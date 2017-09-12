@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.a000webhostapp.mymuseum">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Splashscreen"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NuevoInventoActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".NuevoInventorActivity" />
+        <activity android:name=".NuevoPeriodoActivity" />
+        <activity android:name=".EditarInventoActivity" />
+        <activity android:name=".EditarInventorActivity" />
+        <activity android:name=".EditarPeriodoActivity" />
+        <activity android:name=".EliminarInventoActivity" />
+        <activity android:name=".EliminarInventorActivity" />
+        <activity android:name=".EliminarPeriodoActivity"></activity>
+    </application>
+
+</manifest>
