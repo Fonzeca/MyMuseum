@@ -37,22 +37,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nombre/s del inventor"
-                        android:inputType="textCapWords"/>
-                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
                     <EditText
+                        android:id="@+id/nomyapeInventor_Inventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Apellido/s"
-                        android:inputType="textCapWords"/>
+                        android:hint="Nombre y Apellido del inventor"
+                        android:inputType="textCapWords" />
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
@@ -75,6 +66,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="3">
                     <EditText
+                        android:id="@+id/añoNacimiento_Inventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
@@ -82,6 +74,7 @@
                         android:inputType="number"/>
                 </android.support.design.widget.TextInputLayout>
                 <CheckBox
+                    android:id="@+id/checkboxAC_Inventor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="A.C."
@@ -157,6 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:id="@+id/lugarNacimiento_Inventor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Lugar de nacimiento"
@@ -164,6 +158,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/Save_Inventor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

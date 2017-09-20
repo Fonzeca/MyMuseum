@@ -22,70 +22,78 @@
         android:layout_height="match_parent"
         android:background="@color/colorActivityBackground"
         android:padding="16dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/NomInvento_Invento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre del invento"/>
+                    android:hint="Nombre del invento" />
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp">
+
                 <EditText
+                    android:id="@+id/Descri_Invento"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="top"
-                    android:hint="Descripción"/>
+                    android:hint="Descripción" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Período científico"
-                android:textSize="18sp"
-                android:layout_marginTop="24dp"/>
+                android:textSize="18sp" />
 
             <Spinner
+                android:id="@+id/SpinnerPeri_Invento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:id="@+id/periodo_cientifico_spinner"/>
+                android:layout_marginTop="8dp" />
 
             <LinearLayout
+                android:id="@+id/NewPeriodo_Inventor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:onClick="startNuevoPeriodoActivity">
+                android:clickable="true">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
                     android:text="Agregar nuevo período"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginRight="8dp"/>
+                    android:textSize="16dp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_new"
-                    />
+                    android:src="@drawable/ic_add_new" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Año de invención"
-                android:textSize="18sp"
-                android:layout_marginTop="24dp"/>
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,73 +105,81 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="3">
+
                     <EditText
+                        android:id="@+id/AñoInvento_Invento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:hint="Año"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
+
                 <CheckBox
+                    android:id="@+id/Ac_Invento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="A.C."
                     android:layout_gravity="bottom"
-                    android:buttonTint="@color/darkGray"/>
+                    android:buttonTint="@color/darkGray"
+                    android:text="A.C." />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Inventor/es"
-                android:textSize="18sp"
-                android:layout_marginTop="24dp"/>
+                android:textSize="18sp" />
 
             <Spinner
+                android:id="@+id/SpinnerInventores_Invento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:id="@+id/inventor_spinner"/>
+                android:layout_marginTop="8dp" />
 
             <LinearLayout
+                android:id="@+id/NewInventor_Inventor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:onClick="startNuevoInventorActivity">
+                android:clickable="true">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
                     android:text="Agregar nuevo inventor"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="16dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginRight="8dp"/>
+                    android:textSize="16dp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_new"
-                    />
+                    android:src="@drawable/ic_add_new" />
             </LinearLayout>
 
             <CheckBox
+                android:id="@+id/TheMachine_Invento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Máquina"
                 android:layout_marginTop="24dp"
+                android:buttonTint="@color/darkGray"
+                android:text="Máquina"
                 android:textColor="@color/darkGray"
-                android:textSize="18sp"
-                android:buttonTint="@color/darkGray"/>
+                android:textSize="18sp" />
 
             <Button
+                android:id="@+id/Save_Invento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="GUARDAR"
-                android:textColor="#FFF"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:textColor="#FFF" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

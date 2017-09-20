@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,98 +9,106 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- TODO: Update blank fragment layout -->
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/inventos_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:layout_marginLeft="24dp"
                 android:layout_gravity="top"
-                android:id="@+id/inventos_card"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:cardCornerRadius="2dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+
                     <TextView
+                        android:id="@+id/inventos_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/inventos_title"
+                        android:layout_margin="16dp"
                         android:text="Inventos"
-                        android:textSize="24sp"
                         android:textColor="@color/colorPrimary"
-                        android:layout_margin="16dp"/>
+                        android:textSize="24sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_below="@id/inventos_title"
+                        android:orientation="vertical"
                         android:paddingBottom="16dp">
+
                         <RelativeLayout
+                            android:id="@+id/agregar_nuevo_invento_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/agregar_nuevo_invento_button"
-                            android:onClick="startNuevoInventoActivity">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Agregar nuevo invento"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_add_new"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_new" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/editar_invento_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/editar_invento_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Editar invento"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_edit"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_edit" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/eliminar_invento_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/eliminar_invento_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Eliminar invento"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_delete"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_delete" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -107,95 +116,101 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/inventores_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_gravity="top"
                 android:layout_below="@id/inventos_card"
-                android:id="@+id/inventores_card"
+                android:layout_gravity="top"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:cardCornerRadius="2dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/inventores_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/inventores_title"
+                        android:layout_margin="16dp"
                         android:text="Inventores"
-                        android:textSize="24sp"
                         android:textColor="@color/colorPrimary"
-                        android:layout_margin="16dp"/>
+                        android:textSize="24sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_below="@id/inventores_title"
+                        android:orientation="vertical"
                         android:paddingBottom="16dp">
+
                         <RelativeLayout
+                            android:id="@+id/agregar_nuevo_inventor_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/agregar_nuevo_inventor_button"
-                            android:onClick="startNuevoInventorActivity">
+                            android:clickable="true"
+                            android:padding="16dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Agregar nuevo inventor"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_add_new"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_new" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/editar_inventor_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/editar_inventor_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Editar inventor"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_edit"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_edit" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/eliminar_inventor_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/eliminar_inventor_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Eliminar inventor"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_delete"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_delete" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -203,95 +218,102 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/periodos_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_gravity="top"
                 android:layout_below="@id/inventores_card"
-                android:id="@+id/periodos_card"
+                android:layout_gravity="top"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:cardCornerRadius="2dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/periodos_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/periodos_title"
+                        android:layout_margin="16dp"
                         android:text="Períodos"
-                        android:textSize="24sp"
                         android:textColor="@color/colorPrimary"
-                        android:layout_margin="16dp"/>
+                        android:textSize="24sp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_below="@id/periodos_title"
+                        android:orientation="vertical"
                         android:paddingBottom="16dp">
+
                         <RelativeLayout
+                            android:id="@+id/agregar_nuevo_periodo_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/agregar_nuevo_periodo_button"
-                            android:onClick="startNuevoPeriodoActivity">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Agregar nuevo período"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_add_new"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_new" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/editar_periodo_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/editar_periodo_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Editar período"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_edit"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_edit" />
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/eliminar_periodo_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
-                            android:clickable="true"
                             android:background="?attr/selectableItemBackground"
-                            android:id="@+id/eliminar_periodo_button">
+                            android:clickable="true"
+                            android:padding="16dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Eliminar período"
                                 android:textColor="#000"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp" />
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_delete"
-                                android:layout_alignParentRight="true"/>
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_delete" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
