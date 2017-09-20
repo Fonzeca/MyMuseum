@@ -1,8 +1,7 @@
 package com.a000webhostapp.mymuseum.Entidades;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
+
 
 /**
  * Created by Alexis on 19/9/2017.
@@ -12,7 +11,7 @@ import com.a000webhostapp.mymuseum.DAO.ControlDB;
 public class ModuloEntidad {
     private static ModuloEntidad me;
     private Inventor[] inventoresBuscados;
-    private AppCompatActivity ac;
+    private Periodo[] periodosBuscados;
 
 
     private ModuloEntidad(){
@@ -26,8 +25,9 @@ public class ModuloEntidad {
         return me;
     }
 
-    public void crearInvento(){
-
+    public void crearInvento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina){
+        Invento invento = new Invento(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina);
+        new ControlDB(this).insertar(invento);
     }
 
     public Invento obtenerInvento(){
@@ -54,12 +54,21 @@ public class ModuloEntidad {
     }
 
 
-    public void crearPeriodo(){
+    public void crearPeriodo(String nombre, int añoInicio, int añoFin){
+        Periodo peri = new Periodo(nombre, añoInicio,añoFin);
+        new ControlDB(this).insertar(peri);
 
     }
-    public Periodo obtenerPeriodo(){
-
-        return null;
+    public void buscarPeriodos(){
+        //mandamos a buscar los periodos
+        new ControlDB(this).buscar("Periodo");
+    }
+    public Periodo[] obtenerPeriodos(){
+        //Tratamos de obtener los resultados de la busqueda
+        //Notese que eliminamos el resultado una vez ya se lo pasamos a alguien
+        Periodo[] r = periodosBuscados;
+        periodosBuscados = null;
+        return r;
     }
 
 
@@ -71,6 +80,11 @@ public class ModuloEntidad {
         this.inventoresBuscados = inventoresBuscados;
     }
 
+    public Periodo[] getPeriodosBuscados() {
+        return periodosBuscados;
+    }
 
-
+    public void setPeriodosBuscados(Periodo[] periodosBuscados) {
+        this.periodosBuscados = periodosBuscados;
+    }
 }

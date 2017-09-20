@@ -22,7 +22,7 @@ public class Inventor implements Guardable, Serializable{
 
     public String configGuardar() {
         String accion = "accion=nuevo_inventor";
-        String nom = "nombreCompleto="+ nombreCompleto;
+        String nom = "nombre="+ nombreCompleto;
         String año = "anio_nacimiento="+añoNacimiento;
         String lugar = "lugar_nacimiento="+lugarNacimiento;
 

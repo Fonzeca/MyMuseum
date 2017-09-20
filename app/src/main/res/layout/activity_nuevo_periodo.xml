@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:id="@+id/nomPeriodo_Periodo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nombre del período"/>
@@ -46,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
                     <EditText
+                        android:id="@+id/añoInicoPeriodo_Periodo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Año de inicio"
@@ -53,6 +55,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
+                    android:id="@+id/checkbox_añoInicio"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="A.C."
@@ -70,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
                     <EditText
+                        android:id="@+id/añoFinPeriodo_Periodo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Año de finalización"
@@ -77,6 +81,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
+                    android:id="@+id/checkbox_añoFin"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="A.C."
@@ -85,6 +90,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/Save_Periodo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

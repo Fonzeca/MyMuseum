@@ -29,7 +29,7 @@ public class ControlDB extends AsyncTask implements DAOInterface{
         this.me = me;
     }
 
-    protected Guardable[] doInBackground(Object[] objects) {
+    protected Object[] doInBackground(Object[] objects) {
 
         switch((int)objects[0]){
             case 0:
@@ -57,12 +57,11 @@ public class ControlDB extends AsyncTask implements DAOInterface{
         super.onPostExecute(result);
 
         Guardable[] resultados = (Guardable[]) result;
-        if(resultados[0] != null){
+        if(resultados != null){
             if(resultados[0] instanceof Inventor){
                 me.setInventoresBuscados((Inventor[]) resultados);
-                System.out.println("PASO  " +  ((Inventor[])resultados)[0].configGuardar());
             }else if(resultados[0] instanceof Periodo){
-
+                me.setPeriodosBuscados((Periodo[]) resultados);
             }else if(resultados[0] instanceof Invento){
 
             }
@@ -90,9 +89,21 @@ public class ControlDB extends AsyncTask implements DAOInterface{
     }
 
 
-    private Guardable[] buscarPrivado(String entidad){
+    private Object[] buscarPrivado(String entidad){
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
+
+        System.out.println(jsonRespuesta);
+
+        switch(entidad){
+            case "Inventor":
+                return buscarInventores(jsonRespuesta);
+            case "Periodo":
+                return buscarPeriodo(jsonRespuesta);
+        }
+        return null;
+    }
+    private Inventor[] buscarInventores(String jsonRespuesta){
         Inventor [] inventores = null;
         try {
             JSONObject obj = new JSONObject(jsonRespuesta);
@@ -111,6 +122,26 @@ public class ControlDB extends AsyncTask implements DAOInterface{
             e.printStackTrace();
         }
         return inventores;
+    }
+    private Periodo[] buscarPeriodo(String jsonRespuesta){
+        Periodo [] periodos = null;
+        try {
+            JSONObject obj = new JSONObject(jsonRespuesta);
+            JSONArray json_array = obj.getJSONArray("datos");
+            periodos = new Periodo[json_array.length()];
+
+            for(int i = 0; i < json_array.length(); i++){
+                JSONObject peri = json_array.getJSONObject(i);
+                String nom = peri.getString("nombre");
+                int añoIncio = peri.getInt("año_inicio");
+                int añoFin = peri.getInt("año_fin");
+
+                periodos[i] = new Periodo(nom,añoIncio,añoFin);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return periodos;
     }
 
     private boolean insertarPrivado(Guardable g){

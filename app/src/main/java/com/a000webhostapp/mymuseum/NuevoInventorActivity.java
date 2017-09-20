@@ -31,20 +31,24 @@ public class NuevoInventorActivity extends AppCompatActivity {
         btnGuardar = (Button) findViewById(R.id.Save_Inventor);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                ModuloEntidad me = ModuloEntidad.obtenerModulo();
-                String nombreyapellido = nomYApe.getText().toString();
-                String lugar = lugarNacimiento.getText().toString();
-                int añoInventor;
-                if(AC.isChecked()){
-                    añoInventor = Integer.parseInt("-" + año.getText().toString());
-                }else{
-                    añoInventor = Integer.parseInt(año.getText().toString());
-                }
-                me.crearInventor(nombreyapellido,lugar,añoInventor);
-
+                guardarInformacion();
             }
         });
-
+    }
+    private void guardarInformacion(){
+        ModuloEntidad me = ModuloEntidad.obtenerModulo();
+        String nombreyapellido = nomYApe.getText().toString();
+        String lugar = lugarNacimiento.getText().toString();
+        int añoInventor;
+        if(!nombreyapellido.equals("") && !lugar.equals("") && !año.getText().toString().equals("")){
+            if(AC.isChecked()){
+                añoInventor = Integer.parseInt("-" + año.getText().toString());
+            }else{
+                añoInventor = Integer.parseInt(año.getText().toString());
+            }
+            me.crearInventor(nombreyapellido,lugar,añoInventor);
+            onBackPressed();
+        }
     }
 
     public boolean onSupportNavigateUp() {

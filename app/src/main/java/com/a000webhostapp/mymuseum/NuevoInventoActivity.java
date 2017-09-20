@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,11 +26,14 @@ public class NuevoInventoActivity extends AppCompatActivity {
 
     private EditText nomInvento, descriInvento, añoInvento;
     private Spinner periSpin, inventoresSpin;
-    private CheckBox hacerInvento, theMachine;
+    private CheckBox ACInvento, theMachine;
     private Button guardar;
 
     private Inventor[] inventores;
     private Periodo[] periodos;
+
+    private Inventor inventoActual;
+    private Periodo periodoActual;
 
     private View.OnClickListener clickListenerBotones;
 
@@ -42,6 +46,9 @@ public class NuevoInventoActivity extends AppCompatActivity {
 
         //Mandamos a buscar los inventores
         ModuloEntidad.obtenerModulo().buscarInventores();
+        ModuloEntidad.obtenerModulo().buscarPeriodos();
+
+
 
 
         clickListenerBotones = new View.OnClickListener() {
@@ -73,10 +80,34 @@ public class NuevoInventoActivity extends AppCompatActivity {
         añoInvento = (EditText) findViewById(R.id.AñoInvento_Invento);
 
         periSpin = (Spinner) findViewById(R.id.SpinnerPeri_Invento);
+        periSpin.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(periodos == null){
+                    periodos = ModuloEntidad.obtenerModulo().obtenerPeriodos();
+                    actualizarSpinnerPeriodo();
+                }
+                return false;
+            }
+        });
+        periSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nombrePeriodoActual = (String)periSpin.getSelectedItem();
+                for (int index = 0; index< periodos.length; index++){
+                    if(periodos[index].getNombrePeriodo().equals(nombrePeriodoActual)){
+                        periodoActual = periodos[index];
+                        return;
+                    }
+                }
+
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+
 
         inventoresSpin =(Spinner) findViewById(R.id.SpinnerInventores_Invento);
-        actualizarSpinners();
-
         inventoresSpin.setOnTouchListener(new View.OnTouchListener() {
             //Este metodo se ejecuta cada vez que presionas el spinner
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -84,9 +115,22 @@ public class NuevoInventoActivity extends AppCompatActivity {
                     //Mandamos a buscar los inventores que supuestamente estan buscando
                     //Puede que haya terminado de buscar o puede que no
                     inventores = ModuloEntidad.obtenerModulo().obtenerInventores();
-                    actualizarSpinners();
+                    actualizarSpinnerInventores();
                 }
                 return false;
+            }
+        });
+        inventoresSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
+                for (int index = 0; index< inventores.length; index++){
+                    if(inventores[index].getNombreCompleto().equals(nombreInventorActual)){
+                        inventoActual = inventores[index];
+                        return;
+                    }
+                }
+            }
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -95,7 +139,7 @@ public class NuevoInventoActivity extends AppCompatActivity {
 
 
 
-        hacerInvento = (CheckBox) findViewById(R.id.Ac_Invento);
+        ACInvento = (CheckBox) findViewById(R.id.Ac_Invento);
         theMachine = (CheckBox) findViewById(R.id.TheMachine_Invento);
 
         guardar = (Button) findViewById(R.id.Save_Invento);
@@ -111,9 +155,21 @@ public class NuevoInventoActivity extends AppCompatActivity {
 
 
     private void guardarInformacion(){
+        String nombreGuar = nomInvento.getText().toString();
+        String descriGuar = descriInvento.getText().toString();
+        String añoTextGuar = añoInvento.getText().toString();
+        int añoGuar;
+        if(ACInvento.isChecked()){
+            añoGuar = Integer.parseInt("-" + añoTextGuar);
+        }else{
+            añoGuar = Integer.parseInt(añoTextGuar);
+        }
 
+        ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual,inventoActual,
+                añoGuar,theMachine.isChecked());
     }
-    private void actualizarSpinners(){
+
+    private void actualizarSpinnerInventores(){
         List<String> spinnerArray =  new ArrayList<String>();
         if(inventores != null){
             //se llena el array con los invententores
@@ -125,6 +181,19 @@ public class NuevoInventoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inventoresSpin.setAdapter(adapter);
+    }
+    private void actualizarSpinnerPeriodo(){
+        List<String> spinnerArray =  new ArrayList<String>();
+        if(periodos != null){
+            //se llena el array con los periodos
+            for (int i = 0; i < periodos.length; i++){
+                spinnerArray.add(periodos[i].getNombrePeriodo());
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        periSpin.setAdapter(adapter);
     }
 
     private void startNuevoInventorActivity() {

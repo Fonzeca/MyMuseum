@@ -3,12 +3,13 @@ package com.a000webhostapp.mymuseum.Entidades;
 import com.a000webhostapp.mymuseum.Guardable;
 
 import java.io.Serializable;
+import java.security.Guard;
 
 /**
  * Created by Alexis on 19/9/2017.
  */
 
-public class Invento implements Serializable{
+public class Invento implements Guardable, Serializable{
     private String nombre, descripcion;
     private Periodo periodo;
     private Inventor inventor;
@@ -24,6 +25,20 @@ public class Invento implements Serializable{
         this.isMaquina = isMaquina;
     }
 
+    public String configGuardar() {
+        String accion = "accion=nuevo_invento";
+        String nombreConfig= "nombre="+nombre;
+        String descriConfig= "descripcion="+descripcion;
+        String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
+        String inventorConfig= "nombre_inventor="+inventor.getNombreCompleto();
+        String añoConfig= "anio="+añoInvencion;
+        String isMaquinaConfig= isMaquina?"es_maquina=1":"es_maquina=0";
+
+        return accion + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
+                "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
+    }
+
+    //GETTER & SETTER
     public String getNombre() {
         return nombre;
     }
