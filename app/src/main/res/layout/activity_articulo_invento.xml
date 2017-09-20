@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a000webhostapp.mymuseum.ArticuloInvento"
+    tools:context="com.a000webhostapp.mymuseum.ArticuloInventoActivity"
     android:padding="16dp"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/articulo_invento_nombre_invento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre invento"
@@ -27,7 +28,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -39,7 +41,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edad Antigua"
+                android:id="@+id/articulo_invento_nombre_periodo"
+                android:text=""
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"/>
@@ -55,7 +58,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1926 A.C."
+                android:id="@+id/articulo_invento_año_invencion"
+                android:text=""
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"/>
@@ -71,7 +75,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Aristóteles"
+                android:text=""
+                android:id="@+id/articulo_invento_nombre_inventor"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"/>
@@ -87,7 +92,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                android:id="@+id/articulo_invento_descripcion"
+                android:text=""
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"/>

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdminPanelFragmen
 
         //Cofiguramos el FloatingButton
         fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_search_white);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 

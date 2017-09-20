@@ -3,7 +3,9 @@ package com.a000webhostapp.mymuseum.Entidades;
 
 import com.a000webhostapp.mymuseum.Guardable;
 
-public class Inventor implements Guardable{
+import java.io.Serializable;
+
+public class Inventor implements Guardable, Serializable{
     private String nombreCompleto, lugarNacimiento;
     private int añoNacimiento;  //En caso de ser A.C. debera ser negativo
 

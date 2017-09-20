@@ -35,7 +35,7 @@
         <activity android:name=".EliminarInventoActivity" />
         <activity android:name=".EliminarInventorActivity" />
         <activity android:name=".EliminarPeriodoActivity" />
-        <activity android:name=".ArticuloInvento"></activity>
+        <activity android:name=".ArticuloInventoActivity"></activity>
     </application>
 
 </manifest>
