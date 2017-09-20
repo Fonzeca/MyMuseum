@@ -88,13 +88,6 @@
                     android:src="@drawable/ic_add_new" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Año de invención"
-                android:textSize="18sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:hint="Año"
+                        android:hint="Año de invención"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
