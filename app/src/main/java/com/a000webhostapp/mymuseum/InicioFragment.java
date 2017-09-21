@@ -12,13 +12,15 @@ import android.widget.ListView;
 
 import com.a000webhostapp.mymuseum.Entidades.Invento;
 import com.a000webhostapp.mymuseum.Entidades.Inventor;
+import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Entidades.Periodo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InicioFragment extends Fragment {
+public class InicioFragment extends Fragment implements IObserver{
     private OnFragmentInteractionListener mListener;
+    private  ArrayList<Invento> inventosArrayList;
 
     public InicioFragment() {
 
@@ -34,27 +36,13 @@ public class InicioFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
 
         // Llenar inventosArrayList con valores de la base de datos.
+        inventosArrayList = new ArrayList<Invento>();
 
-        Inventor inventor = new Inventor("Alan Turing", "Maida Vale", 1912);
-        Periodo periodo = new Periodo("Contemporáneo", 1789, 2017);
+        ModuloEntidad.obtenerModulo().buscarInventos(this);
 
-        Invento invento = new Invento("Uber", "Servicio de taxis particulares", periodo, inventor, 2011, false);
-        Invento invento2 = new Invento("Lyft", "Servicio de taxis particulares", periodo, inventor, 2012, false);
-
-        ArrayList<Invento> inventosArrayList = new ArrayList<Invento>();
-
-        inventosArrayList.add(invento);
-        inventosArrayList.add(invento2);
-
-        Invento[] inventosArray = inventosArrayList.toArray(new Invento[inventosArrayList.size()]);
-
-        ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), inventosArray);
-
-        ListView inventosRecientesList = (ListView) getView().findViewById(R.id.inventos_recientes_list);
-        inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
     }
 
     /*
@@ -79,7 +67,22 @@ public class InicioFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    private void actualizarLista(Invento[] g){
+        Invento[] inventosArray = g;
 
+        ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), inventosArray);
+
+        ListView inventosRecientesList = (ListView) getView().findViewById(R.id.inventos_recientes_list);
+        inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
+    }
+
+    public void update(Guardable[]g, int id) {
+        if(g != null){
+            if(g[0] instanceof Invento){
+                actualizarLista((Invento[])g);
+            }
+        }
+    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);

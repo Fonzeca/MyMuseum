@@ -8,6 +8,8 @@ import com.a000webhostapp.mymuseum.Entidades.Inventor;
 import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Entidades.Periodo;
 import com.a000webhostapp.mymuseum.Guardable;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.ISujeto;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,14 +20,18 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 
-
-public class ControlDB extends AsyncTask implements DAOInterface{
+public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
     private ModuloEntidad me;
     private ProgressDialog pdia;
+    private ArrayList<IObserver> observers;
 
-    public ControlDB(ModuloEntidad me){
+
+    public ControlDB(ModuloEntidad me, IObserver ob){
+        observers = new ArrayList<IObserver>();
+        registrarObvserver(ob);
         this.me = me;
     }
 
@@ -57,13 +63,13 @@ public class ControlDB extends AsyncTask implements DAOInterface{
         super.onPostExecute(result);
 
         Guardable[] resultados = (Guardable[]) result;
-        if(resultados != null){
+        if(resultados != null && resultados.length != 0){
             if(resultados[0] instanceof Inventor){
-                me.setInventoresBuscados((Inventor[]) resultados);
+                notificarObsverver(resultados, 0);
             }else if(resultados[0] instanceof Periodo){
-                me.setPeriodosBuscados((Periodo[]) resultados);
+                notificarObsverver(resultados, 1);
             }else if(resultados[0] instanceof Invento){
-
+                notificarObsverver(resultados, 2);
             }
         }
     }
@@ -93,13 +99,14 @@ public class ControlDB extends AsyncTask implements DAOInterface{
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
 
-        System.out.println(jsonRespuesta);
 
         switch(entidad){
             case "Inventor":
                 return buscarInventores(jsonRespuesta);
             case "Periodo":
                 return buscarPeriodo(jsonRespuesta);
+            case "Invento":
+                return buscarInvento(jsonRespuesta);
         }
         return null;
     }
@@ -144,6 +151,34 @@ public class ControlDB extends AsyncTask implements DAOInterface{
         return periodos;
     }
 
+    private Invento[] buscarInvento(String jsonRespuesta){
+        Invento[] inventos = null;
+        try {
+            JSONObject obj = new JSONObject(jsonRespuesta);
+            JSONArray json_array = obj.getJSONArray("datos");
+            inventos = new Invento[json_array.length()];
+
+            for(int i = 0; i < json_array.length(); i++){
+                JSONObject inve = json_array.getJSONObject(i);
+                String nom = inve.getString("nombre");
+                String descripcion = inve.getString("descripcion");
+                JSONObject inventorJSON = inve.getJSONObject("inventor");
+                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"));
+
+                JSONObject periodoJSON = inve.getJSONObject("periodo");
+                Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"));
+
+                int año = inve.getInt("año");
+                boolean maquina = inve.getBoolean("es_maquina");
+
+                inventos[i] = new Invento(nom,descripcion,periodo,inventor,año,maquina);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return inventos;
+    }
+
     private boolean insertarPrivado(Guardable g){
         String respuesta = conectar(g.configGuardar());
         System.out.println(respuesta);
@@ -186,5 +221,28 @@ public class ControlDB extends AsyncTask implements DAOInterface{
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public void registrarObvserver(IObserver ob) {
+        observers.add(ob);
+    }
+
+    @Override
+    public boolean eliminarObvserver(IObserver ob) {
+        for (int i = 0; i < observers.size(); i++){
+            if(observers.get(i).equals(ob)){
+                observers.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void notificarObsverver(Guardable[] g, int id) {
+        for (int i = 0; i < observers.size(); i++){
+            observers.get(i).update(g, id);
+        }
     }
 }

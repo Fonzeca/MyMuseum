@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.Entidades;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.IObserver;
 
 
 /**
@@ -10,11 +11,8 @@ import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
 public class ModuloEntidad {
     private static ModuloEntidad me;
-    private Inventor[] inventoresBuscados;
-    private Periodo[] periodosBuscados;
 
-
-    private ModuloEntidad(){
+    public ModuloEntidad(){
 
     }
     public static ModuloEntidad obtenerModulo(){
@@ -27,64 +25,32 @@ public class ModuloEntidad {
 
     public void crearInvento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina){
         Invento invento = new Invento(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina);
-        new ControlDB(this).insertar(invento);
+        new ControlDB(this, null).insertar(invento);
     }
 
-    public Invento obtenerInvento(){
-
-        return null;
+    public void buscarInventos(IObserver observer){
+        new ControlDB(this, observer).buscar("Invento");
     }
 
 
     public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento){
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
-        new ControlDB(this).insertar(inventor);
+        new ControlDB(this, null).insertar(inventor);
     }
 
-    public void buscarInventores(){
+    public void buscarInventores(IObserver observer){
         //mandamos a buscar los inventores
-        new ControlDB(this).buscar("Inventor");
-    }
-    public Inventor[] obtenerInventores(){
-        //Tratamos de obtener los resultados de la busqueda
-        //Notese que eliminamos el resultado una vez ya se lo pasamos a alguien
-        Inventor[] r = inventoresBuscados;
-        inventoresBuscados = null;
-        return r;
+        new ControlDB(this,observer).buscar("Inventor");
     }
 
 
     public void crearPeriodo(String nombre, int añoInicio, int añoFin){
         Periodo peri = new Periodo(nombre, añoInicio,añoFin);
-        new ControlDB(this).insertar(peri);
+        new ControlDB(this, null).insertar(peri);
 
     }
-    public void buscarPeriodos(){
+    public void buscarPeriodos(IObserver ob){
         //mandamos a buscar los periodos
-        new ControlDB(this).buscar("Periodo");
-    }
-    public Periodo[] obtenerPeriodos(){
-        //Tratamos de obtener los resultados de la busqueda
-        //Notese que eliminamos el resultado una vez ya se lo pasamos a alguien
-        Periodo[] r = periodosBuscados;
-        periodosBuscados = null;
-        return r;
-    }
-
-
-    public Inventor[] getInventoresBuscados() {
-        return inventoresBuscados;
-    }
-
-    public void setInventoresBuscados(Inventor[] inventoresBuscados) {
-        this.inventoresBuscados = inventoresBuscados;
-    }
-
-    public Periodo[] getPeriodosBuscados() {
-        return periodosBuscados;
-    }
-
-    public void setPeriodosBuscados(Periodo[] periodosBuscados) {
-        this.periodosBuscados = periodosBuscados;
+        new ControlDB(this, ob).buscar("Periodo");
     }
 }

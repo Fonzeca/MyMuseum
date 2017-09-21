@@ -29,7 +29,7 @@ public class NuevoPeriodoActivity extends AppCompatActivity {
         añoIncioPeriodo = (EditText) findViewById(R.id.añoInicoPeriodo_Periodo);
         añoFinPeriodo = (EditText) findViewById(R.id.añoFinPeriodo_Periodo);
 
-        checkAñoIncio = (CheckBox) findViewById(R.id.checkbox_añoFin);
+        checkAñoIncio = (CheckBox) findViewById(R.id.checkbox_añoInicio);
         checkAñoFin = (CheckBox) findViewById(R.id.checkbox_añoFin);
 
         btnGuardar = (Button) findViewById(R.id.Save_Periodo);

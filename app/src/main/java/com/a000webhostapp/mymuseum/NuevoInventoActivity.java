@@ -19,8 +19,9 @@ import com.a000webhostapp.mymuseum.Entidades.Periodo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 
-public class NuevoInventoActivity extends AppCompatActivity {
+public class NuevoInventoActivity extends AppCompatActivity implements IObserver{
     private LinearLayout botonNuevoPeriodo, botonNuevoInventor;
 
 
@@ -45,8 +46,8 @@ public class NuevoInventoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Mandamos a buscar los inventores
-        ModuloEntidad.obtenerModulo().buscarInventores();
-        ModuloEntidad.obtenerModulo().buscarPeriodos();
+        ModuloEntidad.obtenerModulo().buscarInventores(this);
+        ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 
 
 
@@ -80,15 +81,6 @@ public class NuevoInventoActivity extends AppCompatActivity {
         añoInvento = (EditText) findViewById(R.id.AñoInvento_Invento);
 
         periSpin = (Spinner) findViewById(R.id.SpinnerPeri_Invento);
-        periSpin.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(periodos == null){
-                    periodos = ModuloEntidad.obtenerModulo().obtenerPeriodos();
-                    actualizarSpinnerPeriodo();
-                }
-                return false;
-            }
-        });
         periSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String nombrePeriodoActual = (String)periSpin.getSelectedItem();
@@ -108,18 +100,6 @@ public class NuevoInventoActivity extends AppCompatActivity {
 
 
         inventoresSpin =(Spinner) findViewById(R.id.SpinnerInventores_Invento);
-        inventoresSpin.setOnTouchListener(new View.OnTouchListener() {
-            //Este metodo se ejecuta cada vez que presionas el spinner
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(inventores == null){
-                    //Mandamos a buscar los inventores que supuestamente estan buscando
-                    //Puede que haya terminado de buscar o puede que no
-                    inventores = ModuloEntidad.obtenerModulo().obtenerInventores();
-                    actualizarSpinnerInventores();
-                }
-                return false;
-            }
-        });
         inventoresSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
@@ -158,15 +138,18 @@ public class NuevoInventoActivity extends AppCompatActivity {
         String nombreGuar = nomInvento.getText().toString();
         String descriGuar = descriInvento.getText().toString();
         String añoTextGuar = añoInvento.getText().toString();
-        int añoGuar;
-        if(ACInvento.isChecked()){
-            añoGuar = Integer.parseInt("-" + añoTextGuar);
-        }else{
-            añoGuar = Integer.parseInt(añoTextGuar);
-        }
+        if(!nombreGuar.equals("") && !descriGuar.equals("") && !añoTextGuar.equals("")){
+            int añoGuar;
+            if(ACInvento.isChecked()){
+                añoGuar = Integer.parseInt("-" + añoTextGuar);
+            }else{
+                añoGuar = Integer.parseInt(añoTextGuar);
+            }
 
-        ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual,inventoActual,
-                añoGuar,theMachine.isChecked());
+            ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual,inventoActual,
+                    añoGuar,theMachine.isChecked());
+            onBackPressed();
+        }
     }
 
     private void actualizarSpinnerInventores(){
@@ -204,5 +187,17 @@ public class NuevoInventoActivity extends AppCompatActivity {
     private void startNuevoPeriodoActivity() {
         Intent intent = new Intent(this, NuevoPeriodoActivity.class);
         startActivity(intent);
+    }
+
+    public void update(Guardable[] g, int id) {
+        if(g != null){
+            if(g[0] instanceof Inventor){
+                inventores = (Inventor[]) g;
+                actualizarSpinnerInventores();
+            }else if(g[0] instanceof Periodo){
+                periodos = (Periodo[]) g;
+                actualizarSpinnerPeriodo();
+            }
+        }
     }
 }

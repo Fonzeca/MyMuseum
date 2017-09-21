@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Entidades.Invento;
 
-public class EditarInventoActivity extends AppCompatActivity {
+public class EditarInventoActivity extends AppCompatActivity implements IObserver{
     private Invento invento;
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_invento);
@@ -34,5 +34,9 @@ public class EditarInventoActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void update(Guardable[] g, int id) {
+
     }
 }
