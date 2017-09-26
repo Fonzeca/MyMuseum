@@ -30,10 +30,12 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/nombre_EditPeriodo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre del período"/>
+                    android:hint="Nombre del período" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -45,19 +47,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
+
                     <EditText
+                        android:id="@+id/añoInicio_EditPeriodo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Año de inicio"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
+                    android:id="@+id/ACInicio_EditPeriodo"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="A.C."
                     android:buttonTint="@color/darkGray"
-                    />
+                    android:text="A.C." />
             </LinearLayout>
 
             <LinearLayout
@@ -69,29 +73,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
+
                     <EditText
+                        android:id="@+id/añoFin_EditPeriodo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Año de finalización"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
+                    android:id="@+id/ACFin_EditPeriodo"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="A.C."
                     android:buttonTint="@color/darkGray"
-                    />
+                    android:text="A.C." />
             </LinearLayout>
 
             <Button
+                android:id="@+id/Save_EditPeriodo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="GUARDAR EDICIÓN"
-                android:textColor="#FFF"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:textColor="#FFF" />
 
         </LinearLayout>
 

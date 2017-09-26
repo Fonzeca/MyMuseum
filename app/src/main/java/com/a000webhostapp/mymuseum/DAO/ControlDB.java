@@ -23,19 +23,17 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
-    private ModuloEntidad me;
+public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements ISujeto,DAOInterface{
     private ProgressDialog pdia;
     private ArrayList<IObserver> observers;
 
 
-    public ControlDB(ModuloEntidad me, IObserver ob){
+    public ControlDB(IObserver ob){
         observers = new ArrayList<IObserver>();
         registrarObvserver(ob);
-        this.me = me;
     }
 
-    protected Object[] doInBackground(Object[] objects) {
+    protected Guardable[] doInBackground(Object[] objects) {
 
         switch((int)objects[0]){
             case 0:
@@ -54,15 +52,9 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
         return null;
     }
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+    protected void onPostExecute(Guardable[] resultados) {
+        super.onPostExecute(resultados);
 
-    protected void onPostExecute(Object result) {
-        super.onPostExecute(result);
-
-        Guardable[] resultados = (Guardable[]) result;
         if(resultados != null && resultados.length != 0){
             if(resultados[0] instanceof Inventor){
                 notificarObsverver(resultados, 0);
@@ -76,7 +68,6 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
 
     public boolean insertar(Guardable g) {
         execute(0,g);
-
         return false;
     }
 
@@ -95,7 +86,7 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
     }
 
 
-    private Object[] buscarPrivado(String entidad){
+    private Guardable[] buscarPrivado(String entidad){
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
 
@@ -110,6 +101,8 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
         }
         return null;
     }
+
+
     private Inventor[] buscarInventores(String jsonRespuesta){
         Inventor [] inventores = null;
         try {
@@ -150,7 +143,6 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
         }
         return periodos;
     }
-
     private Invento[] buscarInvento(String jsonRespuesta){
         Invento[] inventos = null;
         try {
@@ -178,6 +170,7 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
         }
         return inventos;
     }
+
 
     private boolean insertarPrivado(Guardable g){
         String respuesta = conectar(g.configGuardar());
@@ -223,6 +216,8 @@ public class ControlDB extends AsyncTask implements ISujeto,DAOInterface{
         return "";
     }
 
+
+    //Metodos del Observer
     @Override
     public void registrarObvserver(IObserver ob) {
         observers.add(ob);
