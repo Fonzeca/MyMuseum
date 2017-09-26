@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.a000webhostapp.mymuseum.EditarInventorActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Editar inventor"
-        android:gravity="center_horizontal"
-        android:padding="16dp"
-        android:textSize="24sp"
-        android:textColor="@color/colorPrimary"
-        android:background="#FFF"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,6 +29,7 @@
                     android:layout_weight="1">
 
                     <EditText
+                        android:id="@+id/nomyapeInventor_EditInventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Nombre y Apellido del inventor"
@@ -57,42 +48,59 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="3">
+
                     <EditText
+                        android:id="@+id/añoNacInventor_EditInventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:hint="Año de nacimiento"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
+
                 <CheckBox
+                    android:id="@+id/ACInventor_EditInventor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="A.C."
                     android:layout_gravity="bottom"
-                    android:buttonTint="@color/darkGray"/>
+                    android:buttonTint="@color/darkGray"
+                    android:text="A.C." />
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
+                    android:id="@+id/lugarNacInventor_EditInventor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Lugar de nacimiento"
-                    android:inputType="textCapWords"/>
+                    android:inputType="textCapWords" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/Save_EditInventor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="GUARDAR EDICIÓN"
-                android:textColor="#FFF"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:textColor="#FFF" />
 
         </LinearLayout>
 
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar inventor"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:background="#FFF"/>
 
 </LinearLayout>

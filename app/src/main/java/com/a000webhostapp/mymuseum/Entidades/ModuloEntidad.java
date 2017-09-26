@@ -29,7 +29,12 @@ public class ModuloEntidad {
     }
 
     public void buscarInventos(IObserver observer){
+        //Mandamos a buscar los Inventos
         new ControlDB(observer).buscar("Invento");
+    }
+
+    public void editarInvento(){
+        System.out.println("EDITANDO EL INVENTO LALALALALA");
     }
 
 
@@ -43,6 +48,10 @@ public class ModuloEntidad {
         new ControlDB(observer).buscar("Inventor");
     }
 
+    public void editarInventor(){
+        System.out.println("EDITANDO EL INVENTOr J3J3J3J3J3");
+    }
+
 
     public void crearPeriodo(String nombre, int añoInicio, int añoFin){
         Periodo peri = new Periodo(nombre, añoInicio,añoFin);
@@ -52,5 +61,8 @@ public class ModuloEntidad {
     public void buscarPeriodos(IObserver ob){
         //mandamos a buscar los periodos
         new ControlDB(ob).buscar("Periodo");
+    }
+    public void editarPeriodo(){
+        System.out.println("EDITANDO EL PERIODO Xd");
     }
 }

@@ -3,6 +3,7 @@ package com.a000webhostapp.mymuseum;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -59,8 +60,11 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         theMachine = (CheckBox) findViewById(R.id.themachine_EditInvento);
 
         guardar = (Button) findViewById(R.id.Save_EditInvento);
-
-
+        guardar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                ModuloEntidad.obtenerModulo().editarInvento();
+            }
+        });
         nombreInvento.setText(invento.getNombre());
         if(invento.getAñoInvencion() < 0){
             añoInvencion.setText(String.valueOf(Math.abs(invento.getAñoInvencion())));
