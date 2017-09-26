@@ -14,6 +14,8 @@ public class ArticuloInventoActivity extends AppCompatActivity {
 
     private Invento invento;
 
+    private TextView nombreInvento, nombrePeriodo, añoInvencion, nombreInventor, descripcion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,15 +26,20 @@ public class ArticuloInventoActivity extends AppCompatActivity {
 
         invento = (Invento) getIntent().getSerializableExtra("Invento");
 
-        TextView nombreInvento = (TextView) findViewById(R.id.articulo_invento_nombre_invento);
-        TextView nombrePeriodo = (TextView) findViewById(R.id.articulo_invento_nombre_periodo);
-        TextView añoInvencion = (TextView) findViewById(R.id.articulo_invento_año_invencion);
-        TextView nombreInventor = (TextView) findViewById(R.id.articulo_invento_nombre_inventor);
-        TextView descripcion = (TextView) findViewById(R.id.articulo_invento_descripcion);
+        nombreInvento = (TextView) findViewById(R.id.articulo_invento_nombre_invento);
+        nombrePeriodo = (TextView) findViewById(R.id.articulo_invento_nombre_periodo);
+        añoInvencion = (TextView) findViewById(R.id.articulo_invento_año_invencion);
+        nombreInventor = (TextView) findViewById(R.id.articulo_invento_nombre_inventor);
+        descripcion = (TextView) findViewById(R.id.articulo_invento_descripcion);
 
         nombreInvento.setText(invento.getNombre());
         nombrePeriodo.setText(invento.getPeriodo().getNombrePeriodo());
-        añoInvencion.setText(String.valueOf(invento.getAñoInvencion()));
+        if(invento.getAñoInvencion() < 0){
+            String texto = String.valueOf(Math.abs(invento.getAñoInvencion())) + " A.C.";
+            añoInvencion.setText(texto);
+        }else{
+            añoInvencion.setText(String.valueOf(invento.getAñoInvencion()));
+        }
         nombreInventor.setText(invento.getInventor().getNombreCompleto());
         descripcion.setText(invento.getDescripcion());
 

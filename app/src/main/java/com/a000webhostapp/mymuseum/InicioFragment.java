@@ -20,7 +20,6 @@ import java.util.List;
 
 public class InicioFragment extends Fragment implements IObserver{
     private OnFragmentInteractionListener mListener;
-    private  ArrayList<Invento> inventosArrayList;
 
     public InicioFragment() {
 
@@ -37,9 +36,6 @@ public class InicioFragment extends Fragment implements IObserver{
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        // Llenar inventosArrayList con valores de la base de datos.
-        inventosArrayList = new ArrayList<Invento>();
 
         ModuloEntidad.obtenerModulo().buscarInventos(this);
 
@@ -68,12 +64,12 @@ public class InicioFragment extends Fragment implements IObserver{
         mListener = null;
     }
     private void actualizarLista(Invento[] g){
-        Invento[] inventosArray = g;
 
-        ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), inventosArray);
+        ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), g);
 
         ListView inventosRecientesList = (ListView) getView().findViewById(R.id.inventos_recientes_list);
         inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
+
     }
 
     public void update(Guardable[]g, int id) {

@@ -39,7 +39,12 @@ public class ArticuloInventoArrayAdapter extends ArrayAdapter<Invento> {
         TextView verDetalles = (TextView) rowView.findViewById(R.id.ver_detalles_list_item);
 
         nombreInvento.setText(values[position].getNombre());
-        añoInvencion.setText(String.valueOf(values[position].getAñoInvencion()));
+        if(values[position].getAñoInvencion() < 0){
+            String texto = String.valueOf(Math.abs(values[position].getAñoInvencion())) + " A.C.";
+            añoInvencion.setText(texto);
+        }else {
+            añoInvencion.setText(String.valueOf(values[position].getAñoInvencion()));
+        }
         nombreInventor.setText(values[position].getInventor().getNombreCompleto());
 
         verDetalles.setOnClickListener(new View.OnClickListener() {
