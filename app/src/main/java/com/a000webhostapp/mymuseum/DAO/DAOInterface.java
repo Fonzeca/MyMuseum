@@ -8,7 +8,7 @@ import java.security.Guard;
 public interface DAOInterface {
     boolean insertar(Guardable g);
     boolean borrar();
-    boolean modificar();
+    boolean modificar(Guardable g);
     void buscar(String entidad);
 
 }

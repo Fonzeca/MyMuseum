@@ -62,9 +62,39 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         guardar = (Button) findViewById(R.id.Save_EditInvento);
         guardar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                ModuloEntidad.obtenerModulo().editarInvento();
+				//Modificamos todoo el invento
+				invento.setNombre(nombreInvento.getText().toString());
+				invento.setDescripcion(descripcion.getText().toString());
+				int añoModifica;
+				if(ACInvento.isChecked()){
+					añoModifica = Integer.parseInt("-" + añoInvencion.getText().toString());
+				}else{
+					añoModifica = Integer.parseInt(añoInvencion.getText().toString());
+				}
+				invento.setAñoInvencion(añoModifica);
+				if(!invento.getPeriodo().getNombrePeriodo().equals(nombrePeriodoSpinner.getSelectedItem())){
+					for(Periodo p : periodosCargados){
+						if(p.getNombrePeriodo().equals(nombrePeriodoSpinner.getSelectedItem())){
+							invento.setPeriodo(p);
+						}
+					}
+				}
+				
+				if(!invento.getInventor().getNombreCompleto().equals(nombreInventorSpinner.getSelectedItem())){
+					for(Inventor i : inventoresCargados){
+						if(i.getNombreCompleto().equals(nombreInventorSpinner.getSelectedItem())){
+							invento.setInventor(i);
+						}
+					}
+				}
+				invento.setMaquina(theMachine.isChecked());
+	
+	
+				ModuloEntidad.obtenerModulo().editarInvento(invento);
             }
         });
+        
+        //seteamos los datos
         nombreInvento.setText(invento.getNombre());
         if(invento.getAñoInvencion() < 0){
             añoInvencion.setText(String.valueOf(Math.abs(invento.getAñoInvencion())));

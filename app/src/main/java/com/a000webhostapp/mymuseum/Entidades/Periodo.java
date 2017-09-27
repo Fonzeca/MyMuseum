@@ -31,9 +31,12 @@ public class Periodo implements Guardable, Serializable {
         String añoFi = "anio_fin="+añoFin;
         return accion + "&" + nombre + "&" + añoIn + "&" + añoFi;
     }
-
-
-
+    
+    public String configModificar() {
+        return null;
+    }
+    
+    
     //GETTER & SETTER
     public String getNombrePeriodo() {
         return nombrePeriodo;

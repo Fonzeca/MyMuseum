@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.Entidades;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 
 
@@ -33,8 +34,8 @@ public class ModuloEntidad {
         new ControlDB(observer).buscar("Invento");
     }
 
-    public void editarInvento(){
-        System.out.println("EDITANDO EL INVENTO LALALALALA");
+    public void editarInvento(Guardable g){
+        new ControlDB(null).modificar(g);
     }
 
 

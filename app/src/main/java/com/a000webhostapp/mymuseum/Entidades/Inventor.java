@@ -28,8 +28,12 @@ public class Inventor implements Guardable, Serializable{
 
         return accion + "&" + nom + "&" + año + "&" + lugar;
     }
-
-
+    
+    public String configModificar() {
+        return null;
+    }
+    
+    
     //GETTERS & SETTERS
     public String getNombreCompleto() {
         return nombreCompleto;

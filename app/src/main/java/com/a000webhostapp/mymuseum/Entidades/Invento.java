@@ -15,14 +15,20 @@ public class Invento implements Guardable, Serializable{
     private Inventor inventor;
     private int añoInvencion;
     private boolean isMaquina;
+    private final int id;
+    
 
-    public Invento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina) {
+    public Invento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina, int id) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.periodo = periodo;
         this.inventor = inventor;
         this.añoInvencion = añoInvencion;
         this.isMaquina = isMaquina;
+        this.id = id;
+    }
+    public Invento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina) {
+		this(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina,-1);
     }
 
     public String configGuardar() {
@@ -37,8 +43,23 @@ public class Invento implements Guardable, Serializable{
         return accion + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
                 "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
     }
-
-    //GETTER & SETTER
+	
+	public String configModificar() {
+		String accion = "accion=editar_registro";
+		String entidad = "entidad=Invento";
+		String idConfig = "registro_id="+id;
+		String nombreConfig= "nombre="+nombre;
+		String descriConfig= "descripcion="+descripcion;
+		String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
+		String inventorConfig= "nombre_inventor="+inventor.getNombreCompleto();
+		String añoConfig= "anio="+añoInvencion;
+		String isMaquinaConfig= isMaquina?"es_maquina=1":"es_maquina=0";
+		
+		return accion + "&" + entidad + "&" + idConfig + "&" + nombreConfig + "&" + añoConfig +
+				"&" + descriConfig + "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
+	}
+	
+	//GETTER & SETTER
     public String getNombre() {
         return nombre;
     }
@@ -86,4 +107,8 @@ public class Invento implements Guardable, Serializable{
     public void setMaquina(boolean maquina) {
         isMaquina = maquina;
     }
+    
+	public int getID() {
+		return id;
+	}
 }
