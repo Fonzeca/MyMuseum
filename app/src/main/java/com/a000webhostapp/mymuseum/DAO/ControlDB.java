@@ -43,7 +43,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
                 //borrar
                 break;
             case 2:
-                //modificar
+                modificarPrivado((Guardable)objects[1]);
                 break;
             case 3:
                 return buscarPrivado((String)objects[1]);
@@ -76,16 +76,28 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         return false;
     }
 
-    public boolean modificar() {
-
+    public boolean modificar(Guardable g) {
+		execute(2,g);
         return false;
     }
 
     public void buscar(String entidad){
         execute(3, entidad);
     }
-
-
+	
+	
+	private boolean insertarPrivado(Guardable g){
+		String respuesta = conectar(g.configGuardar());
+		System.out.println(respuesta);
+		return true;
+	}
+	
+	private boolean modificarPrivado(Guardable g){
+		String respuesta = conectar(g.configModificar());
+		System.out.println(respuesta);
+		return true;
+	}
+	
     private Guardable[] buscarPrivado(String entidad){
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
@@ -101,8 +113,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         }
         return null;
     }
-
-
+	
     private Inventor[] buscarInventores(String jsonRespuesta){
         Inventor [] inventores = null;
         try {
@@ -123,7 +134,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         }
         return inventores;
     }
-    private Periodo[] buscarPeriodo(String jsonRespuesta){
+	private Periodo[] buscarPeriodo(String jsonRespuesta){
         Periodo [] periodos = null;
         try {
             JSONObject obj = new JSONObject(jsonRespuesta);
@@ -149,21 +160,22 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             JSONObject obj = new JSONObject(jsonRespuesta);
             JSONArray json_array = obj.getJSONArray("datos");
             inventos = new Invento[json_array.length()];
-
-            for(int i = 0; i < json_array.length(); i++){
+			
+			for(int i = 0; i < json_array.length(); i++){
                 JSONObject inve = json_array.getJSONObject(i);
+				int id = inve.getInt("invento_id");
                 String nom = inve.getString("nombre");
                 String descripcion = inve.getString("descripcion");
                 JSONObject inventorJSON = inve.getJSONObject("inventor");
                 Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"));
-
+				
                 JSONObject periodoJSON = inve.getJSONObject("periodo");
                 Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"));
-
+				
                 int año = inve.getInt("año");
                 boolean maquina = inve.getBoolean("es_maquina");
-
-                inventos[i] = new Invento(nom,descripcion,periodo,inventor,año,maquina);
+				
+                inventos[i] = new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -171,13 +183,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         return inventos;
     }
 
-
-    private boolean insertarPrivado(Guardable g){
-        String respuesta = conectar(g.configGuardar());
-        System.out.println(respuesta);
-        return false;
-    }
-
+    
+    
     private String conectar(String parametros){
         try {
             URL url = new URL("http://mymuseum.000webhostapp.com/index.php");
