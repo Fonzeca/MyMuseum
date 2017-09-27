@@ -1,9 +1,6 @@
-package com.a000webhostapp.mymuseum.Entidades;
-
-import com.a000webhostapp.mymuseum.Guardable;
+package com.a000webhostapp.mymuseum.Modelo;
 
 import java.io.Serializable;
-import java.security.Guard;
 
 /**
  * Created by Alexis on 19/9/2017.

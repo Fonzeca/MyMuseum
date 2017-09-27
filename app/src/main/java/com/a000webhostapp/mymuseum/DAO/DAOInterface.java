@@ -1,13 +1,11 @@
 package com.a000webhostapp.mymuseum.DAO;
 
 
-import com.a000webhostapp.mymuseum.Guardable;
-
-import java.security.Guard;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
 
 public interface DAOInterface {
     boolean insertar(Guardable g);
-    boolean borrar();
+    boolean borrar(String parametro);
     boolean modificar(Guardable g);
     void buscar(String entidad);
 

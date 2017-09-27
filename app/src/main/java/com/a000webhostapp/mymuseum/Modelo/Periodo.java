@@ -1,6 +1,4 @@
-package com.a000webhostapp.mymuseum.Entidades;
-
-import com.a000webhostapp.mymuseum.Guardable;
+package com.a000webhostapp.mymuseum.Modelo;
 
 import java.io.Serializable;
 
@@ -12,15 +10,20 @@ public class Periodo implements Guardable, Serializable {
     private String nombrePeriodo;
 
     private int añoInicio, añoFin;
+    private int id;
 
     public Periodo(){
 
     }
 
-    public Periodo(String nombrePeriodo, int añoInicio, int añoFin) {
+    public Periodo(String nombrePeriodo, int añoInicio, int añoFin, int id) {
         this.nombrePeriodo = nombrePeriodo;
         this.añoInicio = añoInicio;
         this.añoFin = añoFin;
+        this. id = id;
+    }
+    public Periodo(String nombrePeriodo, int añoInicio, int añoFin) {
+        this(nombrePeriodo, añoInicio,añoFin, -1);
     }
 
 
@@ -33,7 +36,14 @@ public class Periodo implements Guardable, Serializable {
     }
     
     public String configModificar() {
-        return null;
+        String accion = "accion=editar_registro";
+        String entidad = "entidad=Periodo";
+        String idModifica = "registro_id="+id;
+        String nombre = "nombre="+nombrePeriodo;
+        String añoIn = "anio_inicio="+añoInicio;
+        String añoFi = "anio_fin="+añoFin;
+        
+        return accion + "&" + entidad + "&" + idModifica + "&" + nombre + "&" + añoIn + "&" + añoFi;
     }
     
     
@@ -53,7 +63,11 @@ public class Periodo implements Guardable, Serializable {
     public void setAñoInicio(int añoInicio) {
         this.añoInicio = añoInicio;
     }
-
+	
+	public int getID() {
+		return id;
+	}
+    
     public int getAñoFin() {
         return añoFin;
     }

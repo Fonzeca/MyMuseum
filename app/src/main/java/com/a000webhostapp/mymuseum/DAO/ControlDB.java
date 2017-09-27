@@ -3,11 +3,10 @@ package com.a000webhostapp.mymuseum.DAO;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.a000webhostapp.mymuseum.Entidades.Invento;
-import com.a000webhostapp.mymuseum.Entidades.Inventor;
-import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
-import com.a000webhostapp.mymuseum.Entidades.Periodo;
-import com.a000webhostapp.mymuseum.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.ISujeto;
 
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 
 
 public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements ISujeto,DAOInterface{
-    private ProgressDialog pdia;
     private ArrayList<IObserver> observers;
 
 
@@ -40,7 +38,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
                 insertarPrivado((Guardable)objects[1]);
                 break;
             case 1:
-                //borrar
+                borrarPrivado((String)objects[1]);
                 break;
             case 2:
                 modificarPrivado((Guardable)objects[1]);
@@ -71,8 +69,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         return false;
     }
 
-    public boolean borrar() {
-        execute(1);
+    public boolean borrar(String parametro) {
+        execute(1, parametro);
         return false;
     }
 
@@ -85,6 +83,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         execute(3, entidad);
     }
 	
+    private boolean borrarPrivado(String parametro){
+		String respuesta = conectar(parametro);
+		System.out.println(respuesta);
+		return true;
+	}
 	
 	private boolean insertarPrivado(Guardable g){
 		String respuesta = conectar(g.configGuardar());
@@ -124,10 +127,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject inven = json_array.getJSONObject(i);
                 String nom = inven.getString("nombre");
+				int idConfig = inven.getInt("inventor_id");
                 int año = inven.getInt("año_nacimiento");
                 String lugar = inven.getString("lugar_nacimiento");
 
-                inventores[i] = new Inventor(nom,lugar,año);
+                inventores[i] = new Inventor(nom,lugar,año, idConfig);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -144,10 +148,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject peri = json_array.getJSONObject(i);
                 String nom = peri.getString("nombre");
+				int idConfig = peri.getInt("periodo_id");
                 int añoIncio = peri.getInt("año_inicio");
                 int añoFin = peri.getInt("año_fin");
 
-                periodos[i] = new Periodo(nom,añoIncio,añoFin);
+                periodos[i] = new Periodo(nom,añoIncio,añoFin, idConfig);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -180,7 +185,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return inventos;
+		return inventos;
     }
 
     
@@ -218,9 +223,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
             return response.toString();
         } catch (java.io.IOException e) {
-            e.printStackTrace();
+			e.printStackTrace();
+            notificarObsverver(null, -1);
+            cancel(true);
         }
-        return "";
+		return "NO SE CONECTO";
     }
 
 

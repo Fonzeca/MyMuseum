@@ -1,14 +1,10 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.Entidades.Inventor;
+import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.AdminPanelFragment;
+import com.a000webhostapp.mymuseum.Vista.InfoMuseoFragment;
+import com.a000webhostapp.mymuseum.Vista.InicioFragment;
 
 public class MainActivity extends AppCompatActivity implements AdminPanelFragment.OnFragmentInteractionListener, InfoMuseoFragment.OnFragmentInteractionListener, InicioFragment.OnFragmentInteractionListener {
     private Toolbar toolbar;

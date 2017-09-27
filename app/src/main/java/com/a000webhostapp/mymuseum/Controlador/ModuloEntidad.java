@@ -1,8 +1,11 @@
-package com.a000webhostapp.mymuseum.Entidades;
+package com.a000webhostapp.mymuseum.Controlador;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
 
 
 /**
@@ -23,7 +26,8 @@ public class ModuloEntidad {
         }
         return me;
     }
-
+    
+    //---------------
     public void crearInvento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina){
         Invento invento = new Invento(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina);
         new ControlDB(null).insertar(invento);
@@ -31,14 +35,19 @@ public class ModuloEntidad {
 
     public void buscarInventos(IObserver observer){
         //Mandamos a buscar los Inventos
-        new ControlDB(observer).buscar("Invento");
+		new ControlDB(observer).buscar("Invento");
     }
 
     public void editarInvento(Guardable g){
         new ControlDB(null).modificar(g);
     }
-
-
+	public void eliminarInvento(int id){
+		String entidad = "entidad=Invento";
+		String idBorra = "registro_id=" + id;
+		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
+    
+    //---------------
     public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento){
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
         new ControlDB(null).insertar(inventor);
@@ -49,11 +58,16 @@ public class ModuloEntidad {
         new ControlDB(observer).buscar("Inventor");
     }
 
-    public void editarInventor(){
-        System.out.println("EDITANDO EL INVENTOr J3J3J3J3J3");
+    public void editarInventor(Guardable g){
+        new ControlDB(null).modificar(g);
     }
+	public void eliminarInventor(int id){
+		String entidad = "entidad=Inventor";
+		String idBorra = "registro_id=" + id;
+		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
 
-
+    //---------------
     public void crearPeriodo(String nombre, int añoInicio, int añoFin){
         Periodo peri = new Periodo(nombre, añoInicio,añoFin);
         new ControlDB(null).insertar(peri);
@@ -63,7 +77,12 @@ public class ModuloEntidad {
         //mandamos a buscar los periodos
         new ControlDB(ob).buscar("Periodo");
     }
-    public void editarPeriodo(){
-        System.out.println("EDITANDO EL PERIODO Xd");
+    public void editarPeriodo(Guardable g){
+        new ControlDB(null).modificar(g);
     }
+    public void eliminarPeriodo(int id){
+		String entidad = "entidad=Periodo";
+		String idBorra = "registro_id=" + id;
+		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
 }

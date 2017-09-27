@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +10,18 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.a000webhostapp.mymuseum.Entidades.Invento;
-import com.a000webhostapp.mymuseum.Entidades.Inventor;
-import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
-import com.a000webhostapp.mymuseum.Entidades.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditarInventoActivity extends AppCompatActivity implements IObserver{
+public class EditarInventoActivity extends AppCompatActivity implements IObserver {
     private Inventor[] inventoresCargados;
     private Periodo[] periodosCargados;
 
@@ -29,6 +32,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     private Button guardar;
 
     private ProgressDialog loading;
+	private boolean buscando, cargado;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +44,8 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 
         invento = (Invento) getIntent().getSerializableExtra("Invento");
 
-        loading = new ProgressDialog(this);
-        loading.setMessage("Loading...");
-        loading.setCancelable(false);
-        loading.show();
-
-        ModuloEntidad.obtenerModulo().buscarInventores(this);
-        ModuloEntidad.obtenerModulo().buscarPeriodos(this);
-
-
+		buscarInfoSpinners();
+		
         nombreInvento = (TextView) findViewById(R.id.editar_invento_nombre_invento);
         descripcion = (TextView) findViewById(R.id.editar_invento_descripcion);
         añoInvencion = (TextView) findViewById(R.id.editar_invento_año_invencion);
@@ -91,6 +88,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	
 	
 				ModuloEntidad.obtenerModulo().editarInvento(invento);
+				onBackPressed();
             }
         });
         
@@ -109,9 +107,9 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         onBackPressed();
         return true;
     }
-
-
-    private void actualizarSpinnerInventores(){
+	
+	
+	private void actualizarSpinnerInventores(){
         List<String> spinnerArray =  new ArrayList<String>();
         int selected = 0;
         if(inventoresCargados != null){
@@ -148,19 +146,52 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         nombrePeriodoSpinner.setAdapter(adapter);
         nombrePeriodoSpinner.setSelection(selected);
     }
+	
+    private void buscarInfoSpinners(){
+		buscando = true;
+		loading = new ProgressDialog(this){
+			public void onBackPressed() {
+				if(isShowing()){
+					dismiss();
+					buscando = false;
+				}else{
+					super.onBackPressed();
+				}
+			}
+		};
+		loading.setMessage("Espere un momento...");
+		loading.setCancelable(false);
+		loading.show();
+		
+		ModuloEntidad.obtenerModulo().buscarInventores(this);
+		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+		
+	}
 
-
+    
     public void update(Guardable[] g, int id) {
-        if(g != null){
-            if(g[0] instanceof Inventor){
-                inventoresCargados = (Inventor[]) g;
-                actualizarSpinnerInventores();
-
-            }else if(g[0] instanceof Periodo){
-                periodosCargados = (Periodo[]) g;
-                actualizarSpinnerPeriodo();
-            }
-        }
-        loading.dismiss();
+		if(buscando){
+			if(g != null){
+				if(g[0] instanceof Inventor){
+					inventoresCargados = (Inventor[]) g;
+					actualizarSpinnerInventores();
+					
+				}else if(g[0] instanceof Periodo){
+					periodosCargados = (Periodo[]) g;
+					actualizarSpinnerPeriodo();
+				}
+				
+				//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
+				if(periodosCargados != null && inventoresCargados != null){
+					cargado = true;
+					buscando = false;
+					loading.dismiss();
+				}
+			}else if(id == -1){
+				loading.dismiss();
+				new DialogoAlerta(this, "No se pudo conectar", "Error").mostrar();
+				buscando = false;
+			}
+		}
     }
 }

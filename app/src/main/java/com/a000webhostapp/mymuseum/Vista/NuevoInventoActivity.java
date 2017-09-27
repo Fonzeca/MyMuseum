@@ -1,9 +1,9 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,15 +13,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.a000webhostapp.mymuseum.Entidades.Inventor;
-import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
-import com.a000webhostapp.mymuseum.Entidades.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
-public class NuevoInventoActivity extends AppCompatActivity implements IObserver{
+public class NuevoInventoActivity extends AppCompatActivity implements IObserver {
     private LinearLayout botonNuevoPeriodo, botonNuevoInventor;
 
 
@@ -33,8 +35,11 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     private Inventor[] inventores;
     private Periodo[] periodos;
 
-    private Inventor inventoActual;
+    private Inventor inventorActual;
     private Periodo periodoActual;
+    
+    private ProgressDialog loading;
+    private boolean buscando, cargado;
 
     private View.OnClickListener clickListenerBotones;
 
@@ -46,8 +51,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Mandamos a buscar los inventores
-        ModuloEntidad.obtenerModulo().buscarInventores(this);
-        ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+        buscarInfoSpinners();
 
 
 
@@ -105,7 +109,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
                 String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
                 for (int index = 0; index< inventores.length; index++){
                     if(inventores[index].getNombreCompleto().equals(nombreInventorActual)){
-                        inventoActual = inventores[index];
+                        inventorActual = inventores[index];
                         return;
                     }
                 }
@@ -124,7 +128,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 
         guardar = (Button) findViewById(R.id.Save_Invento);
         guardar.setOnClickListener(clickListenerBotones);
-
+		
 
 
     }
@@ -132,6 +136,27 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         onBackPressed();
         return true;
     }
+	
+	private void buscarInfoSpinners(){
+		buscando = true;
+		loading = new ProgressDialog(this){
+			public void onBackPressed() {
+				if(isShowing()){
+					dismiss();
+					buscando = false;
+				}else{
+					super.onBackPressed();
+				}
+			}
+		};
+		loading.setMessage("Espere un momento...");
+		loading.setCancelable(false);
+		loading.show();
+		
+		ModuloEntidad.obtenerModulo().buscarInventores(this);
+		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+		
+	}
 
 
     private void guardarInformacion(){
@@ -146,7 +171,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
                 añoGuar = Integer.parseInt(añoTextGuar);
             }
 
-            ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual,inventoActual,
+            ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual, inventorActual,
                     añoGuar,theMachine.isChecked());
             onBackPressed();
         }
@@ -190,13 +215,21 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     }
 
     public void update(Guardable[] g, int id) {
-        if(g != null){
-            if(g[0] instanceof Inventor){
-                inventores = (Inventor[]) g;
-                actualizarSpinnerInventores();
-            }else if(g[0] instanceof Periodo){
-                periodos = (Periodo[]) g;
-                actualizarSpinnerPeriodo();
+        if(buscando){
+            if(g != null){
+                if(g[0] instanceof Inventor){
+                    inventores = (Inventor[]) g;
+                    actualizarSpinnerInventores();
+                }else if(g[0] instanceof Periodo){
+                    periodos = (Periodo[]) g;
+                    actualizarSpinnerPeriodo();
+                }
+                if(inventores != null && periodos != null){
+					loading.dismiss();
+				}
+            }else if(id == -1){
+                loading.dismiss();
+				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
             }
         }
     }
