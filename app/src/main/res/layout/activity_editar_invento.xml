@@ -65,6 +65,7 @@
                 android:layout_marginTop="8dp" />
 
             <LinearLayout
+                android:id="@+id/AgregarPeriodo_EditInvento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -129,6 +130,7 @@
                 android:layout_marginTop="8dp" />
 
             <LinearLayout
+                android:id="@+id/AgregarInventor_EditInvento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

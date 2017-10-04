@@ -104,20 +104,20 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     private Guardable[] buscarPrivado(String entidad){
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
-
-
-        switch(entidad){
-            case "Inventor":
-                return buscarInventores(jsonRespuesta);
-            case "Periodo":
-                return buscarPeriodo(jsonRespuesta);
-            case "Invento":
-                return buscarInvento(jsonRespuesta);
-        }
-        return null;
+		
+		Guardable[] respuestaFinal = null;
+		
+		if(entidad.equals("Inventor")){
+			respuestaFinal = buscarInventores(jsonRespuesta);
+		}else if(entidad.equals("Periodo")){
+			respuestaFinal = buscarPeriodo(jsonRespuesta);
+		}else if(entidad.equals("Invento")){
+			respuestaFinal = buscarInvento(jsonRespuesta);
+		}
+        return respuestaFinal;
     }
 	
-    private Inventor[] buscarInventores(String jsonRespuesta){
+    private Guardable[] buscarInventores(String jsonRespuesta){
         Inventor [] inventores = null;
         try {
             JSONObject obj = new JSONObject(jsonRespuesta);
@@ -138,7 +138,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         }
         return inventores;
     }
-	private Periodo[] buscarPeriodo(String jsonRespuesta){
+	private Guardable[] buscarPeriodo(String jsonRespuesta){
         Periodo [] periodos = null;
         try {
             JSONObject obj = new JSONObject(jsonRespuesta);
@@ -159,7 +159,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         }
         return periodos;
     }
-    private Invento[] buscarInvento(String jsonRespuesta){
+    private Guardable[] buscarInvento(String jsonRespuesta){
         Invento[] inventos = null;
         try {
             JSONObject obj = new JSONObject(jsonRespuesta);

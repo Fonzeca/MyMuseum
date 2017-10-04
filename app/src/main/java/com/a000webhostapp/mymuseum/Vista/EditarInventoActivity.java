@@ -1,12 +1,14 @@
 package com.a000webhostapp.mymuseum.Vista;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,6 +28,9 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     private Periodo[] periodosCargados;
 
     private Invento invento;
+	
+	private LinearLayout agregarInventor, agregarPeriodo;
+	
     private TextView nombreInvento, descripcion, añoInvencion;
     private Spinner nombrePeriodoSpinner, nombreInventorSpinner;
     private CheckBox ACInvento, theMachine;
@@ -55,6 +60,19 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 
         ACInvento = (CheckBox) findViewById(R.id.ACInvento_EditInvento);
         theMachine = (CheckBox) findViewById(R.id.themachine_EditInvento);
+		
+		agregarInventor = (LinearLayout) findViewById(R.id.AgregarInventor_EditInvento);
+		agregarInventor.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				startNuevoInventorActivity();
+			}
+		});
+		agregarPeriodo = (LinearLayout)findViewById(R.id.AgregarPeriodo_EditInvento);
+		agregarPeriodo.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				startNuevoPeriodoActivity();
+			}
+		});
 
         guardar = (Button) findViewById(R.id.Save_EditInvento);
         guardar.setOnClickListener(new View.OnClickListener() {
@@ -194,4 +212,14 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 			}
 		}
     }
+	private void startNuevoInventorActivity() {
+		Intent intent = new Intent(this, NuevoInventorActivity.class);
+		startActivity(intent);
+	}
+	
+	private void startNuevoPeriodoActivity() {
+		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
+		startActivity(intent);
+	}
+    
 }
