@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 
 public class DialogoAlerta {
 	private Activity activity;
-	private String mensaje, titulo;
 	private AlertDialog dialogo;
 	
 	public DialogoAlerta(final Activity activity,final String mensaje,final String titulo){

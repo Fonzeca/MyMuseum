@@ -13,7 +13,7 @@ public class Periodo implements Guardable, Serializable {
     private int id;
 
     public Periodo(){
-
+        
     }
 
     public Periodo(String nombrePeriodo, int añoInicio, int añoFin, int id) {
