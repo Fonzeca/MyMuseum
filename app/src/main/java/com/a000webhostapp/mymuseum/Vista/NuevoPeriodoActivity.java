@@ -1,14 +1,14 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
 
-import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.R;
 
 public class NuevoPeriodoActivity extends AppCompatActivity {
 

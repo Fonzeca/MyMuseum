@@ -1,9 +1,6 @@
-package com.a000webhostapp.mymuseum.Entidades;
-
-import com.a000webhostapp.mymuseum.Guardable;
+package com.a000webhostapp.mymuseum.Modelo;
 
 import java.io.Serializable;
-import java.security.Guard;
 
 /**
  * Created by Alexis on 19/9/2017.
@@ -57,6 +54,11 @@ public class Invento implements Guardable, Serializable{
 		
 		return accion + "&" + entidad + "&" + idConfig + "&" + nombreConfig + "&" + añoConfig +
 				"&" + descriConfig + "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
+	}
+	
+	@Override
+	public String toString() {
+		return nombre;
 	}
 	
 	//GETTER & SETTER

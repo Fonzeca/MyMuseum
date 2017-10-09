@@ -1,9 +1,9 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,15 +13,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import com.a000webhostapp.mymuseum.Entidades.Inventor;
-import com.a000webhostapp.mymuseum.Entidades.ModuloEntidad;
-import com.a000webhostapp.mymuseum.Entidades.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
-public class NuevoInventoActivity extends AppCompatActivity implements IObserver{
+public class NuevoInventoActivity extends AppCompatActivity implements IObserver {
     private LinearLayout botonNuevoPeriodo, botonNuevoInventor;
 
 
@@ -33,8 +35,11 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     private Inventor[] inventores;
     private Periodo[] periodos;
 
-    private Inventor inventoActual;
+    private Inventor inventorActual;
     private Periodo periodoActual;
+    
+    private ProgressDialog loading;
+    private boolean buscando, cargado;
 
     private View.OnClickListener clickListenerBotones;
 
@@ -46,8 +51,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Mandamos a buscar los inventores
-        ModuloEntidad.obtenerModulo().buscarInventores(this);
-        ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+        buscarInfoSpinners();
 
 
 
@@ -83,16 +87,8 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         periSpin = (Spinner) findViewById(R.id.SpinnerPeri_Invento);
         periSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String nombrePeriodoActual = (String)periSpin.getSelectedItem();
-                for (int index = 0; index< periodos.length; index++){
-                    if(periodos[index].getNombrePeriodo().equals(nombrePeriodoActual)){
-                        periodoActual = periodos[index];
-                        return;
-                    }
-                }
-
+                periodoActual = (Periodo)periSpin.getSelectedItem();
             }
-
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
@@ -102,13 +98,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         inventoresSpin =(Spinner) findViewById(R.id.SpinnerInventores_Invento);
         inventoresSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
-                for (int index = 0; index< inventores.length; index++){
-                    if(inventores[index].getNombreCompleto().equals(nombreInventorActual)){
-                        inventoActual = inventores[index];
-                        return;
-                    }
-                }
+                inventorActual = (Inventor)inventoresSpin.getSelectedItem();
             }
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -124,79 +114,114 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 
         guardar = (Button) findViewById(R.id.Save_Invento);
         guardar.setOnClickListener(clickListenerBotones);
-
+		
 
 
     }
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-
-    private void guardarInformacion(){
-        String nombreGuar = nomInvento.getText().toString();
-        String descriGuar = descriInvento.getText().toString();
-        String añoTextGuar = añoInvento.getText().toString();
-        if(!nombreGuar.equals("") && !descriGuar.equals("") && !añoTextGuar.equals("")){
-            int añoGuar;
-            if(ACInvento.isChecked()){
-                añoGuar = Integer.parseInt("-" + añoTextGuar);
-            }else{
-                añoGuar = Integer.parseInt(añoTextGuar);
-            }
-
-            ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual,inventoActual,
-                    añoGuar,theMachine.isChecked());
-            onBackPressed();
-        }
-    }
-
+    
+	
+	private void buscarInfoSpinners(){
+		buscando = true;
+		loading = new ProgressDialog(this){
+			public void onBackPressed() {
+				if(isShowing()){
+					dismiss();
+					buscando = false;
+				}else{
+					super.onBackPressed();
+				}
+			}
+		};
+		loading.setMessage("Espere un momento...");
+		loading.setCancelable(false);
+		loading.show();
+		
+		ModuloEntidad.obtenerModulo().buscarInventores(this);
+		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+		
+	}
     private void actualizarSpinnerInventores(){
-        List<String> spinnerArray =  new ArrayList<String>();
+        List<Inventor> spinnerArray =  new ArrayList<Inventor>();
         if(inventores != null){
             //se llena el array con los invententores
             for (int i = 0; i < inventores.length; i++){
-                spinnerArray.add(inventores[i].getNombreCompleto());
+                spinnerArray.add(inventores[i]);
             }
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+		//Si bien guardamos inventores en el array, se muestro el toString de cada inventor.
+        ArrayAdapter<Inventor> adapter = new ArrayAdapter<Inventor>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inventoresSpin.setAdapter(adapter);
     }
     private void actualizarSpinnerPeriodo(){
-        List<String> spinnerArray =  new ArrayList<String>();
+        List<Periodo> spinnerArray =  new ArrayList<Periodo>();
         if(periodos != null){
             //se llena el array con los periodos
             for (int i = 0; i < periodos.length; i++){
-                spinnerArray.add(periodos[i].getNombrePeriodo());
+                spinnerArray.add(periodos[i]);
             }
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        
+		//Si bien guardamos peridoos en el array, se muestro el toString de cada periodo.
+        ArrayAdapter<Periodo> adapter = new ArrayAdapter<Periodo>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periSpin.setAdapter(adapter);
     }
-
-    private void startNuevoInventorActivity() {
-        Intent intent = new Intent(this, NuevoInventorActivity.class);
-        startActivity(intent);
-    }
-
-    private void startNuevoPeriodoActivity() {
-        Intent intent = new Intent(this, NuevoPeriodoActivity.class);
-        startActivity(intent);
-    }
-
-    public void update(Guardable[] g, int id) {
-        if(g != null){
-            if(g[0] instanceof Inventor){
-                inventores = (Inventor[]) g;
-                actualizarSpinnerInventores();
-            }else if(g[0] instanceof Periodo){
-                periodos = (Periodo[]) g;
-                actualizarSpinnerPeriodo();
+	
+    
+	private void guardarInformacion(){
+		String nombreGuar = nomInvento.getText().toString();
+		String descriGuar = descriInvento.getText().toString();
+		String añoTextGuar = añoInvento.getText().toString();
+		if(!nombreGuar.equals("") && !descriGuar.equals("") && !añoTextGuar.equals("")){
+			int añoGuar;
+			if(ACInvento.isChecked()){
+				añoGuar = Integer.parseInt("-" + añoTextGuar);
+			}else{
+				añoGuar = Integer.parseInt(añoTextGuar);
+			}
+			
+			ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual, inventorActual,
+					añoGuar,theMachine.isChecked());
+			onBackPressed();
+		}
+	}
+	
+	protected void onRestart() {
+		super.onRestart();
+		buscarInfoSpinners();
+	}
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
+	}
+	
+	private void startNuevoInventorActivity() {
+		Intent intent = new Intent(this, NuevoInventorActivity.class);
+		startActivity(intent);
+	}
+	
+	private void startNuevoPeriodoActivity() {
+		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
+		startActivity(intent);
+	}
+	
+	public void update(Guardable[] g, int id) {
+        if(buscando){
+            if(g != null){
+                if(g[0] instanceof Inventor){
+                    inventores = (Inventor[]) g;
+                    actualizarSpinnerInventores();
+                }else if(g[0] instanceof Periodo){
+                    periodos = (Periodo[]) g;
+                    actualizarSpinnerPeriodo();
+                }
+                if(inventores != null && periodos != null){
+					loading.dismiss();
+				}
+            }else if(id == -1){
+                loading.dismiss();
+				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
             }
         }
     }

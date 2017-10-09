@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Vista;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.a000webhostapp.mymuseum.Entidades.Invento;
+import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.R;
 
 public class ArticuloInventoActivity extends AppCompatActivity {
 

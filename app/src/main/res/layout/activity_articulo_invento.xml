@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a000webhostapp.mymuseum.ArticuloInventoActivity"
+    tools:context="com.a000webhostapp.mymuseum.Vista.ArticuloInventoActivity"
     android:padding="16dp"
     android:orientation="vertical">
 
@@ -25,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,69 +35,70 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Período científico"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/articulo_invento_nombre_periodo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text=""/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/articulo_invento_nombre_periodo"
-                android:text=""
-                android:layout_marginTop="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Año de invención"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/articulo_invento_año_invencion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/articulo_invento_año_invencion"
-                android:text=""
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
-                android:paddingRight="8dp"/>
+                android:paddingRight="8dp"
+                android:text=""/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Inventor"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/articulo_invento_nombre_inventor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:id="@+id/articulo_invento_nombre_inventor"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
-                android:paddingRight="8dp"/>
+                android:paddingRight="8dp"
+                android:text=""/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Descripción"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/articulo_invento_descripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/articulo_invento_descripcion"
-                android:text=""
                 android:layout_marginTop="8dp"
                 android:paddingLeft="8dp"
-                android:paddingRight="8dp"/>
+                android:paddingRight="8dp"
+                android:text=""/>
         </LinearLayout>
     </ScrollView>
 

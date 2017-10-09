@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum;
+package com.a000webhostapp.mymuseum.Modelo;
 
 public interface Guardable {
     String configGuardar();
