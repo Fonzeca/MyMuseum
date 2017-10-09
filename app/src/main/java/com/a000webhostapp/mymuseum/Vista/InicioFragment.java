@@ -1,15 +1,9 @@
 package com.a000webhostapp.mymuseum.Vista;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +15,12 @@ import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
 
-public class InicioFragment extends Fragment implements IObserver {
-    private OnFragmentInteractionListener mListener;
+public class InicioFragment extends Fragment implements IObserver, SwipeRefreshLayout.OnRefreshListener {
+	private Invento[] inventosCargados;
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private SwipeRefreshLayout swipe;
+	private boolean cargado;
 
     public InicioFragment() {
 
@@ -33,6 +28,7 @@ public class InicioFragment extends Fragment implements IObserver {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+			
     }
 
 
@@ -41,11 +37,23 @@ public class InicioFragment extends Fragment implements IObserver {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
+		swipe = (SwipeRefreshLayout)view.findViewById(R.id.swipeActualizar_InicioFragment);
+		swipe.setOnRefreshListener(this);
+		if(!cargado){
+			buscarInventos();
+		}
+		actualizarLista();
+    }
+	
+	@Override
+	public void onRefresh() {
+		ModuloEntidad.obtenerModulo().buscarInventos(this);
+	}
+	private void buscarInventos(){
 		loading = new ProgressDialog(getContext()){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -54,66 +62,41 @@ public class InicioFragment extends Fragment implements IObserver {
 		loading.setCancelable(false);
 		loading.setMessage("Espere un momento...");
 		loading.show();
-		buscando = true;
 		ModuloEntidad.obtenerModulo().buscarInventos(this);
-    }
-	
-	/*
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-    */
-
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-    private void actualizarLista(Invento[] inventos){
-		Invento[] inventosOrdenados = new Invento[inventos.length];
-		int i2 = inventos.length-1;
-		for(int i = 0; i < inventos.length; i++){
-			inventosOrdenados[i] = inventos[i2];
-			i2--;
+	}
+    private void actualizarLista(){
+		if(inventosCargados != null){
+			Invento[] inventosOrdenados = new Invento[inventosCargados.length];
+			int i2 = inventosCargados.length-1;
+			for(int i = 0; i < inventosCargados.length; i++){
+				inventosOrdenados[i] = inventosCargados[i2];
+				i2--;
+			}
+			
+			ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), inventosOrdenados);
+			
+			ListView inventosRecientesList = (ListView) getView().findViewById(R.id.inventos_recientes_list);
+			inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
 		}
-		
-        ArticuloInventoArrayAdapter articuloInventoArrayAdapter = new ArticuloInventoArrayAdapter(getContext(), inventosOrdenados);
-
-        ListView inventosRecientesList = (ListView) getView().findViewById(R.id.inventos_recientes_list);
-        inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
     }
 
     public void update(Guardable[]g, int id) {
-		if(buscando){
+		if(loading.isShowing() || swipe.isRefreshing()){
 			if(g != null){
 				if(g[0] instanceof Invento){
-					actualizarLista((Invento[])g);
+					inventosCargados = (Invento[])g;
+					actualizarLista();
 					cargado = true;
-					buscando = false;
 					loading.dismiss();
+					swipe.setRefreshing(false);
 				}
 			}else if(id == -1){
 				loading.dismiss();
+				swipe.setRefreshing(false);
 				//Creamos un alertDialog en el Thread UI del activity
 				new DialogoAlerta(getActivity(),"No se pudo conectar", "Error").mostrar();
-				buscando = false;
 			}
-			
 		}
     }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
+	
 }

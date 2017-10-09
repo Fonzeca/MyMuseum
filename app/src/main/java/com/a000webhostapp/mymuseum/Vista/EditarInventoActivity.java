@@ -56,7 +56,9 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         añoInvencion = (TextView) findViewById(R.id.editar_invento_año_invencion);
 
         nombrePeriodoSpinner = (Spinner) findViewById(R.id.editar_invento_periodo_spinner);
+		
         nombreInventorSpinner = (Spinner) findViewById(R.id.editar_invento_nombre_inventor_spinner);
+		
 
         ACInvento = (CheckBox) findViewById(R.id.ACInvento_EditInvento);
         theMachine = (CheckBox) findViewById(R.id.themachine_EditInvento);
@@ -87,21 +89,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 					añoModifica = Integer.parseInt(añoInvencion.getText().toString());
 				}
 				invento.setAñoInvencion(añoModifica);
-				if(!invento.getPeriodo().getNombrePeriodo().equals(nombrePeriodoSpinner.getSelectedItem())){
-					for(Periodo p : periodosCargados){
-						if(p.getNombrePeriodo().equals(nombrePeriodoSpinner.getSelectedItem())){
-							invento.setPeriodo(p);
-						}
-					}
-				}
 				
-				if(!invento.getInventor().getNombreCompleto().equals(nombreInventorSpinner.getSelectedItem())){
-					for(Inventor i : inventoresCargados){
-						if(i.getNombreCompleto().equals(nombreInventorSpinner.getSelectedItem())){
-							invento.setInventor(i);
-						}
-					}
-				}
+				
+				invento.setPeriodo((Periodo)nombrePeriodoSpinner.getSelectedItem());
+				invento.setInventor((Inventor)nombreInventorSpinner.getSelectedItem());
+				
+				
 				invento.setMaquina(theMachine.isChecked());
 	
 	
@@ -119,53 +112,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
             añoInvencion.setText(String.valueOf(invento.getAñoInvencion()));
         }
         descripcion.setText(invento.getDescripcion());
+		
     }
 
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+    
 	
-	
-	private void actualizarSpinnerInventores(){
-        List<String> spinnerArray =  new ArrayList<String>();
-        int selected = 0;
-        if(inventoresCargados != null){
-            //se llena el array con los inventores
-            for (int i = 0; i < inventoresCargados.length; i++){
-                spinnerArray.add(inventoresCargados[i].getNombreCompleto());
-                if(invento.getInventor().getNombreCompleto().equals(inventoresCargados[i].getNombreCompleto())){
-                    selected = i;
-                }
-            }
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        nombreInventorSpinner.setAdapter(adapter);
-        nombreInventorSpinner.setSelection(selected);
-
-    }
-    private void actualizarSpinnerPeriodo(){
-        List<String> spinnerArray =  new ArrayList<String>();
-        int selected = 0;
-        if(periodosCargados != null){
-            //se llena el array con los periodosCargados
-            for (int i = 0; i < periodosCargados.length; i++){
-                spinnerArray.add(periodosCargados[i].getNombrePeriodo());
-                if(invento.getPeriodo().getNombrePeriodo().equals(periodosCargados[i].getNombrePeriodo())){
-                    selected = i;
-                }
-            }
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        nombrePeriodoSpinner.setAdapter(adapter);
-        nombrePeriodoSpinner.setSelection(selected);
-    }
-	
-    private void buscarInfoSpinners(){
+	private void buscarInfoSpinners(){
 		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
@@ -185,7 +137,56 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 		
 	}
+	private void actualizarSpinnerInventores(){
+        List<Inventor> spinnerArray =  new ArrayList<Inventor>();
+        int selected = 0;
+        if(inventoresCargados != null){
+            //se llena el array con los inventores
+            for (int i = 0; i < inventoresCargados.length; i++){
+                spinnerArray.add(inventoresCargados[i]);
+				//Buscamos cual es el inventor del invento
+				if(invento.getInventor().getNombreCompleto().equals(inventoresCargados[i].getNombreCompleto())){
+					selected = i;
+                }
+            }
+        }
 
+        ArrayAdapter<Inventor> adapter = new ArrayAdapter<Inventor>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nombreInventorSpinner.setAdapter(adapter);
+        nombreInventorSpinner.setSelection(selected);
+
+    }
+    private void actualizarSpinnerPeriodo(){
+        List<Periodo> spinnerArray =  new ArrayList<Periodo>();
+        int selected = 0;
+        if(periodosCargados != null){
+            //se llena el array con los periodosCargados
+            for (int i = 0; i < periodosCargados.length; i++){
+                spinnerArray.add(periodosCargados[i]);
+				//Buscamos cual es el periodo del invento
+                if(invento.getPeriodo().getNombrePeriodo().equals(periodosCargados[i].getNombrePeriodo())){
+                    selected = i;
+                }
+            }
+        }
+
+        ArrayAdapter<Periodo> adapter = new ArrayAdapter<Periodo>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nombrePeriodoSpinner.setAdapter(adapter);
+        nombrePeriodoSpinner.setSelection(selected);
+    }
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		buscarInfoSpinners();
+	}
+	
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
+	}
     
     public void update(Guardable[] g, int id) {
 		if(buscando){

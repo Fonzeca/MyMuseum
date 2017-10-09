@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,7 @@ import android.widget.RelativeLayout;
 import com.a000webhostapp.mymuseum.R;
 
 public class AdminPanelFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
-
+	
     private RelativeLayout agregarNuevoInventoButton, agregarNuevoInventorButton, agregarNuevoPeriodoButton;
 	private RelativeLayout editarInventorButton, editarPeriodoButton;
 	private RelativeLayout eliminarInventoButton,eliminarInventorButton, eliminarPeriodoButton;
@@ -73,18 +73,20 @@ public class AdminPanelFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        View viewFinal = inflater.inflate(R.layout.fragment_admin_panel, container, false);
-
-
-        agregarNuevoInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_invento_button);
-        agregarNuevoInventoButton.setOnClickListener(clickListenerBotones);
-
-        agregarNuevoInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_inventor_button);
-        agregarNuevoInventorButton.setOnClickListener(clickListenerBotones);
-
-        agregarNuevoPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_periodo_button);
-        agregarNuevoPeriodoButton.setOnClickListener(clickListenerBotones);
-        
+        return inflater.inflate(R.layout.fragment_admin_panel, container, false);
+    }
+	
+	public void onViewCreated(View viewFinal, Bundle savedInstanceState) {
+		
+		agregarNuevoInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_invento_button);
+		agregarNuevoInventoButton.setOnClickListener(clickListenerBotones);
+		
+		agregarNuevoInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_inventor_button);
+		agregarNuevoInventorButton.setOnClickListener(clickListenerBotones);
+		
+		agregarNuevoPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_periodo_button);
+		agregarNuevoPeriodoButton.setOnClickListener(clickListenerBotones);
+		
 		editarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_inventor_button);
 		editarInventorButton.setOnClickListener(clickListenerBotones);
 		
@@ -93,45 +95,12 @@ public class AdminPanelFragment extends Fragment {
 		
 		eliminarInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_invento_button);
 		eliminarInventoButton.setOnClickListener(clickListenerBotones);
-	
+		
 		eliminarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_inventor_button);
 		eliminarInventorButton.setOnClickListener(clickListenerBotones);
-	
+		
 		eliminarPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_periodo_button);
 		eliminarPeriodoButton.setOnClickListener(clickListenerBotones);
-        
-
-
-        return viewFinal;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
-
-
-
-
-
+		
+	}
 }

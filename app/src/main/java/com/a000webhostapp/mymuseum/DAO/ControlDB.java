@@ -161,7 +161,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     }
     private Guardable[] buscarInvento(String jsonRespuesta){
         Invento[] inventos = null;
-        try {
+		System.out.println(jsonRespuesta);
+		try {
             JSONObject obj = new JSONObject(jsonRespuesta);
             JSONArray json_array = obj.getJSONArray("datos");
             inventos = new Invento[json_array.length()];
@@ -172,15 +173,16 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
                 String nom = inve.getString("nombre");
                 String descripcion = inve.getString("descripcion");
                 JSONObject inventorJSON = inve.getJSONObject("inventor");
-                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"));
+                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
 				
                 JSONObject periodoJSON = inve.getJSONObject("periodo");
-                Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"));
+                Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
 				
                 int año = inve.getInt("año");
                 boolean maquina = inve.getBoolean("es_maquina");
 				
-                inventos[i] = new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
+				System.out.println(nom);
+				inventos[i] = new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
             }
         } catch (JSONException e) {
             e.printStackTrace();

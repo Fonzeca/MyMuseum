@@ -43,6 +43,10 @@ public class Inventor implements Guardable, Serializable{
         return accion + "&" + entidad + "&" + idModifica + "&" + nom + "&" + año + "&" + lugar;
     }
     
+    @Override
+    public String toString() {
+        return nombreCompleto;
+    }
     
     //GETTERS & SETTERS
     public String getNombreCompleto() {

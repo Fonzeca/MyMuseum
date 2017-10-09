@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.a000webhostapp.mymuseum.R;
 
 public class InfoMuseoFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
 
     public InfoMuseoFragment() {
     }
@@ -24,28 +23,4 @@ public class InfoMuseoFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_info_museo, container, false);
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
 }

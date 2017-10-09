@@ -10,4 +10,7 @@ public interface ISujeto {
     void registrarObvserver(IObserver ob);
     boolean eliminarObvserver(IObserver ob);
     void notificarObsverver(Guardable[] g, int id);
+	
+	
+	
 }

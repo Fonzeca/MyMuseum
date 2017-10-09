@@ -56,6 +56,11 @@ public class Invento implements Guardable, Serializable{
 				"&" + descriConfig + "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
 	}
 	
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
 	//GETTER & SETTER
     public String getNombre() {
         return nombre;

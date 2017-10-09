@@ -46,6 +46,10 @@ public class Periodo implements Guardable, Serializable {
         return accion + "&" + entidad + "&" + idModifica + "&" + nombre + "&" + añoIn + "&" + añoFi;
     }
     
+    @Override
+    public String toString() {
+        return nombrePeriodo;
+    }
     
     //GETTER & SETTER
     public String getNombrePeriodo() {
