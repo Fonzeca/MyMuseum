@@ -30,7 +30,7 @@ public class Invento implements Guardable, Serializable{
 
     public String configGuardar() {
         String accion = "accion=nuevo_invento";
-        String nombreConfig= "nombre="+nombre;
+        String nombreConfig= "nombreCompleto="+nombre;
         String descriConfig= "descripcion="+descripcion;
         String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
         String inventorConfig= "nombre_inventor="+inventor.getNombreCompleto();
@@ -45,7 +45,7 @@ public class Invento implements Guardable, Serializable{
 		String accion = "accion=editar_registro";
 		String entidad = "entidad=Invento";
 		String idConfig = "registro_id="+id;
-		String nombreConfig= "nombre="+nombre;
+		String nombreConfig= "nombreCompleto="+nombre;
 		String descriConfig= "descripcion="+descripcion;
 		String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
 		String inventorConfig= "nombre_inventor="+inventor.getNombreCompleto();

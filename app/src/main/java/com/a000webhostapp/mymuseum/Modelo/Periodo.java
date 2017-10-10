@@ -29,7 +29,7 @@ public class Periodo implements Guardable, Serializable {
 
     public String configGuardar() {
         String accion = "accion=nuevo_periodo";
-        String nombre = "nombre="+nombrePeriodo;
+        String nombre = "nombreCompleto="+nombrePeriodo;
         String añoIn = "anio_inicio="+añoInicio;
         String añoFi = "anio_fin="+añoFin;
         return accion + "&" + nombre + "&" + añoIn + "&" + añoFi;
@@ -39,7 +39,7 @@ public class Periodo implements Guardable, Serializable {
         String accion = "accion=editar_registro";
         String entidad = "entidad=Periodo";
         String idModifica = "registro_id="+id;
-        String nombre = "nombre="+nombrePeriodo;
+        String nombre = "nombreCompleto="+nombrePeriodo;
         String añoIn = "anio_inicio="+añoInicio;
         String añoFi = "anio_fin="+añoFin;
         

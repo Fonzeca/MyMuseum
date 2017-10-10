@@ -31,7 +31,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
     private Periodo periodoActual;
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +142,10 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	private void buscarInfoSpinner(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -168,12 +166,11 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
     
 	
 	public void update(Guardable[] g, int id) {
-		if(buscando){
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Periodo){
 					periodos = (Periodo[]) g;
 					cargado = true;
-					buscando = false;
 					actualizarSpinnerInventores();
 					loading.dismiss();
 				}

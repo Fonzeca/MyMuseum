@@ -26,7 +26,7 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 	private Invento[] inventos;
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
 	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +67,10 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 	}
 	
 	private void buscarInfoSpinners(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -107,11 +105,10 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 	}
 	
     public void update(Guardable[] g, int id) {
-        if(buscando){
+        if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Invento){
 					inventos = (Invento[]) g;
-					buscando = false;
 					cargado = true;
 					actualizarSpinners();
 					loading.dismiss();

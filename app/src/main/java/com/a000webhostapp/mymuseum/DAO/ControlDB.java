@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject inven = json_array.getJSONObject(i);
-                String nom = inven.getString("nombre");
+                String nom = inven.getString("nombreCompleto");
 				int idConfig = inven.getInt("inventor_id");
                 int año = inven.getInt("año_nacimiento");
                 String lugar = inven.getString("lugar_nacimiento");
@@ -147,7 +148,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject peri = json_array.getJSONObject(i);
-                String nom = peri.getString("nombre");
+                String nom = peri.getString("nombreCompleto");
 				int idConfig = peri.getInt("periodo_id");
                 int añoIncio = peri.getInt("año_inicio");
                 int añoFin = peri.getInt("año_fin");
@@ -170,13 +171,13 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			for(int i = 0; i < json_array.length(); i++){
                 JSONObject inve = json_array.getJSONObject(i);
 				int id = inve.getInt("invento_id");
-                String nom = inve.getString("nombre");
+                String nom = inve.getString("nombreCompleto");
                 String descripcion = inve.getString("descripcion");
                 JSONObject inventorJSON = inve.getJSONObject("inventor");
-                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
+                Inventor inventor = new Inventor(inventorJSON.getString("nombreCompleto"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
 				
                 JSONObject periodoJSON = inve.getJSONObject("periodo");
-                Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
+                Periodo periodo = new Periodo(periodoJSON.getString("nombreCompleto"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
 				
                 int año = inve.getInt("año");
                 boolean maquina = inve.getBoolean("es_maquina");
@@ -196,6 +197,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         try {
             URL url = new URL("http://mymuseum.000webhostapp.com/index.php");
             HttpURLConnection conect= (HttpURLConnection) url.openConnection();
+            conect.setRequestProperty("Accept-Charset", "UTF-8");
             conect.setRequestMethod("POST");
 
             //el mensaje que le mandamos a la Base de Datos
@@ -204,8 +206,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             conect.setDoOutput(true);
 
 
-            DataOutputStream wr = new DataOutputStream(conect.getOutputStream());
-            wr.writeBytes(urlParameters);
+            OutputStream wr = conect.getOutputStream();
+            wr.write(urlParameters.getBytes("UTF-8"));
             wr.flush();
             wr.close();
 

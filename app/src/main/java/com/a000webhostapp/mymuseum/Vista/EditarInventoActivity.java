@@ -37,7 +37,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     private Button guardar;
 
     private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +118,10 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     
 	
 	private void buscarInfoSpinners(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -189,7 +187,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	}
     
     public void update(Guardable[] g, int id) {
-		if(buscando){
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Inventor){
 					inventoresCargados = (Inventor[]) g;
@@ -203,13 +201,11 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 				//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
 				if(periodosCargados != null && inventoresCargados != null){
 					cargado = true;
-					buscando = false;
 					loading.dismiss();
 				}
 			}else if(id == -1){
 				loading.dismiss();
 				new DialogoAlerta(this, "No se pudo conectar", "Error").mostrar();
-				buscando = false;
 			}
 		}
     }

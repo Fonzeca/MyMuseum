@@ -33,7 +33,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 	
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
     
     
     @Override
@@ -102,7 +102,6 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		}
 		lugar.setText(inventorActual.getLugarNacimiento());
 	}
-	
 	private void actualizarSpinnerInventores(){
 		List<String> spinnerArray =  new ArrayList<String>();
 		if(inventores != null){
@@ -128,12 +127,10 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 	}
 	
 	private void buscarInfoSpinner(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -151,14 +148,13 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 	}
 	
 	public void update(Guardable[] g, int id) {
-		if(buscando){
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Inventor){
 					inventores = (Inventor[]) g;
 					actualizarSpinnerInventores();
 					loading.dismiss();
 					cargado = true;
-					buscando = false;
 				}
 			}else if(id == -1){
 				loading.dismiss();

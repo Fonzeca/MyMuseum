@@ -39,7 +39,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     private Periodo periodoActual;
     
     private ProgressDialog loading;
-    private boolean buscando, cargado;
+    private boolean cargado;
 
     private View.OnClickListener clickListenerBotones;
 
@@ -121,12 +121,10 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     
 	
 	private void buscarInfoSpinners(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -207,7 +205,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 	}
 	
 	public void update(Guardable[] g, int id) {
-        if(buscando){
+        if(loading.isShowing()){
             if(g != null){
                 if(g[0] instanceof Inventor){
                     inventores = (Inventor[]) g;

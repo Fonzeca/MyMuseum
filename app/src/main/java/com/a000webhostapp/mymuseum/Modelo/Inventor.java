@@ -25,7 +25,7 @@ public class Inventor implements Guardable, Serializable{
 
     public String configGuardar() {
         String accion = "accion=nuevo_inventor";
-        String nom = "nombre="+ nombreCompleto;
+        String nom = "nombreCompleto="+ nombreCompleto;
         String año = "anio_nacimiento="+añoNacimiento;
         String lugar = "lugar_nacimiento="+lugarNacimiento;
 
@@ -36,7 +36,7 @@ public class Inventor implements Guardable, Serializable{
         String accion = "accion=editar_registro";
         String entidad = "entidad=Inventor";
         String idModifica = "registro_id=" + id;
-        String nom = "nombre="+ nombreCompleto;
+        String nom = "nombreCompleto="+ nombreCompleto;
         String año = "anio_nacimiento="+añoNacimiento;
         String lugar = "lugar_nacimiento="+lugarNacimiento;
     
