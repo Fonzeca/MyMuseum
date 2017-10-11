@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
@@ -165,7 +166,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	
-	public void update(Guardable[] g, int id) {
+	public void update(Guardable[] g, String respuesta) {
 		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Periodo){
@@ -174,9 +175,21 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 					actualizarSpinnerInventores();
 					loading.dismiss();
 				}
-			}else if(id == -1){
-				loading.dismiss();
-				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
+			}
+			if(respuesta != null && !respuesta.equals("")){
+				switch (respuesta){
+					case ControlDB.res_falloConexion:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaPeriodoVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+						break;
+					
+				}
 			}
 		}
 	}

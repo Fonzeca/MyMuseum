@@ -34,7 +34,7 @@ public class AdminPanelFragment extends Fragment {
                 Intent intent;
                 switch(id){
                     case R.id.agregar_nuevo_invento_button:
-                        intent = new Intent(getActivity(), NuevoInventoActivity.class);
+                        intent = new Intent(getActivity(), ElegirObjetoActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.agregar_nuevo_inventor_button:

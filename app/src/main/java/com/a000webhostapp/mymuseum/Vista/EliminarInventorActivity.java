@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -49,7 +50,7 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 				String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
 				for (int index = 0; index < inventores.length; index++){
-					if(inventores[index].getNombreCompleto().equals(nombreInventoActual)){
+					if(inventores[index].getNombre().equals(nombreInventoActual)){
 						inventorActual = inventores[index];
 						return;
 					}
@@ -88,7 +89,7 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 		if(inventores != null){
 			//se llena el array con los inventosCargados
 			for (int i = 0; i < inventores.length; i++){
-				spinnerArray.add(inventores[i].getNombreCompleto());
+				spinnerArray.add(inventores[i].getNombre());
 			}
 		}
 		
@@ -100,14 +101,14 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 		
 		String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
 		for (int index = 0; index < inventores.length; index++){
-			if(inventores[index].getNombreCompleto().equals(nombreInventoActual)){
+			if(inventores[index].getNombre().equals(nombreInventoActual)){
 				inventorActual = inventores[index];
 				return;
 			}
 		}
 	}
 	
-	public void update(Guardable[] g, int id) {
+	public void update(Guardable[] g, String respuesta) {
 		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Inventor){
@@ -116,9 +117,20 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 					actualizarSpinners();
 					loading.dismiss();
 				}
-			}else if(id == -1){
-				loading.dismiss();
-				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
+			}
+			if(respuesta != null && !respuesta.equals("")){
+				switch (respuesta){
+					case ControlDB.res_falloConexion:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaInventorVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+						break;
+				}
 			}
 		}
 	}

@@ -41,7 +41,7 @@ public class ArticuloInventoActivity extends AppCompatActivity {
         }else{
             añoInvencion.setText(String.valueOf(invento.getAñoInvencion()));
         }
-        nombreInventor.setText(invento.getInventor().getNombreCompleto());
+        nombreInventor.setText(invento.getInventor().getNombre());
         descripcion.setText(invento.getDescripcion());
 
     }

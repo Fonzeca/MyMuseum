@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -21,19 +22,19 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 	private ProgressDialog loading;
 	private SwipeRefreshLayout swipe;
 	private boolean cargado;
-
-    public InicioFragment() {
-
+	
+	public InicioFragment() {
+	
     }
-
+	
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 			
     }
 
-
+	
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_inicio, container, false);
+		return inflater.inflate(R.layout.fragment_inicio, container, false);
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -79,23 +80,37 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 			inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
 		}
     }
-
-    public void update(Guardable[]g, int id) {
+	
+    public void update(Guardable[]g, String respuesta) {
 		if(loading.isShowing() || swipe.isRefreshing()){
 			if(g != null){
 				if(g[0] instanceof Invento){
 					inventosCargados = (Invento[])g;
-					actualizarLista();
+					
 					cargado = true;
 					loading.dismiss();
 					swipe.setRefreshing(false);
 				}
-			}else if(id == -1){
+			}else if(respuesta.equals(ControlDB.res_falloConexion)){
 				loading.dismiss();
-				swipe.setRefreshing(false);
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						swipe.setRefreshing(false);
+					}
+				});
 				//Creamos un alertDialog en el Thread UI del activity
-				new DialogoAlerta(getActivity(),"No se pudo conectar", "Error").mostrar();
+				new DialogoAlerta(getActivity(), ControlDB.res_falloConexion, "Error").mostrar();
+			}else if(respuesta.equals(ControlDB.res_tablaInventoVacio)){
+				loading.dismiss();
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						swipe.setRefreshing(false);
+					}
+				});
+				//Creamos un alertDialog en el Thread UI del activity
+				new DialogoAlerta(getActivity(), ControlDB.res_tablaInventoVacio, "Error").mostrar();
 			}
+			actualizarLista();
 		}
     }
 	

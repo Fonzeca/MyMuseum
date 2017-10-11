@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.DAO;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -15,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -25,6 +23,20 @@ import java.util.ArrayList;
 
 public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements ISujeto,DAOInterface{
     private ArrayList<IObserver> observers;
+	
+	public static final String str_obj_Invento = "Invento";
+	public static final String str_obj_Pintura = "Pintura";
+	public static final String[] objetos = {str_obj_Invento, str_obj_Pintura};
+	
+	public static final String str_per_Inventor = "Inventor";
+	public static final String str_per_Pintor = "Pintor";
+	public static final String[] personas = {str_per_Inventor, str_per_Pintor};
+	
+	public static final String res_falloConexion = "No se pudo conectar";
+	public static final String res_exito = "Exito";
+	public static final String res_tablaInventoVacio = "No hay Inventos en la base de datos";
+	public static final String res_tablaPeriodoVacio = "No hay Periodos en la base de datos";
+	public static final String res_tablaInventorVacio = "No hay Inventores en la base de datos";
 
 
     public ControlDB(IObserver ob){
@@ -56,11 +68,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
         if(resultados != null && resultados.length != 0){
             if(resultados[0] instanceof Inventor){
-                notificarObsverver(resultados, 0);
+                notificarObsverver(resultados, res_exito);
             }else if(resultados[0] instanceof Periodo){
-                notificarObsverver(resultados, 1);
+                notificarObsverver(resultados, res_exito);
             }else if(resultados[0] instanceof Invento){
-                notificarObsverver(resultados, 2);
+                notificarObsverver(resultados, res_exito);
             }
         }
     }
@@ -105,6 +117,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     private Guardable[] buscarPrivado(String entidad){
         String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
         String jsonRespuesta = respuesta.split("<!Doc")[0];
+		System.out.println(jsonRespuesta);
 		
 		Guardable[] respuestaFinal = null;
 		
@@ -124,10 +137,16 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             JSONObject obj = new JSONObject(jsonRespuesta);
             JSONArray json_array = obj.getJSONArray("datos");
             inventores = new Inventor[json_array.length()];
+			
+			if(inventores.length == 0){
+				notificarObsverver(null, res_tablaInventorVacio);
+				cancel(true);
+				return null;
+			}
 
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject inven = json_array.getJSONObject(i);
-                String nom = inven.getString("nombreCompleto");
+                String nom = inven.getString("nombre");
 				int idConfig = inven.getInt("inventor_id");
                 int año = inven.getInt("año_nacimiento");
                 String lugar = inven.getString("lugar_nacimiento");
@@ -145,10 +164,16 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             JSONObject obj = new JSONObject(jsonRespuesta);
             JSONArray json_array = obj.getJSONArray("datos");
             periodos = new Periodo[json_array.length()];
-
+	
+			if(periodos.length == 0){
+				notificarObsverver(null, res_tablaPeriodoVacio);
+				cancel(true);
+				return null;
+			}
+			
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject peri = json_array.getJSONObject(i);
-                String nom = peri.getString("nombreCompleto");
+                String nom = peri.getString("nombre");
 				int idConfig = peri.getInt("periodo_id");
                 int añoIncio = peri.getInt("año_inicio");
                 int añoFin = peri.getInt("año_fin");
@@ -162,22 +187,29 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     }
     private Guardable[] buscarInvento(String jsonRespuesta){
         Invento[] inventos = null;
-		System.out.println(jsonRespuesta);
+		
 		try {
             JSONObject obj = new JSONObject(jsonRespuesta);
             JSONArray json_array = obj.getJSONArray("datos");
             inventos = new Invento[json_array.length()];
 			
+			if(inventos.length == 0){
+				notificarObsverver(null, res_tablaInventoVacio);
+				cancel(true);
+				return null;
+			}
+			
 			for(int i = 0; i < json_array.length(); i++){
                 JSONObject inve = json_array.getJSONObject(i);
 				int id = inve.getInt("invento_id");
-                String nom = inve.getString("nombreCompleto");
+                String nom = inve.getString("nombre");
                 String descripcion = inve.getString("descripcion");
+				
                 JSONObject inventorJSON = inve.getJSONObject("inventor");
-                Inventor inventor = new Inventor(inventorJSON.getString("nombreCompleto"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
+                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
 				
                 JSONObject periodoJSON = inve.getJSONObject("periodo");
-                Periodo periodo = new Periodo(periodoJSON.getString("nombreCompleto"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
+                Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
 				
                 int año = inve.getInt("año");
                 boolean maquina = inve.getBoolean("es_maquina");
@@ -196,6 +228,9 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     private String conectar(String parametros){
         try {
             URL url = new URL("http://mymuseum.000webhostapp.com/index.php");
+			
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			
             HttpURLConnection conect= (HttpURLConnection) url.openConnection();
             conect.setRequestProperty("Accept-Charset", "UTF-8");
             conect.setRequestMethod("POST");
@@ -208,12 +243,15 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
             OutputStream wr = conect.getOutputStream();
             wr.write(urlParameters.getBytes("UTF-8"));
+			
+			System.out.println("Post parameters : " + urlParameters);
+			
             wr.flush();
             wr.close();
 
             int responseCode = conect.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Post parameters : " + urlParameters);
+            
+            
             System.out.println("Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conect.getInputStream()));
@@ -228,7 +266,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             return response.toString();
         } catch (java.io.IOException e) {
 			e.printStackTrace();
-            notificarObsverver(null, -1);
+            notificarObsverver(null, res_falloConexion);
             cancel(true);
         }
 		return "NO SE CONECTO";
@@ -253,9 +291,9 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
     }
 
     @Override
-    public void notificarObsverver(Guardable[] g, int id) {
+    public void notificarObsverver(Guardable[] g, String respuesta) {
         for (int i = 0; i < observers.size(); i++){
-            observers.get(i).update(g, id);
+            observers.get(i).update(g, respuesta);
         }
     }
 }
