@@ -70,10 +70,5 @@ public class BuscarObjetoActivity extends AppCompatActivity {
 		objetosSpinner.setAdapter(adapter);
 	}
 	
-	private void regresarActivity() {
-		Intent parentIntent = NavUtils.getParentActivityIntent(this);
-		parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(parentIntent);
-	}
 	
 }

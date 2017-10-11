@@ -27,7 +27,6 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 	private String nombreABuscar;
 	
 	public InicioFragment() {
-	
     }
 	
     public void onCreate(Bundle savedInstanceState) {
