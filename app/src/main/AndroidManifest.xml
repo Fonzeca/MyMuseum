@@ -36,7 +36,7 @@
         <activity android:name=".Vista.EliminarInventorActivity"/>
         <activity android:name=".Vista.EliminarPeriodoActivity"/>
         <activity android:name=".Vista.ArticuloInventoActivity"/>
-        <activity android:name=".Vista.ElegirObjetoActivity">
+        <activity android:name=".Vista.BuscarObjetoActivity">
         </activity>
     </application>
 

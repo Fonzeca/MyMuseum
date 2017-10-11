@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar nuevo inventor"
+        android:text="Agregar nuevo pintor"
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:textSize="24sp"
@@ -42,7 +42,7 @@
                         android:id="@+id/nomyapeInventor_Inventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre y Apellido del inventor"
+                        android:hint="Nombre y Apellido del pintor"
                         android:inputType="textCapWords" />
                 </android.support.design.widget.TextInputLayout>
 

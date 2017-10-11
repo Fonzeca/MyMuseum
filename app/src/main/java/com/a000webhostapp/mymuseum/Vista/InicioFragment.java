@@ -16,12 +16,15 @@ import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
 
+import java.util.ArrayList;
+
 public class InicioFragment extends Fragment implements IObserver, SwipeRefreshLayout.OnRefreshListener {
 	private Invento[] inventosCargados;
 	
 	private ProgressDialog loading;
 	private SwipeRefreshLayout swipe;
-	private boolean cargado;
+	private boolean cargado, busqueda;
+	private String nombreABuscar;
 	
 	public InicioFragment() {
 	
@@ -81,12 +84,55 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		}
     }
 	
+    public void busquedaInventos(String nombre){
+		loading = new ProgressDialog(getContext()){
+			public void onBackPressed() {
+				if(isShowing()){
+					dismiss();
+				}else{
+					super.onBackPressed();
+				}
+			}
+		};
+		loading.setCancelable(false);
+		loading.setMessage("Buscando...");
+		loading.show();
+		nombreABuscar = nombre;
+		busqueda = true;
+		ModuloEntidad.obtenerModulo().buscarInventos(this);
+	}
+	private void busquedaPrivadaInventosCargados(Invento[] inventosCargados){
+		ArrayList<Invento> match = new ArrayList<Invento>();
+		
+		for (Invento in: inventosCargados) {
+			for (int i = 0; i <= in.getNombre().length(); i++){
+				if(in.getNombre().substring(0,i).equalsIgnoreCase(nombreABuscar)){
+					match.add(in);
+					break;
+				}
+			}
+		}
+		
+		if(match.size() == 0){
+			new DialogoAlerta(getActivity(), "No se encontro el objeto buscado", "Error").mostrar();
+		}else{
+			this.inventosCargados = new Invento[match.size()];
+			for(int i = 0; i < match.size();i++){
+				this.inventosCargados[i] = match.get(i);
+			}
+		}
+		busqueda = false;
+		
+	}
+    
     public void update(Guardable[]g, String respuesta) {
 		if(loading.isShowing() || swipe.isRefreshing()){
 			if(g != null){
 				if(g[0] instanceof Invento){
 					inventosCargados = (Invento[])g;
-					
+					if(busqueda){
+						busquedaPrivadaInventosCargados(inventosCargados);
+					}
 					cargado = true;
 					loading.dismiss();
 					swipe.setRefreshing(false);

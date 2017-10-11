@@ -1,10 +1,7 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +31,7 @@ public class AdminPanelFragment extends Fragment {
                 Intent intent;
                 switch(id){
                     case R.id.agregar_nuevo_invento_button:
-                        intent = new Intent(getActivity(), ElegirObjetoActivity.class);
+                        intent = new Intent(getActivity(), NuevoInventoActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.agregar_nuevo_inventor_button:

@@ -159,7 +159,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Agregar nuevo inventor"
+                                android:text="Agregar nuevo pintor"
                                 android:textColor="#000"
                                 android:textSize="16sp" />
 
@@ -181,7 +181,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Editar inventor"
+                                android:text="Editar pintor"
                                 android:textColor="#000"
                                 android:textSize="16sp" />
 
@@ -203,7 +203,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Eliminar inventor"
+                                android:text="Eliminar pintor"
                                 android:textColor="#000"
                                 android:textSize="16sp" />
 
