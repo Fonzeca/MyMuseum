@@ -6,6 +6,8 @@ import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Pintor;
+import com.a000webhostapp.mymuseum.Modelo.Pintura;
 
 
 /**
@@ -34,7 +36,7 @@ public class ModuloEntidad {
     }
     public void buscarInventos(IObserver observer){
         //Mandamos a buscar los Inventos
-		new ControlDB(observer).buscar("Invento");
+		new ControlDB(observer).buscar(ControlDB.str_obj_Invento);
     }
     public void editarInvento(Guardable g){
         new ControlDB(null).modificar(g);
@@ -44,8 +46,23 @@ public class ModuloEntidad {
 		String idBorra = "registro_id=" + id;
 		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
-    
     //---------------
+	public void crearPintura(String nombre, String descripcion, Periodo periodo, Pintor pintor, int añoInvencion){
+		Pintura pintura = new Pintura(nombre,descripcion,periodo,pintor,añoInvencion);
+		new ControlDB(null).insertar(pintura);
+	}
+	public void buscarPinturas(IObserver observer){
+		new ControlDB(observer).buscar(ControlDB.str_obj_Pintura);
+	}
+    //---------------
+	public void crearPintor(String nombre, String lugarNacimiento, int añoNacimiento){
+		Pintor pintor = new Pintor(nombre,lugarNacimiento,añoNacimiento);
+		new ControlDB(null).insertar(pintor);
+	}
+	public void buscarPintores(IObserver observer){
+		new ControlDB(observer).buscar(ControlDB.str_per_Pintor);
+	}
+	//---------------
     public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento){
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
         new ControlDB(null).insertar(inventor);

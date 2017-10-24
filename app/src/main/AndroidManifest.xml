@@ -30,6 +30,8 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".Vista.NuevoInventorActivity"/>
         <activity android:name=".Vista.NuevoPeriodoActivity"/>
+        <activity android:name=".Vista.NuevaPinturaActivity"/>
+        <activity android:name=".Vista.NuevoPintorActivity"/>
         <activity android:name=".Vista.EditarInventoActivity"/>
         <activity android:name=".Vista.EditarInventorActivity"/>
         <activity android:name=".Vista.EditarPeriodoActivity"/>

@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar nuevo inventor"
+        android:text="Agregar nuevo pintor"
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:textSize="24sp"
@@ -39,10 +39,10 @@
                     android:layout_weight="1">
 
                     <EditText
-                        android:id="@+id/nomyapeInventor_Inventor"
+                        android:id="@+id/nomyapePintor_NuevoPintor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre y Apellido del inventor"
+                        android:hint="Nombre y Apellido del pintor"
                         android:inputType="textCapWords" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -59,7 +59,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="3">
                     <EditText
-                        android:id="@+id/añoNacimiento_Inventor"
+                        android:id="@+id/añoNacimiento_NuevoPintor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
@@ -67,7 +67,7 @@
                         android:inputType="number"/>
                 </android.support.design.widget.TextInputLayout>
                 <CheckBox
-                    android:id="@+id/checkboxAC_Inventor"
+                    android:id="@+id/checkboxAC_NuevoPintor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="A.C."
@@ -143,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/lugarNacimiento_Inventor"
+                    android:id="@+id/lugarNacimiento_NuevoPintor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Lugar de nacimiento"
@@ -151,7 +151,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/Save_Inventor"
+                android:id="@+id/Save_NuevoPintor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

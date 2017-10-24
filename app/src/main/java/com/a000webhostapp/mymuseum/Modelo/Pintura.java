@@ -1,5 +1,7 @@
 package com.a000webhostapp.mymuseum.Modelo;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+
 /**
  * Created by Alexis on 19/9/2017.
  */
@@ -19,20 +21,21 @@ public class Pintura extends Objeto{
     }
 
     public String configGuardar() {
-        String accion = "accion=nuevo_pintura";
+        String accion = "accion=nuevo_objeto";
+		String entidad = "entidad="+ ControlDB.str_obj_Pintura;
         String nombreConfig= "nombre="+nombre;
-        String descriConfig= "descripcion="+descripcion;
-        String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
-        String pintorConfig= "nombre_inventor="+ pintor.getNombre();
-        String añoConfig= "anio="+añoInvencion;
+		String añoConfig= "anio="+añoInvencion;
+		String descriConfig= "descripcion="+descripcion;
+		String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
+		String pintorConfig= "nombre_persona="+ pintor.getNombre();
 
-        return accion + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
+        return accion + "&" + entidad + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
 				"&" + periConfig + "&" + pintorConfig;
     }
 	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
-		String entidad = "entidad=Pintura";
+		String entidad = "entidad="+ControlDB.str_obj_Pintura;
 		String idConfig = "registro_id="+id;
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;

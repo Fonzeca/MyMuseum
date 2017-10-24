@@ -38,7 +38,8 @@ public class ElegirNuevoObjetoActivity extends AppCompatActivity {
 						finish();
 						break;
 					case ControlDB.str_obj_Pintura:
-						
+						intent = new Intent(ElegirNuevoObjetoActivity.this, NuevaPinturaActivity.class);
+						startActivity(intent);
 						finish();
 						break;
 				}

@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.DAO;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
@@ -8,6 +9,8 @@ import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.ISujeto;
+import com.a000webhostapp.mymuseum.Modelo.Pintor;
+import com.a000webhostapp.mymuseum.Modelo.Pintura;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +40,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String res_tablaInventoVacio = "No hay Inventos en la base de datos";
 	public static final String res_tablaPeriodoVacio = "No hay Periodos en la base de datos";
 	public static final String res_tablaInventorVacio = "No hay Inventores en la base de datos";
+	public static final String res_tablaPintoresVacio = "No hay Pintores en la base de datos";
 
 
     public ControlDB(IObserver ob){
@@ -65,15 +69,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
     protected void onPostExecute(Guardable[] resultados) {
         super.onPostExecute(resultados);
-
         if(resultados != null && resultados.length != 0){
-            if(resultados[0] instanceof Inventor){
-                notificarObsverver(resultados, res_exitoBusqueda);
-            }else if(resultados[0] instanceof Periodo){
-                notificarObsverver(resultados, res_exitoBusqueda);
-            }else if(resultados[0] instanceof Invento){
-                notificarObsverver(resultados, res_exitoBusqueda);
-            }
+			notificarObsverver(resultados, res_exitoBusqueda);
         }
     }
 
@@ -127,6 +124,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			respuestaFinal = buscarPeriodo(jsonRespuesta);
 		}else if(entidad.equals("Invento")){
 			respuestaFinal = buscarInvento(jsonRespuesta);
+		}else if(entidad.equals("Pintor")){
+			respuestaFinal = buscarPintores(jsonRespuesta);
 		}
         return respuestaFinal;
     }
@@ -222,8 +221,68 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
         }
 		return inventos;
     }
-
-    
+	private Guardable[] buscarPintores(String jsonRespuesta){
+		Pintor[] pintores = null;
+		try {
+			JSONObject obj = new JSONObject(jsonRespuesta);
+			JSONArray json_array = obj.getJSONArray("datos");
+			pintores = new Pintor[json_array.length()];
+			
+			if(pintores.length == 0){
+				notificarObsverver(null, res_tablaPintoresVacio);
+				cancel(true);
+				return null;
+			}
+			
+			for(int i = 0; i < json_array.length(); i++){
+				JSONObject pintorr = json_array.getJSONObject(i);
+				String nom = pintorr.getString("nombre");
+				int idConfig = pintorr.getInt("persona_id");
+				int año = pintorr.getInt("año_nacimiento");
+				String lugar = pintorr.getString("lugar_nacimiento");
+				
+				pintores[i] = new Pintor(nom,lugar,año, idConfig);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return pintores;
+	}
+	private Guardable[] buscarPintura(String jsonRespuesta){
+		Pintura[] pinturas = null;
+		
+		try {
+			JSONObject obj = new JSONObject(jsonRespuesta);
+			JSONArray json_array = obj.getJSONArray("datos");
+			pinturas = new Pintura[json_array.length()];
+			
+			if(pinturas.length == 0){
+				notificarObsverver(null, res_tablaInventoVacio);
+				cancel(true);
+				return null;
+			}
+			
+			for(int i = 0; i < json_array.length(); i++){
+				JSONObject pinturaa = json_array.getJSONObject(i);
+				int id = pinturaa.getInt("invento_id");
+				String nom = pinturaa.getString("nombre");
+				String descripcion = pinturaa.getString("descripcion");
+				
+				JSONObject pintorJSON = pinturaa.getJSONObject("inventor");
+				Pintor pintor = new Pintor(pintorJSON.getString("nombre"),pintorJSON.getString("lugar_nacimiento"),pintorJSON.getInt("año_nacimiento"),pintorJSON.getInt("persona_id"));
+				
+				JSONObject periodoJSON = pinturaa.getJSONObject("periodo");
+				Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
+				
+				int año = pinturaa.getInt("año");
+				
+				pinturas[i] = new Pintura(nom,descripcion,periodo,pintor,año,id);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return pinturas;
+	}
     
     private String conectar(String parametros){
         try {

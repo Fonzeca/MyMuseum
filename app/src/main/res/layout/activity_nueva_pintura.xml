@@ -43,7 +43,7 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/DexriPintura_NuevaPintura"
+                    android:id="@+id/DescriPintura_NuevaPintura"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="top"
