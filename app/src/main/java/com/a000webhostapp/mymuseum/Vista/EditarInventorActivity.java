@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
@@ -33,7 +34,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 	
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
     
     
     @Override
@@ -56,7 +57,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 				String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
 				for (int index = 0; index < inventores.length; index++){
-					if(inventores[index].getNombreCompleto().equals(nombreInventorActual)){
+					if(inventores[index].getNombre().equals(nombreInventorActual)){
 						inventorActual = inventores[index];
 						actualizarCampos();
 						return;
@@ -81,7 +82,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 					}else{
 						añoInventor = Integer.parseInt(año.getText().toString());
 					}
-					inventorActual.setNombreCompleto(nombreyapellido);
+					inventorActual.setNombre(nombreyapellido);
 					inventorActual.setAñoNacimiento(añoInventor);
 					inventorActual.setLugarNacimiento(lugarConfig);
 					ModuloEntidad.obtenerModulo().editarInventor(inventorActual);
@@ -93,7 +94,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 
     }
     private void actualizarCampos(){
-		nombre.setText(inventorActual.getNombreCompleto());
+		nombre.setText(inventorActual.getNombre());
 		if(inventorActual.getAñoNacimiento() < 0){
 			año.setText(String.valueOf(Math.abs(inventorActual.getAñoNacimiento())));
 			AC.setChecked(true);
@@ -102,13 +103,12 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		}
 		lugar.setText(inventorActual.getLugarNacimiento());
 	}
-	
 	private void actualizarSpinnerInventores(){
 		List<String> spinnerArray =  new ArrayList<String>();
 		if(inventores != null){
 			//se llena el array con los invententores
 			for (int i = 0; i < inventores.length; i++){
-				spinnerArray.add(inventores[i].getNombreCompleto());
+				spinnerArray.add(inventores[i].getNombre());
 			}
 		}
 	
@@ -119,7 +119,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		//Buscamos para que sepan cual es el inventor actual
 		String nombreInventorActual = (String)inventoresSpin.getSelectedItem();
 		for (int index = 0; index < inventores.length; index++){
-			if(inventores[index].getNombreCompleto().equals(nombreInventorActual)){
+			if(inventores[index].getNombre().equals(nombreInventorActual)){
 				inventorActual = inventores[index];
 				actualizarCampos();
 				return;
@@ -128,12 +128,10 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 	}
 	
 	private void buscarInfoSpinner(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -150,19 +148,28 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		return true;
 	}
 	
-	public void update(Guardable[] g, int id) {
-		if(buscando){
+	public void update(Guardable[] g, String respuesta) {
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Inventor){
 					inventores = (Inventor[]) g;
 					actualizarSpinnerInventores();
 					loading.dismiss();
 					cargado = true;
-					buscando = false;
 				}
-			}else if(id == -1){
-				loading.dismiss();
-				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
+			}if(respuesta != null && !respuesta.equals("")){
+				switch (respuesta){
+					case ControlDB.res_falloConexion:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaInventorVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+						break;
+				}
 			}
 		}
 	}

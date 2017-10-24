@@ -7,5 +7,5 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
  */
 
 public interface IObserver {
-    void update(Guardable[] g, int id);
+    void update(Guardable[] g, String respuesta);
 }

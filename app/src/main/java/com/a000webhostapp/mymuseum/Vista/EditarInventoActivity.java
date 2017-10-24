@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -37,7 +38,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     private Button guardar;
 
     private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +119,10 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     
 	
 	private void buscarInfoSpinners(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -145,7 +144,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
             for (int i = 0; i < inventoresCargados.length; i++){
                 spinnerArray.add(inventoresCargados[i]);
 				//Buscamos cual es el inventor del invento
-				if(invento.getInventor().getNombreCompleto().equals(inventoresCargados[i].getNombreCompleto())){
+				if(invento.getInventor().getNombre().equals(inventoresCargados[i].getNombre())){
 					selected = i;
                 }
             }
@@ -188,8 +187,8 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		return true;
 	}
     
-    public void update(Guardable[] g, int id) {
-		if(buscando){
+    public void update(Guardable[] g, String respuesta) {
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Inventor){
 					inventoresCargados = (Inventor[]) g;
@@ -203,13 +202,27 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 				//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
 				if(periodosCargados != null && inventoresCargados != null){
 					cargado = true;
-					buscando = false;
 					loading.dismiss();
 				}
-			}else if(id == -1){
-				loading.dismiss();
-				new DialogoAlerta(this, "No se pudo conectar", "Error").mostrar();
-				buscando = false;
+			}if(respuesta != null && !respuesta.equals("")){
+				switch (respuesta){
+					case ControlDB.res_falloConexion:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaInventorVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaPeriodoVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+						break;
+					
+				}
 			}
 		}
     }

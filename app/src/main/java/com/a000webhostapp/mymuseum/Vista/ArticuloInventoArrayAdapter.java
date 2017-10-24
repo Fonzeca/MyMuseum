@@ -46,7 +46,7 @@ public class ArticuloInventoArrayAdapter extends ArrayAdapter<Invento> {
         }else {
             añoInvencion.setText(String.valueOf(inventos[position].getAñoInvencion()));
         }
-        nombreInventor.setText(inventos[position].getInventor().getNombreCompleto());
+        nombreInventor.setText(inventos[position].getInventor().getNombre());
 
         verDetalles.setOnClickListener(new View.OnClickListener() {
             @Override

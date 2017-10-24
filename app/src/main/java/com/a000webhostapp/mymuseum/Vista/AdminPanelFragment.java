@@ -1,10 +1,7 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,32 +30,32 @@ public class AdminPanelFragment extends Fragment {
                 int id = view.getId();
                 Intent intent;
                 switch(id){
-                    case R.id.agregar_nuevo_invento_button:
-                        intent = new Intent(getActivity(), NuevoInventoActivity.class);
+                    case R.id.agregar_nuevo_objeto_button:
+                        intent = new Intent(getActivity(), ElegirNuevoObjetoActivity.class);
                         startActivity(intent);
                         break;
-                    case R.id.agregar_nuevo_inventor_button:
-                        intent = new Intent(getActivity(), NuevoInventorActivity.class);
+                    case R.id.agregar_nuevo_persona_button:
+                        intent = new Intent(getActivity(), ElegirNuevaPersonaActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.agregar_nuevo_periodo_button:
                         intent = new Intent(getActivity(), NuevoPeriodoActivity.class);
                         startActivity(intent);
                         break;
-                    case R.id.editar_inventor_button:
-                        intent = new Intent(getActivity(), EditarInventorActivity.class);
+                    case R.id.editar_persona_button:
+                        intent = new Intent(getActivity(), ElegirEditarPersonaActivity.class);
                         startActivity(intent);
                         break;
 					case R.id.editar_periodo_button:
 						intent = new Intent(getActivity(), EditarPeriodoActivity.class);
 						startActivity(intent);
 						break;
-					case R.id.eliminar_invento_button:
-						intent = new Intent(getActivity(), EliminarInventoActivity.class);
+					case R.id.eliminar_objeto_button:
+						intent = new Intent(getActivity(), ElegirEliminarObjetoActivity.class);
 						startActivity(intent);
 						break;
-					case R.id.eliminar_inventor_button:
-						intent = new Intent(getActivity(), EliminarInventorActivity.class);
+					case R.id.eliminar_persona_button:
+						intent = new Intent(getActivity(), ElegirEliminarPersonaActivity.class);
 						startActivity(intent);
 						break;
 					case R.id.eliminar_periodo_button:
@@ -78,25 +75,25 @@ public class AdminPanelFragment extends Fragment {
 	
 	public void onViewCreated(View viewFinal, Bundle savedInstanceState) {
 		
-		agregarNuevoInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_invento_button);
+		agregarNuevoInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_objeto_button);
 		agregarNuevoInventoButton.setOnClickListener(clickListenerBotones);
 		
-		agregarNuevoInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_inventor_button);
+		agregarNuevoInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_persona_button);
 		agregarNuevoInventorButton.setOnClickListener(clickListenerBotones);
 		
 		agregarNuevoPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_periodo_button);
 		agregarNuevoPeriodoButton.setOnClickListener(clickListenerBotones);
 		
-		editarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_inventor_button);
+		editarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_persona_button);
 		editarInventorButton.setOnClickListener(clickListenerBotones);
 		
 		editarPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_periodo_button);
 		editarPeriodoButton.setOnClickListener(clickListenerBotones);
 		
-		eliminarInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_invento_button);
+		eliminarInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_objeto_button);
 		eliminarInventoButton.setOnClickListener(clickListenerBotones);
 		
-		eliminarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_inventor_button);
+		eliminarInventorButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_persona_button);
 		eliminarInventorButton.setOnClickListener(clickListenerBotones);
 		
 		eliminarPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_periodo_button);

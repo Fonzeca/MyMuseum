@@ -25,7 +25,6 @@ public class DialogoAlerta {
 						dialogo.dismiss();
 					}
 				});
-				
 			}
 		});
 		

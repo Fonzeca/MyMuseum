@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
@@ -31,7 +32,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
     private Periodo periodoActual;
 	
 	private ProgressDialog loading;
-	private boolean buscando, cargado;
+	private boolean cargado;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,12 +143,10 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	private void buscarInfoSpinner(){
-		buscando = true;
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
 				if(isShowing()){
 					dismiss();
-					buscando = false;
 				}else{
 					super.onBackPressed();
 				}
@@ -167,19 +166,30 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	
-	public void update(Guardable[] g, int id) {
-		if(buscando){
+	public void update(Guardable[] g, String respuesta) {
+		if(loading.isShowing()){
 			if(g != null){
 				if(g[0] instanceof Periodo){
 					periodos = (Periodo[]) g;
 					cargado = true;
-					buscando = false;
 					actualizarSpinnerInventores();
 					loading.dismiss();
 				}
-			}else if(id == -1){
-				loading.dismiss();
-				new DialogoAlerta(this,"No se pudo conectar", "Error").mostrar();
+			}
+			if(respuesta != null && !respuesta.equals("")){
+				switch (respuesta){
+					case ControlDB.res_falloConexion:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+						break;
+					case ControlDB.res_tablaPeriodoVacio:
+						loading.dismiss();
+						//Creamos un alertDialog en el Thread UI del activity
+						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+						break;
+					
+				}
 			}
 		}
 	}

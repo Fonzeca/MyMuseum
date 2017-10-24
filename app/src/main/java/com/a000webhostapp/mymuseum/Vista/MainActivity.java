@@ -1,10 +1,13 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.AdminPanelFragment;
-import com.a000webhostapp.mymuseum.Vista.InfoMuseoFragment;
-import com.a000webhostapp.mymuseum.Vista.InicioFragment;
+
+import java.text.Collator;
+import java.text.Normalizer;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Fragment fragmentActual;
 	private Fragment incioFragment, infoFragment, adminFragment;
+	
+	public final int requestBuscar = 6;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +54,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setImageResource(R.drawable.ic_search_white);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-
+                startActivityBuscar();
             }
         });
-
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -95,12 +99,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void onBackPressed() {
+    private void startActivityBuscar(){
+		Intent intent = new Intent(this, BuscarObjetoActivity.class);
+		startActivityForResult(intent, requestBuscar);
+	}
+	
+	private void startFragmentInicio(){
+		if(incioFragment == null){
+			incioFragment = new InicioFragment();
+		}
+		navigationView.getMenu().getItem(0).setChecked(true);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.frame_content, incioFragment).commitNowAllowingStateLoss();
+	}
+	
+	public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }else{
             super.onBackPressed();
         }
     }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == requestBuscar){
+			if(resultCode == RESULT_OK){
+				startFragmentInicio();
+				String[] partesData = data.getDataString().split("=");
+				if(partesData[0].equals(ControlDB.str_obj_Invento)){
+					((InicioFragment)incioFragment).busquedaInventos(partesData[1]);
+				}
+			}else if(resultCode == BuscarObjetoActivity.responseScannerQR){
+				startFragmentInicio();
+				String[] partesData = data.getDataString().split("=");
+				if(partesData[0].equals(ControlDB.str_obj_Invento)){
+					((InicioFragment)incioFragment).busquedaInventosDirecta(partesData[1]);
+				}
+			}
+		}
+	}
 }

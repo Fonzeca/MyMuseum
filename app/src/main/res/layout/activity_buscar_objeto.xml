@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.a000webhostapp.mymuseum.Vista.BuscarObjetoActivity">
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:text="Buscar objeto"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorActivityBackground"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Objeto a buscar"
+                android:textSize="18sp"/>
+
+            <Spinner
+                android:id="@+id/spinnerObjeto_BuscarObjeto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/NomObjeto_BuscarObjeto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del objeto"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/Save_BuscarObjeto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="BUSCAR"
+                android:textColor="#FFF"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

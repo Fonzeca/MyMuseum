@@ -9,6 +9,6 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
 public interface ISujeto {
     void registrarObvserver(IObserver ob);
     boolean eliminarObvserver(IObserver ob);
-    void notificarObsverver(Guardable[] g, int id);
+    void notificarObsverver(Guardable[] g, String respuesta);
 	
 }
