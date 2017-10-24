@@ -6,6 +6,8 @@ import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,9 @@ import android.view.MenuItem;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
 
+import java.text.Collator;
+import java.text.Normalizer;
+
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -26,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragmentActual;
 	private Fragment incioFragment, infoFragment, adminFragment;
 	
-	private final int requestBuscar = 6;
+	public final int requestBuscar = 6;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityBuscar();
             }
         });
-
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -104,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
 		if(incioFragment == null){
 			incioFragment = new InicioFragment();
 		}
-		
+		navigationView.getMenu().getItem(0).setChecked(true);
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.frame_content, incioFragment).commitAllowingStateLoss();
+		fragmentManager.beginTransaction().replace(R.id.frame_content, incioFragment).commitNowAllowingStateLoss();
 	}
 	
 	public void onBackPressed() {
@@ -119,11 +123,19 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == requestBuscar &&resultCode == RESULT_OK){
-			startFragmentInicio();
-			String[] partesData = data.getDataString().split("=");
-			if(partesData[0].equals(ControlDB.str_obj_Invento)){
-				((InicioFragment)incioFragment).busquedaInventos(partesData[1]);
+		if(requestCode == requestBuscar){
+			if(resultCode == RESULT_OK){
+				startFragmentInicio();
+				String[] partesData = data.getDataString().split("=");
+				if(partesData[0].equals(ControlDB.str_obj_Invento)){
+					((InicioFragment)incioFragment).busquedaInventos(partesData[1]);
+				}
+			}else if(resultCode == BuscarObjetoActivity.responseScannerQR){
+				startFragmentInicio();
+				String[] partesData = data.getDataString().split("=");
+				if(partesData[0].equals(ControlDB.str_obj_Invento)){
+					((InicioFragment)incioFragment).busquedaInventosDirecta(partesData[1]);
+				}
 			}
 		}
 	}

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Alexis on 10/10/2017.
  */
 
-public abstract class Objeto implements Guardable, Serializable {
+public abstract class Objeto implements Guardable {
 	protected String nombre, descripcion;
 	protected Periodo periodo;
 	protected int añoInvencion;

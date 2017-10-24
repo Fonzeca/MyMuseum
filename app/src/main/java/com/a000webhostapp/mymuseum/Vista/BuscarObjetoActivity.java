@@ -1,15 +1,25 @@
 package com.a000webhostapp.mymuseum.Vista;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
@@ -23,7 +33,9 @@ public class BuscarObjetoActivity extends AppCompatActivity {
 	private Spinner objetosSpinner;
 	private EditText nombreObjetoEdit;
 	
-	
+	public static final int requestPermisionCamera = 1;
+	public static final int requestQR = 4;
+	public static final int responseScannerQR = 5;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,5 +82,51 @@ public class BuscarObjetoActivity extends AppCompatActivity {
 		objetosSpinner.setAdapter(adapter);
 	}
 	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == requestQR && resultCode == RESULT_OK){
+			setResult(responseScannerQR,data);
+			finish();
+		}
+	}
 	
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
+	}
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.articulo_invento_menu_qr, menu);
+		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.busqueda_escanearQR:
+				escanearQR();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	private void escanearQR(){
+		if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, requestPermisionCamera);
+			
+		}else{
+			Intent intent = new Intent(this, LectorQRActivity.class);
+			startActivityForResult(intent,requestQR);
+		}
+	}
+	
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		switch (requestCode){
+			case requestPermisionCamera:
+				if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+					Intent intent = new Intent(this, LectorQRActivity.class);
+					startActivityForResult(intent,requestQR);
+				}else{
+					Toast.makeText(this, "Por favor, garantizar el permiso de la camara o sino no te va a andar", Toast.LENGTH_SHORT).show();
+				}
+				break;
+		}
+	}
 }

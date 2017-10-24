@@ -1,5 +1,7 @@
 package com.a000webhostapp.mymuseum.Modelo;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+
 import java.io.Serializable;
 
 /**
@@ -23,26 +25,27 @@ public class Invento extends Objeto{
     }
 
     public String configGuardar() {
-        String accion = "accion=nuevo_invento";
+        String accion = "accion=nuevo_objeto";
+		String entidad = "entidad="+ ControlDB.str_obj_Invento;
         String nombreConfig= "nombre="+nombre;
         String descriConfig= "descripcion="+descripcion;
         String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
-        String inventorConfig= "nombre_inventor="+inventor.getNombre();
+        String inventorConfig= "nombre_persona="+inventor.getNombre();
         String añoConfig= "anio="+añoInvencion;
         String isMaquinaConfig= isMaquina?"es_maquina=1":"es_maquina=0";
 
-        return accion + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
+        return accion + "&" + entidad + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
                 "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
     }
 	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
-		String entidad = "entidad=Invento";
+		String entidad = "entidad=" + ControlDB.str_obj_Invento;
 		String idConfig = "registro_id="+id;
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;
 		String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
-		String inventorConfig= "nombre_inventor="+inventor.getNombre();
+		String inventorConfig= "nombre_persona="+inventor.getNombre();
 		String añoConfig= "anio="+añoInvencion;
 		String isMaquinaConfig= isMaquina?"es_maquina=1":"es_maquina=0";
 		

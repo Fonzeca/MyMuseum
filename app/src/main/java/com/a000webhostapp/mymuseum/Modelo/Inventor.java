@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.Modelo;
 
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
 public class Inventor extends Persona{
     private int id;
@@ -16,17 +17,18 @@ public class Inventor extends Persona{
 
 
     public String configGuardar() {
-        String accion = "accion=nuevo_inventor";
+        String accion = "accion=nueva_persona";
+        String entidad = "entidad=" + ControlDB.str_per_Inventor;
         String nom = "nombre="+ nombre;
         String año = "anio_nacimiento="+añoNacimiento;
         String lugar = "lugar_nacimiento="+lugarNacimiento;
 
-        return accion + "&" + nom + "&" + año + "&" + lugar;
+        return accion + "&" + entidad + "&" + nom + "&" + año + "&" + lugar;
     }
     
     public String configModificar() {
         String accion = "accion=editar_registro";
-        String entidad = "entidad=Inventor";
+        String entidad = "entidad=" + ControlDB.str_per_Inventor;
         String idModifica = "registro_id=" + id;
         String nom = "nombre="+ nombre;
         String año = "anio_nacimiento="+añoNacimiento;

@@ -3,6 +3,7 @@
           package="com.a000webhostapp.mymuseum">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -35,8 +36,16 @@
         <activity android:name=".Vista.EliminarInventoActivity"/>
         <activity android:name=".Vista.EliminarInventorActivity"/>
         <activity android:name=".Vista.EliminarPeriodoActivity"/>
+        <activity android:name=".Vista.ElegirEditarPersonaActivity"/>
+        <activity android:name=".Vista.ElegirEliminarPersonaActivity"/>
+        <activity android:name=".Vista.ElegirNuevoObjetoActivity"/>
+        <activity android:name=".Vista.ElegirEliminarObjetoActivity"/>
         <activity android:name=".Vista.ArticuloInventoActivity"/>
-        <activity android:name=".Vista.BuscarObjetoActivity">
+        <activity android:name=".Vista.BuscarObjetoActivity"/>
+        <activity android:name=".Vista.LectorQRActivity">
+        </activity>
+        <activity
+            android:name=".Vista.ElegirNuevaPersonaActivity">
         </activity>
     </application>
 

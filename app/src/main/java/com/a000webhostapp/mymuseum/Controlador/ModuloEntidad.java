@@ -32,12 +32,10 @@ public class ModuloEntidad {
         Invento invento = new Invento(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina);
         new ControlDB(null).insertar(invento);
     }
-
     public void buscarInventos(IObserver observer){
         //Mandamos a buscar los Inventos
 		new ControlDB(observer).buscar("Invento");
     }
-
     public void editarInvento(Guardable g){
         new ControlDB(null).modificar(g);
     }
@@ -52,12 +50,10 @@ public class ModuloEntidad {
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
         new ControlDB(null).insertar(inventor);
     }
-
     public void buscarInventores(IObserver observer){
         //mandamos a buscar los inventores
         new ControlDB(observer).buscar("Inventor");
     }
-
     public void editarInventor(Guardable g){
         new ControlDB(null).modificar(g);
     }

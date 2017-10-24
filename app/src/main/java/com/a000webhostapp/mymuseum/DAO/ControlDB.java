@@ -33,7 +33,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String[] personas = {str_per_Inventor, str_per_Pintor};
 	
 	public static final String res_falloConexion = "No se pudo conectar";
-	public static final String res_exito = "Exito";
+	public static final String res_exitoBusqueda = "Exito busqueda";
 	public static final String res_tablaInventoVacio = "No hay Inventos en la base de datos";
 	public static final String res_tablaPeriodoVacio = "No hay Periodos en la base de datos";
 	public static final String res_tablaInventorVacio = "No hay Inventores en la base de datos";
@@ -68,11 +68,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 
         if(resultados != null && resultados.length != 0){
             if(resultados[0] instanceof Inventor){
-                notificarObsverver(resultados, res_exito);
+                notificarObsverver(resultados, res_exitoBusqueda);
             }else if(resultados[0] instanceof Periodo){
-                notificarObsverver(resultados, res_exito);
+                notificarObsverver(resultados, res_exitoBusqueda);
             }else if(resultados[0] instanceof Invento){
-                notificarObsverver(resultados, res_exito);
+                notificarObsverver(resultados, res_exitoBusqueda);
             }
         }
     }
@@ -147,7 +147,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             for(int i = 0; i < json_array.length(); i++){
                 JSONObject inven = json_array.getJSONObject(i);
                 String nom = inven.getString("nombre");
-				int idConfig = inven.getInt("inventor_id");
+				int idConfig = inven.getInt("persona_id");
                 int año = inven.getInt("año_nacimiento");
                 String lugar = inven.getString("lugar_nacimiento");
 
@@ -206,7 +206,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
                 String descripcion = inve.getString("descripcion");
 				
                 JSONObject inventorJSON = inve.getJSONObject("inventor");
-                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("inventor_id"));
+                Inventor inventor = new Inventor(inventorJSON.getString("nombre"),inventorJSON.getString("lugar_nacimiento"),inventorJSON.getInt("año_nacimiento"),inventorJSON.getInt("persona_id"));
 				
                 JSONObject periodoJSON = inve.getJSONObject("periodo");
                 Periodo periodo = new Periodo(periodoJSON.getString("nombre"),periodoJSON.getInt("año_inicio"),periodoJSON.getInt("año_fin"),periodoJSON.getInt("periodo_id"));
