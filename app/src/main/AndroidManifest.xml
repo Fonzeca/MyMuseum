@@ -26,24 +26,31 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Vista.NuevoInventoActivity"
+            android:name=".Vista.InventoABM.NuevoInventoActivity"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".Vista.NuevoInventorActivity"/>
-        <activity android:name=".Vista.NuevoPeriodoActivity"/>
-        <activity android:name=".Vista.NuevaPinturaActivity"/>
-        <activity android:name=".Vista.NuevoPintorActivity"/>
-        <activity android:name=".Vista.EditarInventoActivity"/>
-        <activity android:name=".Vista.EditarInventorActivity"/>
-        <activity android:name=".Vista.EditarPeriodoActivity"/>
-        <activity android:name=".Vista.EliminarInventoActivity"/>
-        <activity android:name=".Vista.EliminarInventorActivity"/>
-        <activity android:name=".Vista.EliminarPeriodoActivity"/>
+        <activity android:name=".Vista.InventoABM.EditarInventoActivity"/>
+        <activity android:name=".Vista.InventoABM.EliminarInventoActivity"/>
+        <activity android:name=".Vista.InventorABM.NuevoInventorActivity"/>
+        <activity android:name=".Vista.InventorABM.EditarInventorActivity"/>
+        <activity android:name=".Vista.InventorABM.EliminarInventorActivity"/>
+        <activity android:name=".Vista.PeriodoABM.NuevoPeriodoActivity"/>
+        <activity android:name=".Vista.PeriodoABM.EditarPeriodoActivity"/>
+        <activity android:name=".Vista.PeriodoABM.EliminarPeriodoActivity"/>
+        <activity android:name=".Vista.PinturaABM.NuevaPinturaActivity"/>
+        <activity android:name=".Vista.PinturaABM.EditarPinturaActivity"/>
+        <activity android:name=".Vista.PinturaABM.EliminarPinturaActivity"/>
+        <activity android:name=".Vista.PintorABM.NuevoPintorActivity"/>
+        <activity android:name=".Vista.PintorABM.EditarPintorActivity"/>
+        <activity android:name=".Vista.PintorABM.EliminarPintorActivity"/>
+        <activity android:name=".Vista.TrasladoABM.NuevoTrasladoActivity"/>
         <activity android:name=".Vista.ElegirEditarPersonaActivity"/>
         <activity android:name=".Vista.ElegirEliminarPersonaActivity"/>
         <activity android:name=".Vista.ElegirNuevoObjetoActivity"/>
         <activity android:name=".Vista.ElegirEliminarObjetoActivity"/>
         <activity android:name=".Vista.ArticuloInventoActivity"/>
+        <activity android:name=".Vista.ArticuloPinturaActivity"/>
         <activity android:name=".Vista.BuscarObjetoActivity"/>
+        <activity android:name=".Vista.HistorialPinturaActivity"/>
         <activity android:name=".Vista.LectorQRActivity">
         </activity>
         <activity

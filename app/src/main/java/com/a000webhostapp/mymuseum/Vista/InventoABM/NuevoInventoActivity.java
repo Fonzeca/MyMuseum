@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,6 +20,9 @@ import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.InventorABM.NuevoInventorActivity;
+import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +143,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 		
 	}
     private void actualizarSpinnerInventores(){
-        List<Inventor> spinnerArray =  new ArrayList<Inventor>();
+        List<Inventor> spinnerArray =  new ArrayList<>();
         if(inventores != null){
             //se llena el array con los invententores
             for (int i = 0; i < inventores.length; i++){
@@ -148,12 +151,12 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
             }
         }
 		//Si bien guardamos inventores en el array, se muestro el toString de cada inventor.
-        ArrayAdapter<Inventor> adapter = new ArrayAdapter<Inventor>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        ArrayAdapter<Inventor> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inventoresSpin.setAdapter(adapter);
     }
     private void actualizarSpinnerPeriodo(){
-        List<Periodo> spinnerArray =  new ArrayList<Periodo>();
+        List<Periodo> spinnerArray =  new ArrayList<>();
         if(periodos != null){
             //se llena el array con los periodos
             for (int i = 0; i < periodos.length; i++){
@@ -162,7 +165,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
         }
         
 		//Si bien guardamos peridoos en el array, se muestro el toString de cada periodo.
-        ArrayAdapter<Periodo> adapter = new ArrayAdapter<Periodo>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
+        ArrayAdapter<Periodo> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periSpin.setAdapter(adapter);
     }

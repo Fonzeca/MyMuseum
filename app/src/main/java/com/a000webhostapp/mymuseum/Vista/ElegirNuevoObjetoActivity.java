@@ -11,6 +11,8 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.InventoABM.NuevoInventoActivity;
+import com.a000webhostapp.mymuseum.Vista.PinturaABM.NuevaPinturaActivity;
 
 /**
  * Created by Alexis on 23/10/2017.
@@ -24,6 +26,10 @@ public class ElegirNuevoObjetoActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_elegir_nuevo_objeto);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		
 		spinnerObjetos = (Spinner) findViewById(R.id.SpinnerObjetos_ElegirNuevoObjeto);
 		actualizarSpinnerPersonas();
 		
@@ -51,5 +57,10 @@ public class ElegirNuevoObjetoActivity extends AppCompatActivity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ControlDB.objetos);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerObjetos.setAdapter(adapter);
+	}
+	
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
 	}
 }

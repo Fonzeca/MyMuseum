@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
@@ -30,10 +31,12 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String str_obj_Invento = "Invento";
 	public static final String str_obj_Pintura = "Pintura";
 	public static final String[] objetos = {str_obj_Invento, str_obj_Pintura};
+	public static final String str_objeto = "Objeto";
 	
 	public static final String str_per_Inventor = "Inventor";
 	public static final String str_per_Pintor = "Pintor";
 	public static final String[] personas = {str_per_Inventor, str_per_Pintor};
+	public static final String str_persona = "Persona";
 	
 	public static final String res_falloConexion = "No se pudo conectar";
 	public static final String res_exitoBusqueda = "Exito busqueda";
@@ -41,6 +44,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String res_tablaPeriodoVacio = "No hay Periodos en la base de datos";
 	public static final String res_tablaInventorVacio = "No hay Inventores en la base de datos";
 	public static final String res_tablaPintoresVacio = "No hay Pintores en la base de datos";
+	public static final String res_tablaPinturasVacio = "No hay Pinturas en la base de datos";
 
 
     public ControlDB(IObserver ob){
@@ -126,6 +130,10 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			respuestaFinal = buscarInvento(jsonRespuesta);
 		}else if(entidad.equals("Pintor")){
 			respuestaFinal = buscarPintores(jsonRespuesta);
+		}else if(entidad.equals("Pintura")){
+			respuestaFinal = buscarPintura(jsonRespuesta);
+		}else if(entidad.equals("Objeto")){
+			respuestaFinal = buscarObjetos(jsonRespuesta);
 		}
         return respuestaFinal;
     }
@@ -193,7 +201,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
             inventos = new Invento[json_array.length()];
 			
 			if(inventos.length == 0){
-				notificarObsverver(null, res_tablaInventoVacio);
+				notificarObsverver(inventos, res_tablaInventoVacio);
 				cancel(true);
 				return null;
 			}
@@ -257,7 +265,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			pinturas = new Pintura[json_array.length()];
 			
 			if(pinturas.length == 0){
-				notificarObsverver(null, res_tablaInventoVacio);
+				notificarObsverver(null, res_tablaPinturasVacio);
 				cancel(true);
 				return null;
 			}
@@ -282,6 +290,19 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			e.printStackTrace();
 		}
 		return pinturas;
+	}
+	private Guardable[] buscarObjetos(String jsonRespuesta){
+		Guardable[] inventos, pinturas;
+		inventos = buscarPrivado(ControlDB.str_obj_Invento);
+		pinturas = buscarPrivado(ControlDB.str_obj_Pintura);
+		Guardable[] objetos = new Objeto[inventos.length + pinturas.length];
+		for (int i = 0; i < inventos.length; i++){
+			objetos [i] = inventos[i];
+		}
+		for (int i = 0; i < pinturas.length; i++){
+			objetos[i + inventos.length] = pinturas[i];
+		}
+		return objetos;
 	}
     
     private String conectar(String parametros){

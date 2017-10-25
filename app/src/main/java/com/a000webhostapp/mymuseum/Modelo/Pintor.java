@@ -28,7 +28,7 @@ public class Pintor extends Persona{
     
     public String configModificar() {
         String accion = "accion=editar_registro";
-        String entidad = "entidad=" + ControlDB.str_per_Pintor;
+        String entidad = "entidad=" + ControlDB.str_persona;
         String idModifica = "registro_id=" + id;
         String nom = "nombre="+ nombre;
         String año = "anio_nacimiento="+añoNacimiento;

@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.InventorABM;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 
 import java.util.ArrayList;
 import java.util.List;

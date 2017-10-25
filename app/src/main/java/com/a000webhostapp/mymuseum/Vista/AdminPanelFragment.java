@@ -3,17 +3,21 @@ package com.a000webhostapp.mymuseum.Vista;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EditarPeriodoActivity;
+import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EliminarPeriodoActivity;
+import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 
 public class AdminPanelFragment extends Fragment {
 	
     private RelativeLayout agregarNuevoInventoButton, agregarNuevoInventorButton, agregarNuevoPeriodoButton;
-	private RelativeLayout editarInventorButton, editarPeriodoButton;
+	private RelativeLayout editarInventorButton, editarPeriodoButton, editarObjetoButton;
 	private RelativeLayout eliminarInventoButton,eliminarInventorButton, eliminarPeriodoButton;
 	
 	
@@ -48,6 +52,11 @@ public class AdminPanelFragment extends Fragment {
                         break;
 					case R.id.editar_periodo_button:
 						intent = new Intent(getActivity(), EditarPeriodoActivity.class);
+						startActivity(intent);
+						break;
+					case R.id.editar_objeto_button:
+						Log.v("a", "aaaaa");
+						intent = new Intent(getActivity(), HistorialPinturaActivity.class);
 						startActivity(intent);
 						break;
 					case R.id.eliminar_objeto_button:
@@ -89,6 +98,9 @@ public class AdminPanelFragment extends Fragment {
 		
 		editarPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_periodo_button);
 		editarPeriodoButton.setOnClickListener(clickListenerBotones);
+		
+		editarObjetoButton = (RelativeLayout) viewFinal.findViewById(R.id.editar_objeto_button);
+		editarObjetoButton.setOnClickListener(clickListenerBotones);
 		
 		eliminarInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_objeto_button);
 		eliminarInventoButton.setOnClickListener(clickListenerBotones);

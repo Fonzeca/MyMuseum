@@ -40,7 +40,7 @@ public class Invento extends Objeto{
 	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
-		String entidad = "entidad=" + ControlDB.str_obj_Invento;
+		String entidad = "entidad=" + ControlDB.str_objeto;
 		String idConfig = "registro_id="+id;
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;

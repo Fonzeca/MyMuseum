@@ -11,6 +11,8 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.InventorABM.EliminarInventorActivity;
+import com.a000webhostapp.mymuseum.Vista.PintorABM.EliminarPintorActivity;
 
 /**
  * Created by Alexis on 23/10/2017.
@@ -23,6 +25,9 @@ public class ElegirEliminarPersonaActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_elegir_eliminar_persona);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		
 		spinnerPersonas = (Spinner) findViewById(R.id.SpinnerPersonas_ElegirEliminarPersona);
 		actualizarSpinnerPersonas();
@@ -38,7 +43,8 @@ public class ElegirEliminarPersonaActivity extends AppCompatActivity {
 						finish();
 						break;
 					case ControlDB.str_per_Pintor:
-						
+						intent = new Intent(ElegirEliminarPersonaActivity.this, EliminarPintorActivity.class);
+						startActivity(intent);
 						finish();
 						break;
 				}
@@ -50,5 +56,9 @@ public class ElegirEliminarPersonaActivity extends AppCompatActivity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ControlDB.personas);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerPersonas.setAdapter(adapter);
+	}
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
 	}
 }

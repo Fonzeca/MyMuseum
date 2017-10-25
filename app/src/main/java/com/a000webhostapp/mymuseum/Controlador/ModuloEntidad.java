@@ -42,7 +42,7 @@ public class ModuloEntidad {
         new ControlDB(null).modificar(g);
     }
 	public void eliminarInvento(int id){
-		String entidad = "entidad=Invento";
+		String entidad = "entidad=" + ControlDB.str_objeto;
 		String idBorra = "registro_id=" + id;
 		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
@@ -54,6 +54,14 @@ public class ModuloEntidad {
 	public void buscarPinturas(IObserver observer){
 		new ControlDB(observer).buscar(ControlDB.str_obj_Pintura);
 	}
+	public void eliminarPintura(int id){
+		String entidad = "entidad="+ControlDB.str_objeto;
+		String idBorra = "registro_id=" + id;
+		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
+	public void editarPintura(Guardable g){
+		new ControlDB(null).modificar(g);
+	}
     //---------------
 	public void crearPintor(String nombre, String lugarNacimiento, int añoNacimiento){
 		Pintor pintor = new Pintor(nombre,lugarNacimiento,añoNacimiento);
@@ -62,6 +70,15 @@ public class ModuloEntidad {
 	public void buscarPintores(IObserver observer){
 		new ControlDB(observer).buscar(ControlDB.str_per_Pintor);
 	}
+	public void eliminarPintor(int id){
+		String entidad = "entidad="+ControlDB.str_persona;
+		String idBorra = "registro_id=" + id;
+		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
+	public void editarPintor(Guardable g){
+		new ControlDB(null).modificar(g);
+	}
+	
 	//---------------
     public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento){
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
@@ -75,11 +92,10 @@ public class ModuloEntidad {
         new ControlDB(null).modificar(g);
     }
 	public void eliminarInventor(int id){
-		String entidad = "entidad=Inventor";
+		String entidad = "entidad=" + ControlDB.str_persona;
 		String idBorra = "registro_id=" + id;
 		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
-
     //---------------
     public void crearPeriodo(String nombre, int añoInicio, int añoFin){
         Periodo peri = new Periodo(nombre, añoInicio,añoFin);
@@ -97,5 +113,9 @@ public class ModuloEntidad {
 		String entidad = "entidad=Periodo";
 		String idBorra = "registro_id=" + id;
 		new ControlDB(null).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
+	}
+	//---------------
+	public void buscarObjetos(IObserver observer){
+		new ControlDB(observer).buscar(ControlDB.str_objeto);
 	}
 }

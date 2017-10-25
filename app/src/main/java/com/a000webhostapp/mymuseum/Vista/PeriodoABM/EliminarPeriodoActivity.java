@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.PeriodoABM;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,45 +13,48 @@ import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
+import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EliminarInventorActivity extends AppCompatActivity implements IObserver {
+public class EliminarPeriodoActivity extends AppCompatActivity implements IObserver{
     private Button eliminar;
-    private Spinner inventorSpinner;
-	
-	private Inventor inventorActual;
-	private Inventor[] inventores;
-	
-	private ProgressDialog loading;
-	private boolean cargado;
+    private Spinner periodoSpinner;
+    
+    private Periodo periodoActual;
+    private Periodo[] periodos;
+    
+    private ProgressDialog loading;
+    private boolean cargado;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eliminar_inventor);
-	
+        setContentView(R.layout.activity_eliminar_periodo);
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-	
-		eliminar = (Button) findViewById(R.id.Save_EliminarInventor);
+		
+		
+		eliminar = (Button) findViewById(R.id.Save_EliminarPeriodo);
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				ModuloEntidad.obtenerModulo().eliminarInventor(inventorActual.getID());
+				ModuloEntidad.obtenerModulo().eliminarPeriodo(periodoActual.getID());
 				onBackPressed();
 			}
 		});
 	
-		inventorSpinner = (Spinner)findViewById(R.id.spinnerInventor_EliminarInventor);
-		inventorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		periodoSpinner = (Spinner)findViewById(R.id.spinnerPeriodo_EliminarPeriodo);
+		periodoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-				String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
-				for (int index = 0; index < inventores.length; index++){
-					if(inventores[index].getNombre().equals(nombreInventoActual)){
-						inventorActual = inventores[index];
+				String nombrePeriodoActual = (String)periodoSpinner.getSelectedItem();
+				for (int index = 0; index < periodos.length; index++){
+					if(periodos[index].getNombrePeriodo().equals(nombrePeriodoActual)){
+						periodoActual = periodos[index];
 						return;
 					}
 				}
@@ -62,7 +65,7 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 		buscarInfoSpinners();
 		
     }
-	
+    
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
@@ -82,37 +85,38 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 		loading.setCancelable(false);
 		loading.show();
 		
-		ModuloEntidad.obtenerModulo().buscarInventores(this);
+		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
+	
 	private void actualizarSpinners(){
 		List<String> spinnerArray =  new ArrayList<String>();
-		if(inventores != null){
+		if(periodos != null){
 			//se llena el array con los inventosCargados
-			for (int i = 0; i < inventores.length; i++){
-				spinnerArray.add(inventores[i].getNombre());
+			for (int i = 0; i < periodos.length; i++){
+				spinnerArray.add(periodos[i].getNombrePeriodo());
 			}
 		}
 		
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		inventorSpinner.setAdapter(adapter);
+		periodoSpinner.setAdapter(adapter);
 		
 		
-		String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
-		for (int index = 0; index < inventores.length; index++){
-			if(inventores[index].getNombre().equals(nombreInventoActual)){
-				inventorActual = inventores[index];
+		String nombrePeriodoActual = (String)periodoSpinner.getSelectedItem();
+		for (int index = 0; index < periodos.length; index++){
+			if(periodos[index].getNombrePeriodo().equals(nombrePeriodoActual)){
+				periodoActual = periodos[index];
 				return;
 			}
 		}
 	}
-	
+    
 	public void update(Guardable[] g, String respuesta) {
 		if(loading.isShowing()){
 			if(g != null){
-				if(g[0] instanceof Inventor){
-					inventores = (Inventor[]) g;
+				if(g[0] instanceof Periodo){
+					periodos = (Periodo[]) g;
 					cargado = true;
 					actualizarSpinners();
 					loading.dismiss();
@@ -125,11 +129,12 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 						//Creamos un alertDialog en el Thread UI del activity
 						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
 						break;
-					case ControlDB.res_tablaInventorVacio:
+					case ControlDB.res_tablaPeriodoVacio:
 						loading.dismiss();
 						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
 						break;
+					
 				}
 			}
 		}

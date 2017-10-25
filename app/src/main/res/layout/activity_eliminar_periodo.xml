@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a000webhostapp.mymuseum.Vista.EliminarPeriodoActivity">
+    tools:context="com.a000webhostapp.mymuseum.Vista.PeriodoABM.EliminarPeriodoActivity">
 
     <ScrollView
         android:layout_width="match_parent"

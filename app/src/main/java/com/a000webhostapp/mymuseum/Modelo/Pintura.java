@@ -2,12 +2,15 @@ package com.a000webhostapp.mymuseum.Modelo;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alexis on 19/9/2017.
  */
 
 public class Pintura extends Objeto{
     private Pintor pintor;
+	private ArrayList<Traslado> traslados;
     private final int id;
     
 
@@ -15,6 +18,7 @@ public class Pintura extends Objeto{
 		super(nombre,descripcion,periodo,añoInvencion);
         this.pintor = pintor;
         this.id = id;
+		traslados = new ArrayList<>();
 }
     public Pintura(String nombre, String descripcion, Periodo periodo, Pintor pintor, int añoInvencion) {
 		this(nombre,descripcion,periodo, pintor,añoInvencion,-1);
@@ -35,7 +39,7 @@ public class Pintura extends Objeto{
 	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
-		String entidad = "entidad="+ControlDB.str_obj_Pintura;
+		String entidad = "entidad="+ControlDB.str_objeto;
 		String idConfig = "registro_id="+id;
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;
@@ -60,5 +64,15 @@ public class Pintura extends Objeto{
     
 	public int getID() {
 		return id;
+	}
+	public void agregarTraslado(Traslado t){
+		traslados.add(t);
+	}
+	public void borrarTraslado(int id){
+		for(Traslado t : traslados){
+			if(t.getId() == id){
+				traslados.remove(t);
+			}
+		}
 	}
 }

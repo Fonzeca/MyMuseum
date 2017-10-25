@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Editar invento"
+        android:text="Editar pintura"
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:textSize="24sp"
@@ -32,10 +32,10 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editar_invento_nombre_invento"
+                    android:id="@+id/editar_pintura_nombre_pintura"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre del invento" />
+                    android:hint="Nombre de la pintura" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -44,7 +44,7 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/editar_invento_descripcion"
+                    android:id="@+id/editar_pintura_descripcion"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:gravity="top"
@@ -55,17 +55,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Período científico"
+                android:text="Período"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/editar_invento_periodo_spinner"
+                android:id="@+id/editar_pintura_periodo_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
             <LinearLayout
-                android:id="@+id/AgregarPeriodo_EditInvento"
+                android:id="@+id/AgregarPeriodo_EditPintura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -99,16 +99,16 @@
                     android:layout_weight="3">
 
                     <EditText
-                        android:id="@+id/editar_invento_año_invencion"
+                        android:id="@+id/editar_pintura_año_invencion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top"
-                        android:hint="Año de invención"
+                        android:hint="Año de creación"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
                 <CheckBox
-                    android:id="@+id/ACInvento_EditInvento"
+                    android:id="@+id/ACPintura_EditPintura"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -120,17 +120,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Inventor/es"
+                android:text="Pintor/es"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/editar_invento_nombre_inventor_spinner"
+                android:id="@+id/editar_pintura_nombre_pintor_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
             <LinearLayout
-                android:id="@+id/AgregarInventor_EditInvento"
+                android:id="@+id/AgregarPintor_EditPintura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -142,7 +142,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="8dp"
                     android:gravity="center_vertical"
-                    android:text="Agregar nuevo inventor"
+                    android:text="Agregar nuevo pintor"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16dp" />
 
@@ -152,18 +152,8 @@
                     android:src="@drawable/ic_add_new" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/themachine_EditInvento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:buttonTint="@color/darkGray"
-                android:text="Máquina"
-                android:textColor="@color/darkGray"
-                android:textSize="18sp" />
-
             <Button
-                android:id="@+id/Save_EditInvento"
+                android:id="@+id/Save_EditPintura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

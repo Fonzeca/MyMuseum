@@ -15,7 +15,7 @@
         android:background="#FFF"
         android:gravity="center_horizontal"
         android:padding="16dp"
-        android:text="Eliminar Invento"
+        android:text="Eliminar Pintura"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"/>
 
@@ -31,18 +31,18 @@
             android:orientation="vertical">
 
             <Spinner
-                android:id="@+id/spinnerInvento_EliminarInvento"
+                android:id="@+id/spinnerPintura_EliminarPintura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <Button
-                android:id="@+id/Save_EliminarInvento"
+                android:id="@+id/Save_EliminarPintura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="ELIMINAR INVENTO"
+                android:text="ELIMINAR PINTURA"
                 android:textColor="#FFF"/>
 
         </LinearLayout>

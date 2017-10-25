@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/articulo_historialPintura_remove"
+        android:title="Editar Invento"
+        android:icon="@drawable/ic_historial_remove"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/articulo_historialPintura_edit"
+        android:title="Editar Invento"
+        android:icon="@drawable/ic_edit_white"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/articulo_historialPintura_add"
+        android:title="Editar Invento"
+        android:icon="@drawable/ic_historial_add"
+        app:showAsAction="always"/>
+</menu>

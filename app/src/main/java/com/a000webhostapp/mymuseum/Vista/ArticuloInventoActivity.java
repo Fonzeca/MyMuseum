@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
 
 public class ArticuloInventoActivity extends AppCompatActivity {
 

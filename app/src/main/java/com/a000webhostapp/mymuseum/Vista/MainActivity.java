@@ -129,12 +129,18 @@ public class MainActivity extends AppCompatActivity {
 				String[] partesData = data.getDataString().split("=");
 				if(partesData[0].equals(ControlDB.str_obj_Invento)){
 					((InicioFragment)incioFragment).busquedaInventos(partesData[1]);
+				}else if(partesData[0].equals(ControlDB.str_obj_Pintura)){
+					((InicioFragment)incioFragment).busquedaPinturas(partesData[1]);
 				}
 			}else if(resultCode == BuscarObjetoActivity.responseScannerQR){
 				startFragmentInicio();
 				String[] partesData = data.getDataString().split("=");
-				if(partesData[0].equals(ControlDB.str_obj_Invento)){
+				if(partesData.length != 2){
+					new DialogoAlerta(this,"Parece que el código escaneado no pertence al museo, por favor inténtelo de nuevo.", "Error");
+				}else if(partesData[0].equals(ControlDB.str_obj_Invento)){
 					((InicioFragment)incioFragment).busquedaInventosDirecta(partesData[1]);
+				}else if(partesData[0].equals(ControlDB.str_obj_Pintura)){
+					((InicioFragment)incioFragment).busquedaPinturaDirecta(partesData[1]);
 				}
 			}
 		}
