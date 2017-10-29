@@ -17,7 +17,6 @@ import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
-import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
 
@@ -48,7 +47,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
     public void onViewCreated(View view, Bundle savedInstanceState) {
 		swipe = (SwipeRefreshLayout)view.findViewById(R.id.swipeActualizar_InicioFragment);
 		swipe.setOnRefreshListener(this);
-		buscarInventos();
+		buscarObjetos();
 		actualizarLista();
     }
 	
@@ -56,7 +55,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 	public void onRefresh() {
 		ModuloEntidad.obtenerModulo().buscarObjetos(this);
 	}
-	private void buscarInventos(){
+	private void buscarObjetos(){
 		loading = new ProgressDialog(getContext()){
 			public void onBackPressed() {
 				if(isShowing()){
@@ -122,7 +121,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		busqueda = true;
 		ModuloEntidad.obtenerModulo().buscarPinturas(this);
 	}
-	public void busquedaInventosDirecta(String nombre){
+	public void busquedaObjetoDirecto(String nombre, String entidad){
 		loading = new ProgressDialog(getContext()){
 			public void onBackPressed() {
 				if(isShowing()){
@@ -135,26 +134,15 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		loading.setCancelable(false);
 		loading.setMessage("Buscando...");
 		loading.show();
-		nombreABuscar = nombre;
 		busquedaDirecta = true;
-		ModuloEntidad.obtenerModulo().buscarInventos(this);
-	}
-	public void busquedaPinturaDirecta(String nombre){
-		loading = new ProgressDialog(getContext()){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setCancelable(false);
-		loading.setMessage("Buscando...");
-		loading.show();
-		nombreABuscar = nombre;
-		busquedaDirecta = true;
-		ModuloEntidad.obtenerModulo().buscarPinturas(this);
+		switch (entidad){
+			case ControlDB.str_obj_Invento:
+				ModuloEntidad.obtenerModulo().buscarInventoDirecto(this,nombre);
+				break;
+			case ControlDB.str_obj_Pintura:
+				ModuloEntidad.obtenerModulo().buscarPinturaDirecto(this,nombre);
+				break;
+		}
 	}
 	private void busquedaPrivadaInventosCargados(Objeto[] objetosCargados){
 		ArrayList<Invento> match = new ArrayList<>();
@@ -172,7 +160,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 			for (int i = 0; i <= in.getNombre().length() - nombreABuscar.length(); i++){
 				if(comparador.compare(in.getNombre().substring(i,i+nombreABuscar.length()), nombreABuscar) == 0){
 					
-					//BORRAR ESTO--------------------------------------------------------------------------
+					/*//BORRAR ESTO--------------------------------------------------------------------------
 					if(busquedaDirecta){
 						Intent intent = new Intent(getContext(), ArticuloInventoActivity.class);
 						intent.putExtra("Invento", in);
@@ -180,17 +168,17 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 						busquedaDirecta = false;
 						return;
 					}
-					//Hasta aca----------------------------------------------------------------------------
+					*///Hasta aca----------------------------------------------------------------------------
 					match.add(in);
 					break;
 				}
 			}
 		}
-		//BORRAR ESTO--------------------------------------------------------------------------
+		/*//BORRAR ESTO--------------------------------------------------------------------------
 		if(busquedaDirecta){
 			new DialogoAlerta(getActivity(), "Ups ! El invento buscado no se encuentra en la base de datos, por favor inténtelo de nuevo.", "Error");
 		}
-		//Hasta aca----------------------------------------------------------------------------
+		*///Hasta aca----------------------------------------------------------------------------
 		if(match.size() == 0){
 			new DialogoAlerta(getActivity(), "No se encontro el objeto buscado", "Error").mostrar();
 		}else{
@@ -217,7 +205,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 			for (int i = 0; i <= in.getNombre().length() - nombreABuscar.length(); i++){
 				if(comparador.compare(in.getNombre().substring(i,i+nombreABuscar.length()), nombreABuscar) == 0){
 					
-					//BORRAR ESTO--------------------------------------------------------------------------
+					/*//BORRAR ESTO--------------------------------------------------------------------------
 					if(busquedaDirecta){
 						Intent intent = new Intent(getContext(), ArticuloPinturaActivity.class);
 						intent.putExtra("Pintura", in);
@@ -225,17 +213,17 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 						busquedaDirecta = false;
 						return;
 					}
-					//Hasta aca----------------------------------------------------------------------------
+					*///Hasta aca----------------------------------------------------------------------------
 					match.add(in);
 					break;
 				}
 			}
 		}
-		//BORRAR ESTO--------------------------------------------------------------------------
+		/*//BORRAR ESTO--------------------------------------------------------------------------
 		if(busquedaDirecta){
 			new DialogoAlerta(getActivity(), "Ups ! La pinura buscada no se encuentra en la base de datos, por favor inténtelo de nuevo.", "Error");
 		}
-		//Hasta aca----------------------------------------------------------------------------
+		*///Hasta aca----------------------------------------------------------------------------
 		if(match.size() == 0){
 			new DialogoAlerta(getActivity(), "No se encontro el objeto buscado", "Error").mostrar();
 		}else{
@@ -255,28 +243,23 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 						if(g.length != 0 && g[0] instanceof Objeto){
 							objetosCargados = (Objeto[])g;
 							Log.v("Cantidad", objetosCargados.length+"");
-							if(g[0] instanceof Invento){
-								if(busqueda){
+							
+							if(busqueda){
+								if(g[0] instanceof Invento){
 									busquedaPrivadaInventosCargados(objetosCargados);
-								}else if(busquedaDirecta){
-									if(g.length == 1){
+								}else if(g[0] instanceof Pintura){
+									busquedaPrivadaPinturasCargados(objetosCargados);
+								}
+							}else if(busquedaDirecta){
+								if(g.length == 1){
+									if(g[0] instanceof Invento){
 										Intent intent = new Intent(getContext(), ArticuloInventoActivity.class);
 										intent.putExtra("Invento", g[0]);
 										startActivity(intent);
-									}else{
-										busquedaPrivadaInventosCargados(objetosCargados);
-									}
-								}
-							}else if(g[0] instanceof Pintura){
-								if(busqueda){
-									busquedaPrivadaPinturasCargados(objetosCargados);
-								}else if(busquedaDirecta){
-									if(g.length == 1){
+									}else if(g[0] instanceof Pintura){
 										Intent intent = new Intent(getContext(), ArticuloPinturaActivity.class);
 										intent.putExtra("Pintura", g[0]);
 										startActivity(intent);
-									}else{
-										busquedaPrivadaPinturasCargados(objetosCargados);
 									}
 								}
 							}

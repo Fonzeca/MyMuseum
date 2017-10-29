@@ -43,6 +43,7 @@
         <activity android:name=".Vista.PintorABM.EditarPintorActivity"/>
         <activity android:name=".Vista.PintorABM.EliminarPintorActivity"/>
         <activity android:name=".Vista.TrasladoABM.NuevoTrasladoActivity"/>
+        <activity android:name=".Vista.TrasladoABM.EliminarTrasladoActivity"/>
         <activity android:name=".Vista.ElegirEditarPersonaActivity"/>
         <activity android:name=".Vista.ElegirEliminarPersonaActivity"/>
         <activity android:name=".Vista.ElegirNuevoObjetoActivity"/>

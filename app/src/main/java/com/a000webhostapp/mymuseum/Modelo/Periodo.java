@@ -1,5 +1,8 @@
 package com.a000webhostapp.mymuseum.Modelo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -11,10 +14,6 @@ public class Periodo implements Guardable, Serializable {
 
     private int añoInicio, añoFin;
     private int id;
-
-    public Periodo(){
-        
-    }
 
     public Periodo(String nombrePeriodo, int añoInicio, int añoFin, int id) {
         this.nombrePeriodo = nombrePeriodo;
@@ -45,6 +44,15 @@ public class Periodo implements Guardable, Serializable {
         
         return accion + "&" + entidad + "&" + idModifica + "&" + nombre + "&" + añoIn + "&" + añoFi;
     }
+    
+    public static Periodo obtenerPeriodoJSON(JSONObject obJSON) throws JSONException{
+		String nom = obJSON.getString("nombre");
+		int idConfig = obJSON.getInt("periodo_id");
+		int añoIncio = obJSON.getInt("año_inicio");
+		int añoFin = obJSON.getInt("año_fin");
+		
+		return new Periodo(nom,añoIncio,añoFin, idConfig);
+	}
     
     @Override
     public String toString() {

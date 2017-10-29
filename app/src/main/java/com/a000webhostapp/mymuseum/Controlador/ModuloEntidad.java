@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.Controlador;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.ISujeto;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -9,6 +10,8 @@ import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by Alexis on 19/9/2017.
@@ -16,6 +19,7 @@ import com.a000webhostapp.mymuseum.Modelo.Pintura;
  */
 
 public class ModuloEntidad {
+	private ArrayList<IObserver> observers;
     private static ModuloEntidad me;
 
     private ModuloEntidad(){
@@ -38,6 +42,10 @@ public class ModuloEntidad {
         //Mandamos a buscar los Inventos
 		new ControlDB(observer).buscar(ControlDB.str_obj_Invento);
     }
+	public void buscarInventoDirecto(IObserver observer, String nombre){
+		//Mandamos a buscar los Inventos
+		new ControlDB(observer).buscarDirecto(ControlDB.str_obj_Invento,nombre);
+	}
     public void editarInvento(Guardable g){
         new ControlDB(null).modificar(g);
     }
@@ -53,6 +61,9 @@ public class ModuloEntidad {
 	}
 	public void buscarPinturas(IObserver observer){
 		new ControlDB(observer).buscar(ControlDB.str_obj_Pintura);
+	}
+	public void buscarPinturaDirecto(IObserver observer, String nombre){
+		new ControlDB(observer).buscarDirecto(ControlDB.str_obj_Pintura,nombre);
 	}
 	public void eliminarPintura(int id){
 		String entidad = "entidad="+ControlDB.str_objeto;
@@ -118,4 +129,6 @@ public class ModuloEntidad {
 	public void buscarObjetos(IObserver observer){
 		new ControlDB(observer).buscar(ControlDB.str_objeto);
 	}
+	//---------------
+	
 }

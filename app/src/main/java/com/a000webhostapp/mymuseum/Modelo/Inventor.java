@@ -3,6 +3,9 @@ package com.a000webhostapp.mymuseum.Modelo;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Inventor extends Persona{
     private int id;
     
@@ -37,6 +40,14 @@ public class Inventor extends Persona{
         return accion + "&" + entidad + "&" + idModifica + "&" + nom + "&" + año + "&" + lugar;
     }
     
+    public static Inventor obtenerInventorJSON(JSONObject obJSON) throws JSONException{
+		String nom = obJSON.getString("nombre");
+		int idConfig = obJSON.getInt("persona_id");
+		int año = obJSON.getInt("año_nacimiento");
+		String lugar = obJSON.getString("lugar_nacimiento");
+		
+		return new Inventor(nom,lugar,año, idConfig);
+	}
     
     //GETTERS & SETTERS
 	public int getID() {

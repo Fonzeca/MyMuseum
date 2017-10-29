@@ -28,6 +28,9 @@ public class NuevoTrasladoActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generar_traslado);
 		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		
 		pintura = (Pintura) getIntent().getSerializableExtra("Pintura");
 		trasladoAnterior = (Traslado) getIntent().getSerializableExtra("TrasladoAnterior");
 		
@@ -54,6 +57,10 @@ public class NuevoTrasladoActivity extends AppCompatActivity {
 		
 		
 		
+	}
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return true;
 	}
 	
 }

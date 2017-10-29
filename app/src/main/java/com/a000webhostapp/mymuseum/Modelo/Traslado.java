@@ -1,5 +1,8 @@
 package com.a000webhostapp.mymuseum.Modelo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -21,6 +24,13 @@ public class Traslado implements Serializable {
 	}
 	public Traslado(Pintura pintura, String lugarOrigen, String lugarDestino, String fechaTraslado){
 		this(pintura,lugarOrigen, lugarDestino, fechaTraslado, -1);
+	}
+	
+	
+	public static Traslado obtenerTrasladoJSON(JSONObject obJSON) throws JSONException{
+		
+		
+		return null;
 	}
 	
 	
