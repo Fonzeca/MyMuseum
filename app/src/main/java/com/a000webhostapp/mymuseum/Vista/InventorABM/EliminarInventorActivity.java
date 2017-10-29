@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.InventorABM;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,43 +14,45 @@ import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EliminarInventoActivity extends AppCompatActivity implements IObserver {
-	private Button eliminar;
-	private Spinner inventoSpinner;
+public class EliminarInventorActivity extends AppCompatActivity implements IObserver {
+    private Button eliminar;
+    private Spinner inventorSpinner;
 	
-	private Invento inventoActual;
-	private Invento[] inventos;
+	private Inventor inventorActual;
+	private Inventor[] inventores;
 	
 	private ProgressDialog loading;
 	private boolean cargado;
-	
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eliminar_invento);
+        setContentView(R.layout.activity_eliminar_inventor);
 	
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		
-		eliminar = (Button) findViewById(R.id.Save_EliminarInvento);
+	
+		eliminar = (Button) findViewById(R.id.Save_EliminarInventor);
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				ModuloEntidad.obtenerModulo().eliminarInvento(inventoActual.getID());
+				ModuloEntidad.obtenerModulo().eliminarInventor(inventorActual.getID());
 				onBackPressed();
 			}
 		});
-		
-		inventoSpinner = (Spinner)findViewById(R.id.spinnerInvento_EliminarInvento);
-		inventoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	
+		inventorSpinner = (Spinner)findViewById(R.id.spinnerInventor_EliminarInventor);
+		inventorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-				String nombreInventoActual = (String)inventoSpinner.getSelectedItem();
-				for (int index = 0; index < inventos.length; index++){
-					if(inventos[index].getNombre().equals(nombreInventoActual)){
-						inventoActual = inventos[index];
+				String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
+				for (int index = 0; index < inventores.length; index++){
+					if(inventores[index].getNombre().equals(nombreInventoActual)){
+						inventorActual = inventores[index];
 						return;
 					}
 				}
@@ -61,7 +63,7 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		buscarInfoSpinners();
 		
     }
-    
+	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
@@ -81,36 +83,37 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		loading.setCancelable(false);
 		loading.show();
 		
-		ModuloEntidad.obtenerModulo().buscarInventos(this);
+		ModuloEntidad.obtenerModulo().buscarInventores(this);
 	}
-    private void actualizarSpinners(){
-		//MEJORAR!!!!!!!!!! <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <--- <---
+	private void actualizarSpinners(){
 		List<String> spinnerArray =  new ArrayList<String>();
-		if(inventos != null){
+		if(inventores != null){
 			//se llena el array con los inventosCargados
-			for (int i = 0; i < inventos.length; i++){
-				spinnerArray.add(inventos[i].getNombre());
+			for (int i = 0; i < inventores.length; i++){
+				spinnerArray.add(inventores[i].getNombre());
 			}
 		}
-	
+		
+		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		inventoSpinner.setAdapter(adapter);
-	
-		String nombreInventoActual = (String)inventoSpinner.getSelectedItem();
-		for (int index = 0; index < inventos.length; index++){
-			if(inventos[index].getNombre().equals(nombreInventoActual)){
-				inventoActual = inventos[index];
+		inventorSpinner.setAdapter(adapter);
+		
+		
+		String nombreInventoActual = (String)inventorSpinner.getSelectedItem();
+		for (int index = 0; index < inventores.length; index++){
+			if(inventores[index].getNombre().equals(nombreInventoActual)){
+				inventorActual = inventores[index];
 				return;
 			}
 		}
 	}
 	
-    public void update(Guardable[] g, String respuesta) {
-        if(loading.isShowing()){
+	public void update(Guardable[] g, String respuesta) {
+		if(loading.isShowing()){
 			if(g != null){
-				if(g[0] instanceof Invento){
-					inventos = (Invento[]) g;
+				if(g[0] instanceof Inventor){
+					inventores = (Inventor[]) g;
 					cargado = true;
 					actualizarSpinners();
 					loading.dismiss();
@@ -123,14 +126,13 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 						//Creamos un alertDialog en el Thread UI del activity
 						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
 						break;
-					case ControlDB.res_tablaInventoVacio:
+					case ControlDB.res_tablaInventorVacio:
 						loading.dismiss();
 						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaInventoVacio, "Error").mostrar();
+						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
 						break;
-			
 				}
 			}
 		}
-    }
+	}
 }

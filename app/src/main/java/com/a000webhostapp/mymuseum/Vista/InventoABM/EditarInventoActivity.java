@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,6 +20,9 @@ import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.InventorABM.NuevoInventorActivity;
+import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 
 import java.util.ArrayList;
 import java.util.List;

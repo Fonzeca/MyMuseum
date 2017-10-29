@@ -3,6 +3,9 @@ package com.a000webhostapp.mymuseum.Modelo;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Pintor extends Persona{
     private int id;
     
@@ -28,7 +31,7 @@ public class Pintor extends Persona{
     
     public String configModificar() {
         String accion = "accion=editar_registro";
-        String entidad = "entidad=" + ControlDB.str_per_Pintor;
+        String entidad = "entidad=" + ControlDB.str_persona;
         String idModifica = "registro_id=" + id;
         String nom = "nombre="+ nombre;
         String año = "anio_nacimiento="+añoNacimiento;
@@ -36,6 +39,16 @@ public class Pintor extends Persona{
     
         return accion + "&" + entidad + "&" + idModifica + "&" + nom + "&" + año + "&" + lugar;
     }
+    
+    public static Pintor obtenerPintorJSON(JSONObject obJSON)throws JSONException{
+		
+		String nom = obJSON.getString("nombre");
+		int idConfig = obJSON.getInt("persona_id");
+		int año = obJSON.getInt("año_nacimiento");
+		String lugar = obJSON.getString("lugar_nacimiento");
+		
+		return new Pintor(nom,lugar,año, idConfig);
+	}
     
     
     //GETTERS & SETTERS

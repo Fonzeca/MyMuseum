@@ -2,6 +2,9 @@ package com.a000webhostapp.mymuseum.Modelo;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -40,7 +43,7 @@ public class Invento extends Objeto{
 	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
-		String entidad = "entidad=" + ControlDB.str_obj_Invento;
+		String entidad = "entidad=" + ControlDB.str_objeto;
 		String idConfig = "registro_id="+id;
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;
@@ -53,6 +56,23 @@ public class Invento extends Objeto{
 				"&" + descriConfig + "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
 	}
 	
+	public static Invento obtenerInventoJSON(JSONObject obJSON) throws JSONException{
+		int id = obJSON.getInt("invento_id");
+		String nom = obJSON.getString("nombre");
+		String descripcion = obJSON.getString("descripcion");
+		
+		JSONObject inventorJSON = obJSON.getJSONObject("inventor");
+		Inventor inventor = Inventor.obtenerInventorJSON(inventorJSON);
+		
+		JSONObject periodoJSON = obJSON.getJSONObject("periodo");
+		Periodo periodo = Periodo.obtenerPeriodoJSON(periodoJSON);
+		
+		int año = obJSON.getInt("año");
+		boolean maquina = obJSON.getBoolean("es_maquina");
+		
+		return new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
+		
+	}
 	
 	//GETTER & SETTER
 

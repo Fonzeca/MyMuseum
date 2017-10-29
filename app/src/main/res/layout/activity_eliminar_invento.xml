@@ -6,7 +6,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a000webhostapp.mymuseum.Vista.EliminarInventoActivity">
+    tools:context="com.a000webhostapp.mymuseum.Vista.InventoABM.EliminarInventoActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:text="Eliminar Invento"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,14 +49,4 @@
 
     </ScrollView>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFF"
-        android:gravity="center_horizontal"
-        android:padding="16dp"
-        android:text="Eliminar Invento"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"/>
 </LinearLayout>

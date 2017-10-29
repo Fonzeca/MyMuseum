@@ -1,4 +1,4 @@
-package com.a000webhostapp.mymuseum.Vista;
+package com.a000webhostapp.mymuseum.Vista.PintorABM;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

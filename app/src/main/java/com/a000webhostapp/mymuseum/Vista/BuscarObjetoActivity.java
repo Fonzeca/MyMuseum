@@ -61,7 +61,12 @@ public class BuscarObjetoActivity extends AppCompatActivity {
 						}
 						break;
 					case ControlDB.str_obj_Pintura:
-						
+						if(!nombreObjetoEdit.getText().toString().isEmpty()){
+							Intent data = new Intent();
+							data.setData(Uri.parse(ControlDB.str_obj_Pintura + "=" + nombreObjetoEdit.getText()));
+							setResult(RESULT_OK,data);
+							finish();
+						}
 						break;
 				}
 				

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.a000webhostapp.mymuseum.Vista.EditarInventorActivity">
+    tools:context="com.a000webhostapp.mymuseum.Vista.InventorABM.EditarInventorActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                         android:id="@+id/nomyapeInventor_EditInventor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre y Apellido del pintor"
+                        android:hint="Nombre y Apellido del inventor"
                         android:inputType="textCapWords"/>
                 </android.support.design.widget.TextInputLayout>
 
@@ -102,7 +102,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Editar pintor"
+        android:text="Editar inventor"
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:textSize="24sp"

@@ -29,12 +29,13 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/strAño"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Año de invención"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/año_invencion_list_item"
                     android:layout_width="wrap_content"
@@ -42,12 +43,12 @@
                     android:text="2017"/>
 
                 <TextView
+                    android:id="@+id/strPersona"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Inventor"
-                    android:textStyle="bold"
                     android:layout_marginTop="8dp"
-                    />
+                    android:text="Inventor"
+                    android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/nombre_inventor_list_item"
                     android:layout_width="wrap_content"
