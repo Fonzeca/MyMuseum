@@ -1,76 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:weightSum="1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="8dp">
 
     <LinearLayout
 
         android:id="@+id/layoutEncabezado_HistoriaPintura"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="15dp"
+        >
 
         <TextView
-            android:id="@+id/textPinturaEncabezado_HistorialPintura"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Pintura"
-            android:textAlignment="textStart"
-            android:textColor="#FFF"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/textLugarAnteriorEncabezado_HistorialPintura"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Lugar anterior"
-            android:textAlignment="textStart"
-            android:textColor="#FFF"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/textLugarActualEncabezado_HistorialPintura"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Lugar actual"
-            android:textAlignment="textStart"
-            android:textColor="#FFF"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/textFechaEncabezado_HistorialPintura"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Fecha de movimiento"
-            android:textAlignment="textStart"
-            android:textColor="#FFF"
-            android:textSize="10sp" />
+            android:text="Pintura"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="Traslado"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            />
 
     </LinearLayout>
 
-    <HorizontalScrollView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary"
+        />
 
-        <ListView
-            android:id="@+id/listaDePinturas_historiaPintura"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            />
-    </HorizontalScrollView>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listaDePinturas_historiaPintura"
+        />
 
 </LinearLayout>

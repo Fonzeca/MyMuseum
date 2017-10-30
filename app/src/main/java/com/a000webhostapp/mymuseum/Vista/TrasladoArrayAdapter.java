@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,8 @@ public class TrasladoArrayAdapter extends ArrayAdapter<Traslado> {
         TextView fecha = (TextView) rowView.findViewById(R.id.textFecha_HistorialPintura);
 		
 		nombrePintura.setText(traslados[position].getPintura().getNombre());
-		lugarAnterior.setText(traslados[position].getLugarOrigen());
-		lugarActual.setText(traslados[position].getLugarDestino());
+		lugarAnterior.setText(Html.fromHtml("<b>Origen:</b> " + traslados[position].getLugarOrigen()));
+		lugarActual.setText(Html.fromHtml("<b>Destino:</b> " + traslados[position].getLugarDestino()));
 		fecha.setText(traslados[position].getFechaTraslado());
 
         return rowView;
