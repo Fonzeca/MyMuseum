@@ -32,24 +32,24 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 	private String nombreABuscar;
 	
 	public InicioFragment() {
-    }
+	}
 	
-    public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 			
-    }
+	}
 
 	
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_inicio, container, false);
-    }
+	}
 
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		swipe = (SwipeRefreshLayout)view.findViewById(R.id.swipeActualizar_InicioFragment);
 		swipe.setOnRefreshListener(this);
 		buscarObjetos();
 		actualizarLista();
-    }
+	}
 	
 	@Override
 	public void onRefresh() {
@@ -70,7 +70,7 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		loading.show();
 		ModuloEntidad.obtenerModulo().buscarObjetos(this);
 	}
-    private void actualizarLista(){
+	private void actualizarLista(){
 		if(objetosCargados != null){
 			Objeto[] objetosOrdenados = new Objeto[objetosCargados.length];
 			int i2 = objetosCargados.length-1;
@@ -85,9 +85,9 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 			inventosRecientesList.setAdapter(articuloInventoArrayAdapter);
 			
 		}
-    }
+	}
 	
-    public void busquedaInventos(String nombre){
+	public void busquedaInventos(String nombre){
 		loading = new ProgressDialog(getContext()){
 			public void onBackPressed() {
 				if(isShowing()){
@@ -100,9 +100,8 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		loading.setCancelable(false);
 		loading.setMessage("Buscando...");
 		loading.show();
-		nombreABuscar = nombre;
 		busqueda = true;
-		ModuloEntidad.obtenerModulo().buscarInventos(this);
+		ModuloEntidad.obtenerModulo().buscarInventosRefinada(this,nombre);
 	}
 	public void busquedaPinturas(String nombre){
 		loading = new ProgressDialog(getContext()){
@@ -117,9 +116,8 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 		loading.setCancelable(false);
 		loading.setMessage("Buscando...");
 		loading.show();
-		nombreABuscar = nombre;
 		busqueda = true;
-		ModuloEntidad.obtenerModulo().buscarPinturas(this);
+		ModuloEntidad.obtenerModulo().buscarPinturasRefinada(this,nombre);
 	}
 	public void busquedaObjetoDirecto(String nombre, String entidad){
 		loading = new ProgressDialog(getContext()){
@@ -144,101 +142,11 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 				break;
 		}
 	}
-	private void busquedaPrivadaInventosCargados(Objeto[] objetosCargados){
-		ArrayList<Invento> match = new ArrayList<>();
-		Collator comparador = Collator.getInstance();
-		comparador.setStrength(Collator.PRIMARY);
-		
-		ArrayList<Invento> inventosCargados = new ArrayList<>();
-		for(Objeto ob : objetosCargados){
-			if(ob instanceof Invento){
-				inventosCargados.add((Invento)ob);
-			}
-		}
-		
-		for (Invento in: inventosCargados) {
-			for (int i = 0; i <= in.getNombre().length() - nombreABuscar.length(); i++){
-				if(comparador.compare(in.getNombre().substring(i,i+nombreABuscar.length()), nombreABuscar) == 0){
-					
-					/*//BORRAR ESTO--------------------------------------------------------------------------
-					if(busquedaDirecta){
-						Intent intent = new Intent(getContext(), ArticuloInventoActivity.class);
-						intent.putExtra("Invento", in);
-						startActivity(intent);
-						busquedaDirecta = false;
-						return;
-					}
-					*///Hasta aca----------------------------------------------------------------------------
-					match.add(in);
-					break;
-				}
-			}
-		}
-		/*//BORRAR ESTO--------------------------------------------------------------------------
-		if(busquedaDirecta){
-			new DialogoAlerta(getActivity(), "Ups ! El invento buscado no se encuentra en la base de datos, por favor inténtelo de nuevo.", "Error");
-		}
-		*///Hasta aca----------------------------------------------------------------------------
-		if(match.size() == 0){
-			new DialogoAlerta(getActivity(), "No se encontro el objeto buscado", "Error").mostrar();
-		}else{
-			this.objetosCargados = new Objeto[match.size()];
-			for(int i = 0; i < match.size();i++){
-				this.objetosCargados[i] = match.get(i);
-			}
-		}
-		busqueda = false;
-	}
-	private void busquedaPrivadaPinturasCargados(Objeto[] objetosCargados){
-		ArrayList<Pintura> match = new ArrayList<>();
-		Collator comparador = Collator.getInstance();
-		comparador.setStrength(Collator.PRIMARY);
-		
-		ArrayList<Pintura> pinturasCargadas = new ArrayList<>();
-		for(Objeto ob : objetosCargados){
-			if(ob instanceof Pintura){
-				pinturasCargadas.add((Pintura)ob);
-			}
-		}
-		
-		for (Pintura in: pinturasCargadas) {
-			for (int i = 0; i <= in.getNombre().length() - nombreABuscar.length(); i++){
-				if(comparador.compare(in.getNombre().substring(i,i+nombreABuscar.length()), nombreABuscar) == 0){
-					
-					/*//BORRAR ESTO--------------------------------------------------------------------------
-					if(busquedaDirecta){
-						Intent intent = new Intent(getContext(), ArticuloPinturaActivity.class);
-						intent.putExtra("Pintura", in);
-						startActivity(intent);
-						busquedaDirecta = false;
-						return;
-					}
-					*///Hasta aca----------------------------------------------------------------------------
-					match.add(in);
-					break;
-				}
-			}
-		}
-		/*//BORRAR ESTO--------------------------------------------------------------------------
-		if(busquedaDirecta){
-			new DialogoAlerta(getActivity(), "Ups ! La pinura buscada no se encuentra en la base de datos, por favor inténtelo de nuevo.", "Error");
-		}
-		*///Hasta aca----------------------------------------------------------------------------
-		if(match.size() == 0){
-			new DialogoAlerta(getActivity(), "No se encontro el objeto buscado", "Error").mostrar();
-		}else{
-			this.objetosCargados = new Objeto[match.size()];
-			for(int i = 0; i < match.size();i++){
-				this.objetosCargados[i] = match.get(i);
-			}
-		}
-		busqueda = false;
-	}
-    
-    public void update(Guardable[]g, String respuesta) {
+	
+	/*public void update(Guardable[]g, String respuesta) {
 		if(loading.isShowing() || swipe.isRefreshing()){
 			switch(respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
 						if(g.length != 0 && g[0] instanceof Objeto){
 							objetosCargados = (Objeto[])g;
@@ -291,6 +199,59 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 			}
 			actualizarLista();
 		}
-    }
+	}*/
+	public void update(Guardable[] g,int request, String respuesta){
+		if(loading.isShowing() || swipe.isRefreshing()){
+			switch(respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+						if(g.length != 0 && g[0] instanceof Objeto){
+							Intent intent;
+							switch (request){
+								case ModuloEntidad.RQS_BUSQUEDA_OBJETO_TOTAL:
+								case ModuloEntidad.RQS_BUSQUEDA_INVENTOS_REFINADO:
+								case ModuloEntidad.RQS_BUSQUEDA_PINTURAS_REFINADO:
+									objetosCargados = (Objeto[])g;
+									break;
+								case ModuloEntidad.RQS_BUSQUEDA_INVENTO_DIRECTA:
+									intent = new Intent(getContext(), ArticuloInventoActivity.class);
+									intent.putExtra("Invento", g[0]);
+									startActivity(intent);
+									break;
+								case ModuloEntidad.RQS_BUSQUEDA_PINTURA_DIRECTA:
+									intent = new Intent(getContext(), ArticuloPinturaActivity.class);
+									intent.putExtra("Pintura", g[0]);
+									startActivity(intent);
+									break;
+							}
+							loading.dismiss();
+							swipe.setRefreshing(false);
+						}
+					}
+					break;
+				case ControlDB.res_falloConexion:
+					loading.dismiss();
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							swipe.setRefreshing(false);
+						}
+					});
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(getActivity(), ControlDB.res_falloConexion, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaInventoVacio:
+					loading.dismiss();
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							swipe.setRefreshing(false);
+						}
+					});
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(getActivity(), ControlDB.res_tablaInventoVacio, "Error").mostrar();
+					break;
+			}
+			actualizarLista();
+		}
+	}
 	
 }

@@ -13,13 +13,9 @@ import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EliminarPintorActivity extends AppCompatActivity implements IObserver {
     private Button eliminar;
@@ -40,7 +36,7 @@ public class EliminarPintorActivity extends AppCompatActivity implements IObserv
 		eliminar = (Button) findViewById(R.id.Save_EliminarPintor);
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				ModuloEntidad.obtenerModulo().eliminarPintor(pintorActual.getID());
+				ModuloEntidad.obtenerModulo().eliminarPintor(pintorActual.getID(),EliminarPintorActivity.this);
 				onBackPressed();
 			}
 		});
@@ -86,16 +82,20 @@ public class EliminarPintorActivity extends AppCompatActivity implements IObserv
 		}
 	}
 	
-	public void update(Guardable[] g, String respuesta) {
+	public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
-						if(g[0] instanceof Pintor){
-							pintores = (Pintor[]) g;
-							actualizarSpinners();
-							loading.dismiss();
+						switch (request) {
+							case ModuloEntidad.RQS_BUSQUEDA_PINTORES_TOTAL:
+								if(g[0] instanceof Pintor){
+									pintores = (Pintor[]) g;
+								}
+								break;
 						}
+						actualizarSpinners();
+						loading.dismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:

@@ -138,7 +138,7 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 			}
 			
 			ModuloEntidad.obtenerModulo().crearPintura(nombreGuar,descriGuar,periodoActual, pintorActual,
-					añoGuar);
+					añoGuar,this);
 			onBackPressed();
 		}
 	}
@@ -178,17 +178,25 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		startActivity(intent);
 	}
 	
-	public void update(Guardable[] g, String respuesta) {
+	public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
-						if(g[0] instanceof Pintor){
-							pintores = (Pintor[]) g;
-							actualizarSpinnerPintores();
-						}else if(g[0] instanceof Periodo){
-							periodos = (Periodo[]) g;
-							actualizarSpinnerPeriodo();
+						switch (request) {
+							case ModuloEntidad.RQS_BUSQUEDA_PINTORES_TOTAL:
+								if(g[0] instanceof Pintor){
+									pintores = (Pintor[]) g;
+									actualizarSpinnerPintores();
+								}
+								break;
+							case ModuloEntidad.RQS_BUSQUEDA_PERIODOS_TOTAL:
+								if(g[0] instanceof Periodo){
+									periodos = (Periodo[]) g;
+									actualizarSpinnerPeriodo();
+								}
+								break;
+								
 						}
 						if(pintores != null && periodos != null){
 							loading.dismiss();

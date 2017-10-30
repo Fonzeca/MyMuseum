@@ -8,9 +8,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
 
-public class NuevoPeriodoActivity extends AppCompatActivity {
+public class NuevoPeriodoActivity extends AppCompatActivity implements IObserver {
 
     private EditText nombrePeriodo,añoIncioPeriodo, añoFinPeriodo;
     private CheckBox checkAñoIncio, checkAñoFin;
@@ -60,7 +62,7 @@ public class NuevoPeriodoActivity extends AppCompatActivity {
             }else{
                 añoFin = Integer.parseInt(añoFinTexto);
             }
-            me.crearPeriodo(nombre,añoIncio, añoFin);
+            me.crearPeriodo(nombre,añoIncio, añoFin,this);
             onBackPressed();
         }
     }
@@ -69,5 +71,10 @@ public class NuevoPeriodoActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+    
+    @Override
+    public void update(Guardable[] g, int request, String respuesta) {
+    
     }
 }

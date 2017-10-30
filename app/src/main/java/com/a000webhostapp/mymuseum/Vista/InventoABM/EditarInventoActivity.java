@@ -102,7 +102,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 				invento.setMaquina(theMachine.isChecked());
 	
 	
-				ModuloEntidad.obtenerModulo().editarInvento(invento);
+				ModuloEntidad.obtenerModulo().editarInvento(invento,EditarInventoActivity.this);
 				onBackPressed();
             }
         });
@@ -190,42 +190,48 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		return true;
 	}
     
-    public void update(Guardable[] g, String respuesta) {
+    public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
-			if(g != null){
-				if(g[0] instanceof Inventor){
-					inventoresCargados = (Inventor[]) g;
-					actualizarSpinnerInventores();
-					
-				}else if(g[0] instanceof Periodo){
-					periodosCargados = (Periodo[]) g;
-					actualizarSpinnerPeriodo();
-				}
-				
-				//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
-				if(periodosCargados != null && inventoresCargados != null){
-					cargado = true;
+			switch (respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+						switch (request){
+							case ModuloEntidad.RQS_BUSQUEDA_PERIODOS_TOTAL:
+								if(g[0] instanceof Periodo){
+									periodosCargados = (Periodo[]) g;
+									actualizarSpinnerPeriodo();
+								}
+								break;
+							case ModuloEntidad.RQS_BUSQUEDA_INVENTORES_TOTAL:
+								if(g[0] instanceof Inventor){
+									inventoresCargados = (Inventor[]) g;
+									actualizarSpinnerInventores();
+								}
+								break;
+						}
+						
+						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
+						if(periodosCargados != null && inventoresCargados != null){
+							loading.dismiss();
+						}
+					}
+					break;
+				case ControlDB.res_falloConexion:
 					loading.dismiss();
-				}
-			}if(respuesta != null && !respuesta.equals("")){
-				switch (respuesta){
-					case ControlDB.res_falloConexion:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
-						break;
-					case ControlDB.res_tablaInventorVacio:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
-						break;
-					case ControlDB.res_tablaPeriodoVacio:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
-						break;
-					
-				}
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaInventorVacio:
+					loading.dismiss();
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaPeriodoVacio:
+					loading.dismiss();
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+					break;
+				
 			}
 		}
     }

@@ -1,5 +1,6 @@
 package com.a000webhostapp.mymuseum.Vista.InventorABM;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +9,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.ArticuloInventoActivity;
+import com.a000webhostapp.mymuseum.Vista.ArticuloPinturaActivity;
+import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 
-public class NuevoInventorActivity extends AppCompatActivity {
+public class NuevoInventorActivity extends AppCompatActivity implements IObserver{
     private EditText nomYApe, año,lugarNacimiento;
     private CheckBox AC;
     private Button btnGuardar;
@@ -47,7 +55,7 @@ public class NuevoInventorActivity extends AppCompatActivity {
             }else{
                 añoInventor = Integer.parseInt(año.getText().toString());
             }
-            me.crearInventor(nombreyapellido,lugar,añoInventor);
+            me.crearInventor(nombreyapellido,lugar,añoInventor,this);
             onBackPressed();
         }
     }
@@ -56,4 +64,7 @@ public class NuevoInventorActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+	
+	public void update(Guardable[] g, int request, String respuesta) {
+	}
 }

@@ -41,7 +41,7 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 		eliminar = (Button) findViewById(R.id.Save_EliminarPintura);
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				ModuloEntidad.obtenerModulo().eliminarPintura(pinturaActual.getID());
+				ModuloEntidad.obtenerModulo().eliminarPintura(pinturaActual.getID(),EliminarPinturaActivity.this);
 				onBackPressed();
 			}
 		});
@@ -89,16 +89,20 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 		}
 	}
 	
-    public void update(Guardable[] g, String respuesta) {
+    public void update(Guardable[] g,int request, String respuesta) {
         if(loading.isShowing()){
 			switch (respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
-						if(g[0] instanceof Pintura){
-							pinturas = (Pintura[]) g;
-							actualizarSpinners();
-							loading.dismiss();
+						switch (request) {
+							case ModuloEntidad.RQS_BUSQUEDA_PINTURAS_TOTAL:
+								if(g[0] instanceof Pintura){
+									pinturas = (Pintura[]) g;
+								}
+								break;
 						}
+						actualizarSpinners();
+						loading.dismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:
