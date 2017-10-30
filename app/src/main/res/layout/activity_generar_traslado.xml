@@ -3,31 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp"
-        android:text="TextView" />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/textDestino_GenerarTraslado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textFechadetraslado_GenerarTraslado"
-            android:layout_alignStart="@+id/textFechadetraslado_GenerarTraslado"
-            android:layout_centerVertical="true"
-            android:ems="10"
-            android:hint="Destino"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textStyle="italic"/>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp">
 
         <TextView
             android:id="@+id/textTitulo_Generar_Traslado"
@@ -41,32 +21,56 @@
             android:textSize="30sp"
             android:textStyle="bold|italic"/>
 
-        <EditText
-            android:id="@+id/textFechadetraslado_GenerarTraslado"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinnerPintura_Generar_Traslado"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textDestino_GenerarTraslado"
-            android:layout_alignEnd="@+id/textTitulo_Generar_Traslado"
-            android:layout_alignStart="@+id/textTitulo_Generar_Traslado"
-            android:layout_marginBottom="30dp"
-            android:ems="10"
-            android:hint="Fecha de traslado"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textStyle="italic"/>
+            android:layout_below="@id/textTitulo_Generar_Traslado"
+            android:layout_marginTop="32dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textOrigen_Generar_Traslado"
+            android:layout_below="@id/spinnerPintura_Generar_Traslado">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lugar origen"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textDestino_GenerarTraslado"
+            android:layout_below="@id/textOrigen_Generar_Traslado">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lugar destino"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textFecha_HistorialPintura"
+            android:hint="Tocar para elegir fecha"
+            android:layout_below="@id/textDestino_GenerarTraslado"
+            android:layout_marginTop="8dp"/>
 
         <Button
-            android:id="@+id/boton_Generar_GenerarTraslado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textDestino_GenerarTraslado"
-            android:layout_alignStart="@+id/textDestino_GenerarTraslado"
-            android:layout_below="@+id/textDestino_GenerarTraslado"
-            android:layout_marginTop="52dp"
-            android:background="@color/colorPrimary"
-            android:elevation="24dp"
-            android:text="Generar"
-            android:textColor="@color/colorActivityBackground"/>
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="GUARDAR"
+            android:textColor="#FFF"
+            android:layout_below="@id/textFecha_HistorialPintura"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 </LinearLayout>
