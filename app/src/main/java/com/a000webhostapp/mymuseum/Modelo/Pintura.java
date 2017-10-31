@@ -85,8 +85,17 @@ public class Pintura extends Objeto{
 	public int getID() {
 		return id;
 	}
+	public int cantidadTraslados(){
+    	return traslados.size();
+	}
+	public Traslado getTraslado(int i){
+		return traslados.get(i);
+	}
 	public void agregarTraslado(Traslado t){
 		traslados.add(t);
+	}
+	public void borrarTodoTraslado(){
+		traslados.removeAll(traslados);
 	}
 	public void borrarTraslado(int id){
 		for(Traslado t : traslados){

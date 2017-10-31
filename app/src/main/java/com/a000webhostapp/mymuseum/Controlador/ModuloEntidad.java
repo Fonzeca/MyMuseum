@@ -1,5 +1,7 @@
 package com.a000webhostapp.mymuseum.Controlador;
 
+import android.util.Log;
+
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.ISujeto;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
@@ -10,6 +12,7 @@ import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
+import com.a000webhostapp.mymuseum.Modelo.Traslado;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -35,12 +38,15 @@ public class ModuloEntidad implements ISujeto {
 	public static final int RQS_BUSQUEDA_INVENTO_DIRECTA = 7;
 	public static final int RQS_BUSQUEDA_PINTURA_DIRECTA = 8;
 	public static final int RQS_BUSQUEDA_OBJETO_TOTAL = 9;
+	public static final int RQS_BUSQUEDA_TRASLADOS_TOTAL = 10;
+	public static final int RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA = 11;
 	
 	public static final int RQS_ALTA_INVENTOR = 100;
 	public static final int RQS_ALTA_PINTOR = 101;
 	public static final int RQS_ALTA_PERIODO = 102;
 	public static final int RQS_ALTA_INVENTO = 103;
 	public static final int RQS_ALTA_PINTURA = 104;
+	public static final int RQS_ALTA_TRASLADO = 105;
 	
 	public static final int RQS_MODIFICACION_INVENTOR = 200;
 	public static final int RQS_MODIFICACION_PINTOR = 201;
@@ -218,12 +224,23 @@ public class ModuloEntidad implements ISujeto {
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
 	//---------------
+	public void crearTraslado(Pintura pintura, String lugarOrigen, String lugarDestino, String fechaTraslado, IObserver observer){
+		Traslado nuevoTraslado = new Traslado(pintura,lugarOrigen,lugarDestino,fechaTraslado);
+		Request request = new Request(RQS_ALTA_TRASLADO);
+		registrarObserver(observer,request);
+		new ControlDB(request).insertar(nuevoTraslado);
+	}
+	public void buscarTraslados(IObserver observer, Pintura p){
+		Request request = new Request(RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA);
+		registrarObserver(observer,request);
+		new ControlDB(request).buscarTrasladosIDPintura(p);
+	}
+	//---------------
 	public void buscarObjetos(IObserver observer){
 		Request request = new Request(RQS_BUSQUEDA_OBJETO_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_objeto);
 	}
-	
 	//---------------
 	private Objeto[] busquedaPrivadaObjetos(Guardable[] g, Request request){
 		ArrayList<Objeto> match = new ArrayList<>();
@@ -292,6 +309,7 @@ public class ModuloEntidad implements ISujeto {
 				case RQS_BUSQUEDA_PINTORES_TOTAL:
 				case RQS_BUSQUEDA_INVENTOS_TOTAL:
 				case RQS_BUSQUEDA_PINTURAS_TOTAL:
+				case RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
 					notificarObserver(request,g,respuesta);
 					break;
 				case RQS_BUSQUEDA_INVENTOS_REFINADO:
@@ -304,6 +322,8 @@ public class ModuloEntidad implements ISujeto {
 					notificarObserver(request,g,respuesta);
 					break;
 			}
+		}else if(respuesta.equals(ControlDB.res_tablaTrasladoUnicoVacio)){
+			notificarObserver(request,g,respuesta);
 		}
 	}
 	

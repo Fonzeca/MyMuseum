@@ -1,6 +1,7 @@
 package com.a000webhostapp.mymuseum.DAO;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.Request;
@@ -13,6 +14,7 @@ import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.ISujeto;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
+import com.a000webhostapp.mymuseum.Modelo.Traslado;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +51,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String res_tablaInventorVacio = "No hay Inventores en la base de datos";
 	public static final String res_tablaPintoresVacio = "No hay Pintores en la base de datos";
 	public static final String res_tablaPinturasVacio = "No hay Pinturas en la base de datos";
+	public static final String res_tablaTrasladoUnicoVacio = "No hay Traslados asociado a la Pintura en la base de datos";
 
 
 	
@@ -72,6 +75,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 				return buscarPrivado((String)objects[1]);
 			case 4:
 				return buscarPrivadoDirecto((String)objects[1], (String)objects[2]);
+			case 5:
+				return buscarTrasladoPrivadoID((Pintura) objects[1]);
 		}
 
 		return null;
@@ -102,33 +107,37 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public void buscar(String entidad){
 		execute(3, entidad);
 	}
+	
 	public void buscarDirecto(String entidad, String nombre){
 		execute(4, entidad, nombre);
 	}
 	
+	public void buscarTrasladosIDPintura(Pintura p){
+		execute(5,p);
+	}
 	//----------------
 	private boolean borrarPrivado(String parametro){
 		String respuesta = conectar(parametro);
-		System.out.println(respuesta);
+		Log.v("Response DB", respuesta);
 		return true;
 	}
 	
 	private boolean insertarPrivado(Guardable g){
 		String respuesta = conectar(g.configGuardar());
-		System.out.println(respuesta);
+		Log.v("Response DB", respuesta);
 		return true;
 	}
 	
 	private boolean modificarPrivado(Guardable g){
 		String respuesta = conectar(g.configModificar());
-		System.out.println(respuesta);
+		Log.v("Response DB", respuesta);
 		return true;
 	}
 	
 	private Guardable[] buscarPrivado(String entidad){
 		String respuesta = conectar("accion=obtener_datos&entidad="+entidad);
 		String jsonRespuesta = respuesta.split("<!Doc")[0];
-		System.out.println(jsonRespuesta);
+		Log.v("Response DB", jsonRespuesta);
 		
 		Guardable[] respuestaFinal = null;
 		
@@ -150,7 +159,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	private Guardable[] buscarPrivadoDirecto(String entidad, String nombre){
 		String respuesta = conectar("accion=obtener_objeto&nombre=" + nombre + "&entidad="+entidad);
 		String jsonRespuesta = respuesta.split("<!Doc")[0];
-		System.out.println(jsonRespuesta);
+		Log.v("Response DB", jsonRespuesta);
 		
 		Guardable[] respuestaFinal = null;
 		
@@ -161,6 +170,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		}
 		
 		return respuestaFinal;
+	}
+	private Guardable[] buscarTrasladoPrivadoID(Pintura p){
+		String respuesta = conectar("accion=obtener_historial&pintura_id=" + p.getID());
+		Log.v("Response DB", respuesta);
+		return buscarTraslados(respuesta,p);
 	}
 	//----------------
 	
@@ -294,7 +308,32 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		}
 		return objetos;
 	}
-	
+	private Guardable[] buscarTraslados(String jsonRespuesta, Pintura p){
+		Traslado[] traslados = null;
+		
+		try {
+			JSONObject obj = new JSONObject(jsonRespuesta);
+			JSONArray json_array = obj.getJSONArray("datos");
+			traslados = new Traslado[json_array.length()];
+			
+			if(traslados.length == 0){
+				notificarModulo(null, res_tablaTrasladoUnicoVacio);
+				cancel(true);
+				return null;
+			}
+			p.borrarTodoTraslado();
+			for(int i = 0; i < json_array.length(); i++){
+				JSONObject trasladoJSON = json_array.getJSONObject(i);
+				
+				traslados[i] = Traslado.obtenerTrasladoJSON(trasladoJSON, p);
+			}
+			Log.v("cantidad traslados", " " + p.cantidadTraslados());
+		}catch (JSONException e){
+			e.printStackTrace();
+		}
+		return traslados;
+	}
+	//----------------
 	
 	private String conectar(String parametros){
 		try {
