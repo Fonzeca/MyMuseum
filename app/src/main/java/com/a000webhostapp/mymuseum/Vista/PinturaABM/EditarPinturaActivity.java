@@ -94,7 +94,7 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 				pintura.setPintor((Pintor) nombrePintoresSpinner.getSelectedItem());
 	
 	
-				ModuloEntidad.obtenerModulo().editarPintura(pintura);
+				ModuloEntidad.obtenerModulo().editarPintura(pintura,EditarPinturaActivity.this);
 				onBackPressed();
             }
         });
@@ -176,20 +176,26 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 		return true;
 	}
     
-    public void update(Guardable[] g, String respuesta) {
+    public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
 			switch(respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
-						if(g[0] instanceof Pintor){
-							pintoresCargados = (Pintor[]) g;
-							actualizarSpinnerInventores();
-							
-						}else if(g[0] instanceof Periodo){
-							periodosCargados = (Periodo[]) g;
-							actualizarSpinnerPeriodo();
+						switch (request) {
+							case ModuloEntidad.RQS_BUSQUEDA_PINTORES_TOTAL:
+								if(g[0] instanceof Pintor){
+									pintoresCargados = (Pintor[]) g;
+									actualizarSpinnerInventores();
+									
+								}
+								break;
+							case ModuloEntidad.RQS_BUSQUEDA_PERIODOS_TOTAL:
+								if(g[0] instanceof Periodo){
+									periodosCargados = (Periodo[]) g;
+									actualizarSpinnerPeriodo();
+								}
+								break;
 						}
-						
 						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
 						if(periodosCargados != null && pintoresCargados != null){
 							loading.dismiss();

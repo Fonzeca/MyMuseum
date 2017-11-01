@@ -4,5 +4,6 @@
     <item
         android:id="@+id/busqueda_escanearQR"
         android:title="Escanear QR"
+        android:icon="@drawable/ic_qr_code"
         app:showAsAction="always"/>
 </menu>

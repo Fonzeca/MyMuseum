@@ -40,7 +40,7 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		eliminar = (Button) findViewById(R.id.Save_EliminarInvento);
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				ModuloEntidad.obtenerModulo().eliminarInvento(inventoActual.getID());
+				ModuloEntidad.obtenerModulo().eliminarInvento(inventoActual.getID(),EliminarInventoActivity.this);
 				onBackPressed();
 			}
 		});
@@ -107,30 +107,33 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		}
 	}
 	
-    public void update(Guardable[] g, String respuesta) {
+    public void update(Guardable[] g,int request, String respuesta) {
         if(loading.isShowing()){
-			if(g != null){
-				if(g[0] instanceof Invento){
-					inventos = (Invento[]) g;
-					cargado = true;
-					actualizarSpinners();
+			switch (respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+						switch (request){
+							case ModuloEntidad.RQS_BUSQUEDA_INVENTOS_TOTAL:
+								if(g[0] instanceof Invento){
+									inventos = (Invento[]) g;
+								}
+								break;
+						}
+						actualizarSpinners();
+						loading.dismiss();
+					}
+					
+					break;
+				case ControlDB.res_falloConexion:
 					loading.dismiss();
-				}
-			}
-			if(respuesta != null && !respuesta.equals("")){
-				switch (respuesta){
-					case ControlDB.res_falloConexion:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
-						break;
-					case ControlDB.res_tablaInventoVacio:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaInventoVacio, "Error").mostrar();
-						break;
-			
-				}
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaInventoVacio:
+					loading.dismiss();
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_tablaInventoVacio, "Error").mostrar();
+					break;
 			}
 		}
     }

@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
@@ -86,7 +87,7 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 					inventorActual.setNombre(nombreyapellido);
 					inventorActual.setAñoNacimiento(añoInventor);
 					inventorActual.setLugarNacimiento(lugarConfig);
-					ModuloEntidad.obtenerModulo().editarInventor(inventorActual);
+					ModuloEntidad.obtenerModulo().editarInventor(inventorActual,EditarInventorActivity.this);
 					onBackPressed();
 				}
             }
@@ -149,28 +150,32 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		return true;
 	}
 	
-	public void update(Guardable[] g, String respuesta) {
+	public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
-			if(g != null){
-				if(g[0] instanceof Inventor){
-					inventores = (Inventor[]) g;
-					actualizarSpinnerInventores();
+			switch (respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+						switch (request){
+							case ModuloEntidad.RQS_BUSQUEDA_INVENTORES_TOTAL:
+								if(g[0] instanceof Inventor){
+									inventores = (Inventor[]) g;
+								}
+								break;
+						}
+						actualizarSpinnerInventores();
+						loading.dismiss();
+					}
+					break;
+				case ControlDB.res_falloConexion:
 					loading.dismiss();
-					cargado = true;
-				}
-			}if(respuesta != null && !respuesta.equals("")){
-				switch (respuesta){
-					case ControlDB.res_falloConexion:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
-						break;
-					case ControlDB.res_tablaInventorVacio:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
-						break;
-				}
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaInventorVacio:
+					loading.dismiss();
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+					break;
 			}
 		}
 	}

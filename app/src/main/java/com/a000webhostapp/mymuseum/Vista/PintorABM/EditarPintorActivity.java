@@ -76,7 +76,7 @@ public class EditarPintorActivity extends AppCompatActivity implements IObserver
 					pintorActual.setNombre(nombreyapellido);
 					pintorActual.setAñoNacimiento(añoPintor);
 					pintorActual.setLugarNacimiento(lugarConfig);
-					ModuloEntidad.obtenerModulo().editarPintor(pintorActual);
+					ModuloEntidad.obtenerModulo().editarPintor(pintorActual,EditarPintorActivity.this);
 					onBackPressed();
 				}
             }
@@ -123,16 +123,20 @@ public class EditarPintorActivity extends AppCompatActivity implements IObserver
 		return true;
 	}
 	
-	public void update(Guardable[] g, String respuesta) {
+	public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){
-				case ControlDB.res_exitoBusqueda:
+				case ControlDB.res_exito:
 					if(g != null){
-						if(g[0] instanceof Pintor){
-							pintores = (Pintor[]) g;
-							actualizarSpinnerPintores();
-							loading.dismiss();
+						switch (request) {
+							case ModuloEntidad.RQS_BUSQUEDA_PINTORES_TOTAL:
+								if(g[0] instanceof Pintor){
+									pintores = (Pintor[]) g;
+								}
+								break;
 						}
+						actualizarSpinnerPintores();
+						loading.dismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:

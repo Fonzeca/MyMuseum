@@ -92,7 +92,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 					periodoActual.setNombrePeriodo(nombreConfig);
 					periodoActual.setAñoInicio(añoIncio);
 					periodoActual.setAñoFin(añoFin);
-					ModuloEntidad.obtenerModulo().editarPeriodo(periodoActual);
+					ModuloEntidad.obtenerModulo().editarPeriodo(periodoActual,EditarPeriodoActivity.this);
 					onBackPressed();
 				}
             }
@@ -167,30 +167,33 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	
-	public void update(Guardable[] g, String respuesta) {
+	public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
-			if(g != null){
-				if(g[0] instanceof Periodo){
-					periodos = (Periodo[]) g;
-					cargado = true;
-					actualizarSpinnerInventores();
+			switch (respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+						switch (request){
+							case ModuloEntidad.RQS_BUSQUEDA_PERIODOS_TOTAL:
+								if(g[0] instanceof Periodo){
+									periodos = (Periodo[]) g;
+								}
+								break;
+						}
+						actualizarSpinnerInventores();
+						loading.dismiss();
+					}
+					break;
+				case ControlDB.res_falloConexion:
 					loading.dismiss();
-				}
-			}
-			if(respuesta != null && !respuesta.equals("")){
-				switch (respuesta){
-					case ControlDB.res_falloConexion:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
-						break;
-					case ControlDB.res_tablaPeriodoVacio:
-						loading.dismiss();
-						//Creamos un alertDialog en el Thread UI del activity
-						new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
-						break;
-					
-				}
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					break;
+				case ControlDB.res_tablaPeriodoVacio:
+					loading.dismiss();
+					//Creamos un alertDialog en el Thread UI del activity
+					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+					break;
+				
 			}
 		}
 	}

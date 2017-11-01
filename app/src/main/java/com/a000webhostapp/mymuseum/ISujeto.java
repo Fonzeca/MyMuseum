@@ -1,5 +1,6 @@
 package com.a000webhostapp.mymuseum;
 
+import com.a000webhostapp.mymuseum.Controlador.Request;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 
 /**
@@ -7,8 +8,8 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
  */
 
 public interface ISujeto {
-    void registrarObvserver(IObserver ob);
-    boolean eliminarObvserver(IObserver ob);
-    void notificarObsverver(Guardable[] g, String respuesta);
+    void registrarObserver(IObserver ob, Request request);
+    boolean eliminarObserver(IObserver ob);
+    void notificarObserver(Request request, Guardable[] g, String respuesta);
 	
 }

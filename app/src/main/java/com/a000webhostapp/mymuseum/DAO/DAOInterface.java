@@ -8,5 +8,6 @@ public interface DAOInterface {
     boolean borrar(String parametro);
     boolean modificar(Guardable g);
     void buscar(String entidad);
+    void buscarDirecto(String entidad, String nombre);
 
 }

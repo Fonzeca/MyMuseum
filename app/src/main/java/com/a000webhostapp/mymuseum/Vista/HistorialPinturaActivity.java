@@ -1,5 +1,6 @@
 package com.a000webhostapp.mymuseum.Vista;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
@@ -26,11 +31,10 @@ import java.util.Locale;
  * Created by Alexis on 25/10/2017.
  */
 
-public class HistorialPinturaActivity extends AppCompatActivity {
+public class HistorialPinturaActivity extends AppCompatActivity implements IObserver {
 	
 	private ListView listaPinturas;
-	private Pintura pintura;
-	private ArrayList<Traslado> trasladosCargados;
+	private ProgressDialog loading;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,9 @@ public class HistorialPinturaActivity extends AppCompatActivity {
 		
 		listaPinturas = (ListView)findViewById(R.id.listaDePinturas_historiaPintura);
 		
-		trasladosCargados = new ArrayList<>();
+		
+		buscarInfo();
+		/*trasladosCargados = new ArrayList<>();
 		//CARGA EJEMPLO
 		
 		pintura = new Pintura("Mona Lisa", "la mona", null, null, 500);
@@ -53,39 +59,54 @@ public class HistorialPinturaActivity extends AppCompatActivity {
 		trasladosCargados.add(new Traslado(pintura,"MyMuseum", "El museo de carlitos", "26/10/2017"));
 		trasladosCargados.add(new Traslado(pintura,"El museo de carlitos", "Museo industrial", "27/10/2017"));
 		trasladosCargados.add(new Traslado(pintura,"Museo industrial", "MyMuseum", "01/11/2017"));
+		*/
 		
-		actualizarLista();
 	}
-	private void actualizarLista(){
+	private void actualizarLista(Traslado [] trasladosCargados){
 		if(trasladosCargados != null){
-			
 			Traslado aux;
 			int imin;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-			for(int i = 0; i < trasladosCargados.size(); i++){
+			for(int i = 0; i < trasladosCargados.length; i++){
 				imin = i;
-				for(int j = i+1; j < trasladosCargados.size(); j++){
+				for(int j = i+1; j < trasladosCargados.length; j++){
 					Date d1 = null, d2 = null;
 					try {
-						d1=sdf.parse(trasladosCargados.get(j).getFechaTraslado());
-						d2=sdf.parse(trasladosCargados.get(imin).getFechaTraslado());
+						d1=sdf.parse(trasladosCargados[j].getFechaTraslado());
+						d2=sdf.parse(trasladosCargados[imin].getFechaTraslado());
 						if(d1.compareTo(d2) < 0){
 							imin = j;
 						}
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-					
 				}
-				aux = trasladosCargados.get(i);
-				trasladosCargados.set(i,trasladosCargados.get(imin));
-				trasladosCargados.set(imin, aux);
+				aux = trasladosCargados[i];
+				trasladosCargados[i] = trasladosCargados[imin];
+				trasladosCargados[imin] = aux;
 			}
-			
-			
 			TrasladoArrayAdapter articuloInventoArrayAdapter = new TrasladoArrayAdapter(this, trasladosCargados);
 			listaPinturas.setAdapter(articuloInventoArrayAdapter);
 		}
+	}
+	private void buscarInfo(){
+		runOnUiThread(new Runnable() {
+			public void run() {
+				loading = new ProgressDialog(HistorialPinturaActivity.this){
+					public void onBackPressed() {
+						if(isShowing()){
+							dismiss();
+						}else{
+							super.onBackPressed();
+						}
+					}
+				};
+				loading.setMessage("Espere un momento...");
+				loading.setCancelable(false);
+				loading.show();
+			}
+		});
+		ModuloEntidad.obtenerModulo().buscarTrasladosTOTAL(this);
 	}
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -96,9 +117,7 @@ public class HistorialPinturaActivity extends AppCompatActivity {
 		switch (item.getItemId()){
 			case R.id.articulo_historialPintura_add:
 				Intent intent = new Intent(this, NuevoTrasladoActivity.class);
-				intent.putExtra("Pintura", pintura);
-				intent.putExtra("TrasladoAnterior", trasladosCargados.get(trasladosCargados.size()-1));
-				startActivityForResult(intent, 0);
+				startActivity(intent);
 				break;
 			case R.id.articulo_historialPintura_edit:
 				break;
@@ -107,16 +126,23 @@ public class HistorialPinturaActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == 0 && resultCode == RESULT_OK){
-			trasladosCargados.add((Traslado) data.getSerializableExtra("Traslado"));
-			actualizarLista();
-		}
-	}
-	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
+	}
+	
+	public void update(Guardable[] g, int request, String respuesta) {
+		if(loading.isShowing()){
+			switch (respuesta){
+				case ControlDB.res_exito:
+					switch (request){
+						case ModuloEntidad.RQS_BUSQUEDA_TRASLADOS_TOTAL:
+							actualizarLista((Traslado[])g);
+							break;
+					}
+					loading.dismiss();
+					break;
+			}
+		}
 	}
 }

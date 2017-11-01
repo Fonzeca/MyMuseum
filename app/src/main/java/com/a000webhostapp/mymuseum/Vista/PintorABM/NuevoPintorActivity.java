@@ -17,7 +17,7 @@ import com.a000webhostapp.mymuseum.R;
  * Created by Alexis on 10/10/2017.
  */
 
-public class NuevoPintorActivity extends AppCompatActivity {
+public class NuevoPintorActivity extends AppCompatActivity implements IObserver {
 	private EditText nomYApe, año,lugarNacimiento;
 	private CheckBox AC;
 	private Button btnGuardar;
@@ -55,12 +55,17 @@ public class NuevoPintorActivity extends AppCompatActivity {
 			}else{
 				añoPintor = Integer.parseInt(año.getText().toString());
 			}
-			me.crearPintor(nombreyapellido,lugar,añoPintor);
+			me.crearPintor(nombreyapellido,lugar,añoPintor,this);
 			onBackPressed();
 		}
 	}
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
+	}
+	
+	@Override
+	public void update(Guardable[] g, int request, String respuesta) {
+	
 	}
 }
