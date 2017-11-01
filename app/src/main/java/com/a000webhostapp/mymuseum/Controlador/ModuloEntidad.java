@@ -224,16 +224,21 @@ public class ModuloEntidad implements ISujeto {
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
 	//---------------
-	public void crearTraslado(Pintura pintura, String lugarOrigen, String lugarDestino, String fechaTraslado, IObserver observer){
-		Traslado nuevoTraslado = new Traslado(pintura,lugarOrigen,lugarDestino,fechaTraslado);
+	public void crearTraslado(String nombrePintura,int idPintura, String lugarOrigen, String lugarDestino, String fechaTraslado, IObserver observer){
+		Traslado nuevoTraslado = new Traslado(nombrePintura,idPintura,lugarOrigen,lugarDestino,fechaTraslado);
 		Request request = new Request(RQS_ALTA_TRASLADO);
 		registrarObserver(observer,request);
 		new ControlDB(request).insertar(nuevoTraslado);
 	}
 	public void buscarTraslados(IObserver observer, Pintura p){
-		Request request = new Request(RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA);
+		Request request = new RequestHistorialPintura(RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA, p);
 		registrarObserver(observer,request);
-		new ControlDB(request).buscarTrasladosIDPintura(p);
+		new ControlDB(request).buscarTrasladosIDPintura();
+	}
+	public void buscarTrasladosTOTAL(IObserver observer){
+		Request request = new Request(RQS_BUSQUEDA_TRASLADOS_TOTAL);
+		registrarObserver(observer,request);
+		new ControlDB(request).buscarTraslados();
 	}
 	//---------------
 	public void buscarObjetos(IObserver observer){
@@ -277,8 +282,24 @@ public class ModuloEntidad implements ISujeto {
 			return match.toArray(new Objeto[match.size()]);
 		}
 	}
-	
-	
+	private void insertarTrasladosEnPintura(Request request, Guardable[] guardables){
+		Pintura pintura = null;
+		Traslado[] traslados = null;
+		if(request instanceof RequestHistorialPintura && guardables instanceof Traslado[]){
+			pintura = ((RequestHistorialPintura)request).getPintura();
+			traslados = (Traslado[]) guardables;
+		}else{
+			//ERROR ACA
+			return;
+		}
+		
+		//SE BOORA TODO!!
+		pintura.borrarTodoTraslado();
+		
+		for (Traslado t : traslados){
+			pintura.agregarTraslado(t);
+		}
+	}
 	//---------------
 	
 	public void registrarObserver(IObserver ob, Request request) {
@@ -309,7 +330,7 @@ public class ModuloEntidad implements ISujeto {
 				case RQS_BUSQUEDA_PINTORES_TOTAL:
 				case RQS_BUSQUEDA_INVENTOS_TOTAL:
 				case RQS_BUSQUEDA_PINTURAS_TOTAL:
-				case RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
+				case RQS_BUSQUEDA_TRASLADOS_TOTAL:
 					notificarObserver(request,g,respuesta);
 					break;
 				case RQS_BUSQUEDA_INVENTOS_REFINADO:
@@ -319,6 +340,10 @@ public class ModuloEntidad implements ISujeto {
 					break;
 				case RQS_BUSQUEDA_INVENTO_DIRECTA:
 				case RQS_BUSQUEDA_PINTURA_DIRECTA:
+					notificarObserver(request,g,respuesta);
+					break;
+				case RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
+					insertarTrasladosEnPintura(request,g);
 					notificarObserver(request,g,respuesta);
 					break;
 			}

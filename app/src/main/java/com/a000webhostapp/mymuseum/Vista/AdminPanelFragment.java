@@ -13,12 +13,14 @@ import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EditarPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EliminarPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
+import com.a000webhostapp.mymuseum.Vista.TrasladoABM.NuevoTrasladoActivity;
 
 public class AdminPanelFragment extends Fragment {
 	
     private RelativeLayout agregarNuevoInventoButton, agregarNuevoInventorButton, agregarNuevoPeriodoButton;
 	private RelativeLayout editarInventorButton, editarPeriodoButton, editarObjetoButton;
 	private RelativeLayout eliminarInventoButton,eliminarInventorButton, eliminarPeriodoButton;
+	private RelativeLayout generarTrasladoButton,verHistorialButton;
 	
 	
 	private View.OnClickListener clickListenerBotones;
@@ -55,9 +57,6 @@ public class AdminPanelFragment extends Fragment {
 						startActivity(intent);
 						break;
 					case R.id.editar_objeto_button:
-						Log.v("a", "aaaaa");
-						intent = new Intent(getActivity(), HistorialPinturaActivity.class);
-						startActivity(intent);
 						break;
 					case R.id.eliminar_objeto_button:
 						intent = new Intent(getActivity(), ElegirEliminarObjetoActivity.class);
@@ -71,11 +70,17 @@ public class AdminPanelFragment extends Fragment {
 						intent = new Intent(getActivity(), EliminarPeriodoActivity.class);
 						startActivity(intent);
 						break;
+					case R.id.generar_traslado_button:
+						intent = new Intent(getActivity(), NuevoTrasladoActivity.class);
+						startActivity(intent);
+						break;
+					case R.id.ver_historial_button:
+						intent = new Intent(getActivity(), HistorialPinturaActivity.class);
+						startActivity(intent);
+						break;
                 }
-
             }
         };
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -110,6 +115,12 @@ public class AdminPanelFragment extends Fragment {
 		
 		eliminarPeriodoButton = (RelativeLayout) viewFinal.findViewById(R.id.eliminar_periodo_button);
 		eliminarPeriodoButton.setOnClickListener(clickListenerBotones);
+		
+		generarTrasladoButton = (RelativeLayout) viewFinal.findViewById(R.id.generar_traslado_button);
+		generarTrasladoButton.setOnClickListener(clickListenerBotones);
+		
+		verHistorialButton = (RelativeLayout) viewFinal.findViewById(R.id.ver_historial_button);
+		verHistorialButton.setOnClickListener(clickListenerBotones);
 		
 	}
 }

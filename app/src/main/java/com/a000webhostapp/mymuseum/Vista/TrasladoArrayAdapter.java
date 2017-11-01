@@ -29,10 +29,10 @@ public class TrasladoArrayAdapter extends ArrayAdapter<Traslado> {
     private final Traslado[] traslados;
 	
 	
-    public TrasladoArrayAdapter(Context context, ArrayList<Traslado> traslados){
+    public TrasladoArrayAdapter(Context context, Traslado[] traslados){
         super(context, -1, traslados);
         this.context = context;
-        this.traslados = traslados.toArray(new Traslado[traslados.size()]);
+        this.traslados = traslados;
     }
 
     @NonNull
@@ -40,15 +40,14 @@ public class TrasladoArrayAdapter extends ArrayAdapter<Traslado> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
-        View rowView = layoutInflater.inflate(R.layout.articulo_pintura_list_item, parent, false);
+        View rowView = layoutInflater.inflate(R.layout.historial_list_item, parent, false);
 
-        
         TextView nombrePintura = (TextView) rowView.findViewById(R.id.textPintura_historialPintura);
         TextView lugarAnterior = (TextView) rowView.findViewById(R.id.textlugarAnterior_HistorialPintura);
         TextView lugarActual = (TextView) rowView.findViewById(R.id.textLugarActual_HistorialPintura);
         TextView fecha = (TextView) rowView.findViewById(R.id.textFecha_HistorialPintura);
 		
-		nombrePintura.setText(traslados[position].getPintura().getNombre());
+		nombrePintura.setText(traslados[position].getNombrePintura());
 		lugarAnterior.setText(Html.fromHtml("<b>Origen:</b> " + traslados[position].getLugarOrigen()));
 		lugarActual.setText(Html.fromHtml("<b>Destino:</b> " + traslados[position].getLugarDestino()));
 		fecha.setText(traslados[position].getFechaTraslado());

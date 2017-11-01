@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.Request;
+import com.a000webhostapp.mymuseum.Controlador.RequestHistorialPintura;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
@@ -76,7 +77,9 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			case 4:
 				return buscarPrivadoDirecto((String)objects[1], (String)objects[2]);
 			case 5:
-				return buscarTrasladoPrivadoID((Pintura) objects[1]);
+				return buscarTrasladoPrivadoID();
+			case 6:
+				return buscarTrasladoPrivado();
 		}
 
 		return null;
@@ -112,8 +115,12 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		execute(4, entidad, nombre);
 	}
 	
-	public void buscarTrasladosIDPintura(Pintura p){
-		execute(5,p);
+	public void buscarTrasladosIDPintura(){
+		execute(5);
+	}
+	
+	public void buscarTraslados(){
+		execute(6);
 	}
 	//----------------
 	private boolean borrarPrivado(String parametro){
@@ -171,10 +178,22 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		
 		return respuestaFinal;
 	}
-	private Guardable[] buscarTrasladoPrivadoID(Pintura p){
-		String respuesta = conectar("accion=obtener_historial&pintura_id=" + p.getID());
+	private Guardable[] buscarTrasladoPrivadoID(){
+		Pintura p = null;
+		if(request instanceof RequestHistorialPintura){
+			p = ((RequestHistorialPintura)request).getPintura();
+		}else{
+			return null;
+		}
+		
+		String respuesta = conectar("accion=obtener_historial_pintura&pintura_id=" + p.getID());
 		Log.v("Response DB", respuesta);
-		return buscarTraslados(respuesta,p);
+		return buscarTraslados(respuesta);
+	}
+	private Guardable[] buscarTrasladoPrivado(){
+		String respuesta = conectar("accion=obtener_historial");
+		Log.v("Response DB", respuesta);
+		return buscarTraslados(respuesta);
 	}
 	//----------------
 	
@@ -308,7 +327,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		}
 		return objetos;
 	}
-	private Guardable[] buscarTraslados(String jsonRespuesta, Pintura p){
+	private Guardable[] buscarTraslados(String jsonRespuesta){
 		Traslado[] traslados = null;
 		
 		try {
@@ -321,13 +340,12 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 				cancel(true);
 				return null;
 			}
-			p.borrarTodoTraslado();
+			
 			for(int i = 0; i < json_array.length(); i++){
 				JSONObject trasladoJSON = json_array.getJSONObject(i);
-				
-				traslados[i] = Traslado.obtenerTrasladoJSON(trasladoJSON, p);
+				traslados[i] = Traslado.obtenerTrasladoJSON(trasladoJSON);
 			}
-			Log.v("cantidad traslados", " " + p.cantidadTraslados());
+			
 		}catch (JSONException e){
 			e.printStackTrace();
 		}

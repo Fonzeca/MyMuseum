@@ -61,7 +61,8 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 		
 		listenerDate= new DatePickerDialog.OnDateSetListener() {
 			public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-				fecha.setText(i2 + "/" + i1 + "/" + i);
+				String fechaCompleta = i2 + "/" + i1 + "/" + i;
+				fecha.setText(fechaCompleta);
 			}
 		};
 		datePickerDialog = new DatePickerDialog(this, listenerDate,año,mes,dia);
@@ -98,7 +99,7 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 				String strDestino = destino.getText().toString();
 				String strFecha = fecha.getText().toString();
 				
-				ModuloEntidad.obtenerModulo().crearTraslado(pinturaActual,strOrigen,strDestino,strFecha,NuevoTrasladoActivity.this);
+				ModuloEntidad.obtenerModulo().crearTraslado(pinturaActual.getNombre(),pinturaActual.getID(),strOrigen,strDestino,strFecha,NuevoTrasladoActivity.this);
 				
 				finish();
 			}
