@@ -89,7 +89,9 @@ public class AdminPanelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_admin_panel, container, false);
     }
-	
+
+
+
 	public void onViewCreated(View viewFinal, Bundle savedInstanceState) {
 		
 		agregarNuevoInventoButton = (RelativeLayout) viewFinal.findViewById(R.id.agregar_nuevo_objeto_button);
