@@ -52,6 +52,7 @@
         <activity android:name=".Vista.ArticuloPinturaActivity"/>
         <activity android:name=".Vista.BuscarObjetoActivity"/>
         <activity android:name=".Vista.HistorialPinturaActivity"/>
+        <activity android:name=".Vista.MostarImagenActivity"/>
         <activity android:name=".Vista.LectorQRActivity">
         </activity>
         <activity

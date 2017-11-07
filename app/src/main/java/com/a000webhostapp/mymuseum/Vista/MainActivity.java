@@ -1,6 +1,8 @@
 package com.a000webhostapp.mymuseum.Vista;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,8 @@ import android.view.MenuItem;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.Collator;
 import java.text.Normalizer;
 

@@ -357,7 +357,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		try {
 			URL url = new URL("http://mymuseum.000webhostapp.com/index.php");
 			
-			System.out.println("\nSending 'POST' id to URL : " + url);
+			Log.v("System.out","\nSending 'POST' id to URL : " + url);
 			
 			HttpURLConnection conect= (HttpURLConnection) url.openConnection();
 			conect.setRequestProperty("Accept-Charset", "UTF-8");
@@ -372,15 +372,14 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			OutputStream wr = conect.getOutputStream();
 			wr.write(urlParameters.getBytes("UTF-8"));
 			
-			System.out.println("Post parameters : " + urlParameters);
+			Log.v("System.out","Post parameters : " + urlParameters);
 			
 			wr.flush();
 			wr.close();
 
 			int responseCode = conect.getResponseCode();
 			
-			
-			System.out.println("Response Code : " + responseCode);
+			Log.v("System.out","Response Code : " + responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(conect.getInputStream()));
 			String inputLine;

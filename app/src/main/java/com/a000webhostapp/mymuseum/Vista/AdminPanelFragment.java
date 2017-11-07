@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EditarPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.EliminarPeriodoActivity;
@@ -57,6 +58,8 @@ public class AdminPanelFragment extends Fragment {
 						startActivity(intent);
 						break;
 					case R.id.editar_objeto_button:
+						intent = new Intent(getActivity(), MostarImagenActivity.class);
+						startActivity(intent);
 						break;
 					case R.id.eliminar_objeto_button:
 						intent = new Intent(getActivity(), ElegirEliminarObjetoActivity.class);
