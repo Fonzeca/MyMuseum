@@ -156,8 +156,9 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 		
-		imagenBuscada = false;
-		ModuloImagen.obtenerModulo().buscarImagen(pintura.getNombre(),ControlDB.str_obj_Pintura,this);
+		if(!imagenBuscada){
+			ModuloImagen.obtenerModulo().buscarImagen(pintura.getNombre(),ControlDB.str_obj_Pintura,this);
+		}
 		
 	}
 	private void actualizarSpinnerInventores(){
@@ -210,7 +211,6 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 			uriImagen = data.getData();
 			imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
 			imageView.setAdjustViewBounds(true);
-			loading.dismiss();
 		}
 		
 	}

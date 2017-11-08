@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.Constantes;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
@@ -84,8 +85,10 @@ public class ArticuloPinturaActivity extends AppCompatActivity implements IObser
 	}
     
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.articulo_invento_menu, menu);
+		if(Constantes.getADMIN()){
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.articulo_invento_menu, menu);
+		}
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {

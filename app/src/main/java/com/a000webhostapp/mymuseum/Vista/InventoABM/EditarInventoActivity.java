@@ -35,6 +35,8 @@ import java.util.List;
 
 public class EditarInventoActivity extends AppCompatActivity implements IObserver {
 	private static final int RQS_BUSCARIMAGEN = 0;
+	private static final int RQS_NUEVO_INVENTOR = 100;
+	private static final int RQS_NUEVO_PERIODO = 101;
     private Inventor[] inventoresCargados;
     private Periodo[] periodosCargados;
 
@@ -128,7 +130,8 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		imagenTextView = (TextView)findViewById(R.id.buttonAgregarImagen_EditarInvento);
 		imagenTextView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
 				intent.setType("image/*");
 				startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
 			}
@@ -164,8 +167,9 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		ModuloEntidad.obtenerModulo().buscarInventores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 		
-		imagenBuscada = false;
-		ModuloImagen.obtenerModulo().buscarImagen(invento.getNombre(),ControlDB.str_obj_Invento,this);
+		if(!imagenBuscada){
+			ModuloImagen.obtenerModulo().buscarImagen(invento.getNombre(),ControlDB.str_obj_Invento,this);
+		}
 		
 	}
 	private void actualizarSpinnerInventores(){
@@ -221,10 +225,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if(requestCode == RQS_BUSCARIMAGEN){
-			uriImagen = data.getData();
-			imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
-			imageView.setAdjustViewBounds(true);
+		switch (requestCode){
+			case RQS_BUSCARIMAGEN:
+				uriImagen = data.getData();
+				imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
+				imageView.setAdjustViewBounds(true);
+				break;
 		}
   
 	}
@@ -284,12 +290,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     }
 	private void startNuevoInventorActivity() {
 		Intent intent = new Intent(this, NuevoInventorActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent,RQS_NUEVO_INVENTOR);
 	}
 	
 	private void startNuevoPeriodoActivity() {
 		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent,RQS_NUEVO_PERIODO);
 	}
     
 }

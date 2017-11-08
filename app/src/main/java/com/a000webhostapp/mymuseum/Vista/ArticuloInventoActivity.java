@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.Constantes;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
@@ -38,7 +39,8 @@ public class ArticuloInventoActivity extends AppCompatActivity implements IObser
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         invento = (Invento) getIntent().getSerializableExtra("Invento");
-
+	
+		buscarInfo();
         nombreInvento = (TextView) findViewById(R.id.articulo_invento_nombre_invento);
         nombrePeriodo = (TextView) findViewById(R.id.articulo_invento_nombre_periodo);
         añoInvencion = (TextView) findViewById(R.id.articulo_invento_año_invencion);
@@ -78,8 +80,10 @@ public class ArticuloInventoActivity extends AppCompatActivity implements IObser
 	}
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.articulo_invento_menu, menu);
+		if(Constantes.getADMIN()){
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.articulo_invento_menu, menu);
+		}
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {

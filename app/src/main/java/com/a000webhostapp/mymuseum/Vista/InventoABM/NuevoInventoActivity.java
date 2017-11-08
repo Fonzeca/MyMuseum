@@ -83,8 +83,9 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
                     case R.id.Save_Invento:
                         guardarInformacion();
                         break;
-					case R.id.buttonAgregarImagen_NuevaPintura:
-						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+					case R.id.buttonAgregarImagen_NuevoInvento:
+						Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+						intent.addCategory(Intent.CATEGORY_OPENABLE);
 						intent.setType("image/*");
 						startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
 						break;
