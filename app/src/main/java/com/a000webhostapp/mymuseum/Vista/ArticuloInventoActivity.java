@@ -111,7 +111,6 @@ public class ArticuloInventoActivity extends AppCompatActivity implements IObser
 								if(g[0] instanceof Imagen){
 									imagen = (Imagen)g[0];
 									imageView.setImageBitmap(imagen.getBitmap());
-									imageView.setAdjustViewBounds(true);
 								}
 								loading.dismiss();
 								break;
