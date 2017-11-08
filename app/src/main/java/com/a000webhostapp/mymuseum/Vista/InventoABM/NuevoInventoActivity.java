@@ -2,6 +2,7 @@ package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,12 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
@@ -28,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NuevoInventoActivity extends AppCompatActivity implements IObserver {
+	private static final int RQS_BUSCARIMAGEN = 0;
     private LinearLayout botonNuevoPeriodo, botonNuevoInventor;
 
 
@@ -41,6 +47,10 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 
     private Inventor inventorActual;
     private Periodo periodoActual;
+	
+	private ImageView imageView;
+	private TextView imagenTextView;
+	private Uri uriImagen;
     
     private ProgressDialog loading;
     private boolean cargado;
@@ -73,6 +83,11 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
                     case R.id.Save_Invento:
                         guardarInformacion();
                         break;
+					case R.id.buttonAgregarImagen_NuevaPintura:
+						Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+						intent.setType("image/*");
+						startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
+						break;
                 }
             }
         };
@@ -118,8 +133,12 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 
         guardar = (Button) findViewById(R.id.Save_Invento);
         guardar.setOnClickListener(clickListenerBotones);
-		
-
+	
+		imageView = (ImageView) findViewById(R.id.imagenView_NuevoInvento);
+		imageView.setOnClickListener(clickListenerBotones);
+	
+		imagenTextView = (TextView)findViewById(R.id.buttonAgregarImagen_NuevoInvento);
+		imagenTextView.setOnClickListener(clickListenerBotones);
 
     }
     
@@ -185,6 +204,9 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 			
 			ModuloEntidad.obtenerModulo().crearInvento(nombreGuar,descriGuar,periodoActual, inventorActual,
 					añoGuar,theMachine.isChecked(),this);
+			if(uriImagen != null){
+				ModuloImagen.obtenerModulo().insertarImagen(nombreGuar,ControlDB.str_obj_Invento,this,uriImagen,this);
+			}
 			onBackPressed();
 		}
 	}
@@ -208,7 +230,16 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 		startActivity(intent);
 	}
 	
-	public void update(Guardable[] g,int request, String respuesta) {
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == RQS_BUSCARIMAGEN){
+			uriImagen = data.getData();
+			imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
+			imageView.setAdjustViewBounds(true);
+		}
+	}
+	
+	public void update(Guardable[] g, int request, String respuesta) {
         if(loading.isShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:

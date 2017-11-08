@@ -25,8 +25,8 @@ import java.io.InputStream;
  */
 
 public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
-	private static String pathImagenFTP = "/public_html/images/";
-	private static String extensionArchivo = ".png";
+	public static String pathImagenFTP = "/public_html/images/MyMuseum/";
+	public static String extensionArchivo = ".png";
 	
 	private Context context;
 	private FTPClient ftp;
@@ -64,7 +64,9 @@ public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
 	private boolean insertarImagen(InputStream is){
 		boolean guardo = false;
 		try {
-			guardo = ftp.storeFile(request.getPath(), is);
+			String path = request.getPath();
+			Log.v("Ubicacion", path + "");
+			guardo = ftp.storeFile(path, is);
 			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -78,7 +80,9 @@ public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
 		boolean busco = false;
 		Bitmap bitmap = null;
 		try {
-			busco = ftp.retrieveFile(request.getPath(),os);
+			String path = request.getPath();
+			Log.v("Ubicacion", path + "");
+			busco = ftp.retrieveFile(path,os);
 			if(busco){
 				os.close();
 				byte[] bytes = os.toByteArray();

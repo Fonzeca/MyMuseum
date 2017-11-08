@@ -33,39 +33,66 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Período científico"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/articulo_invento_nombre_periodo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text=""/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="4">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Año de invención"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Período científico"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/articulo_invento_año_invencion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text=""/>
+                    <TextView
+                        android:id="@+id/articulo_invento_nombre_periodo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text=""/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Año de invención"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/articulo_invento_año_invencion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imagenInvento_ArticuloInvento"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="fill_parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_image"
+                    />
+
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -100,11 +127,6 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text=""/>
-
-            <ImageView
-                android:id="@+id/imagenInvento_ArticuloInvento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

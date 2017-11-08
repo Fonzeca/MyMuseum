@@ -3,6 +3,8 @@ package com.a000webhostapp.mymuseum;
 import android.net.Uri;
 import android.util.Log;
 
+import com.a000webhostapp.mymuseum.Modelo.Invento;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -15,7 +17,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
+		if(null instanceof Invento){
 		
+		}
 		
 		
 	}
