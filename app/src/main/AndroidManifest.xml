@@ -52,9 +52,9 @@
         <activity android:name=".Vista.ElegirEliminarObjetoActivity"/>
         <activity android:name=".Vista.ArticuloInventoActivity"/>
         <activity android:name=".Vista.ArticuloPinturaActivity"/>
+        <activity android:name=".Vista.ArticuloObjetoActivity"/>
         <activity android:name=".Vista.BuscarObjetoActivity"/>
         <activity android:name=".Vista.HistorialPinturaActivity"/>
-        <activity android:name=".Vista.MostarImagenActivity"/>
         <activity android:name=".Vista.LectorQRActivity">
         </activity>
         <activity android:name=".Vista.ElegirNuevaPersonaActivity">

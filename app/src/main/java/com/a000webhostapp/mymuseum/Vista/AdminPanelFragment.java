@@ -58,8 +58,6 @@ public class AdminPanelFragment extends Fragment {
 						startActivity(intent);
 						break;
 					case R.id.editar_objeto_button:
-						intent = new Intent(getActivity(), MostarImagenActivity.class);
-						startActivity(intent);
 						break;
 					case R.id.eliminar_objeto_button:
 						intent = new Intent(getActivity(), ElegirEliminarObjetoActivity.class);

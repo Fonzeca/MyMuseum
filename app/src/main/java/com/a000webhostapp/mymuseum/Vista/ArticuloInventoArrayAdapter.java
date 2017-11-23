@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
@@ -79,13 +80,14 @@ public class ArticuloInventoArrayAdapter extends ArrayAdapter<Objeto> {
 
         verDetalles.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+				Intent intent = new Intent(context, ArticuloObjetoActivity.class);
 				if(objetos[position] instanceof Invento){
-					Intent intent = new Intent(context, ArticuloInventoActivity.class);
-					intent.putExtra("Invento", (Invento)objetos[position]);
+					intent.putExtra("TipoObjeto", ControlDB.str_obj_Invento);
+					intent.putExtra(ControlDB.str_obj_Invento, (Invento)objetos[position]);
 					context.startActivity(intent);
 				}else if(objetos[position] instanceof Pintura){
-					Intent intent = new Intent(context, ArticuloPinturaActivity.class);
-					intent.putExtra("Pintura", (Pintura)objetos[position]);
+					intent.putExtra("TipoObjeto", ControlDB.str_obj_Pintura);
+					intent.putExtra(ControlDB.str_obj_Pintura, (Pintura)objetos[position]);
 					context.startActivity(intent);
 				}
                 

@@ -95,7 +95,7 @@ public class ModuloImagen implements ISujeto {
 	
 	/*protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.prueba);
+		setContentView(R.layout.image_view);
 		
 		iv = (ImageView)findViewById(R.id.imageViewPRUEBA);
 		
