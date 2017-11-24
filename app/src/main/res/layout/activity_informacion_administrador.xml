@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.a000webhostapp.mymuseum.Vista.InformacionAdministradorActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Información general"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre del museo"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Museo Provincial de Ciencias Naturales"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Clave de administrador"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="*********************"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lightGray"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Información de objetos"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total de objetos en el museo"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total de pinturas"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total de inventos"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total de inventores"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total de pintores"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lightGray"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estadísticas de búsqueda"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Búsquedas realizadas"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inventos más buscados"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pinturas más buscadas"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/lightGray"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Información extra"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="16dp"
+                    />
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Traslados realizados"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inventor destacado"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="#############"
+                    android:textAlignment="center"
+                    android:textStyle="italic"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="© Artesanía Digital"
+                android:textAlignment="textEnd"
+                android:textStyle="italic"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                />
+
+
+        </LinearLayout>
+
+
+
+</ScrollView>

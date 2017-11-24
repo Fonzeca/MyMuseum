@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#e91e63</color>
     <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ED457E</color>
     <color name="colorActivityBackground">#F2F2F2</color>
     <color name="darkGray">#888</color>
+    <color name="lightGray">#BBB</color>
 </resources>
