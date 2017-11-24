@@ -2,6 +2,7 @@ package com.a000webhostapp.mymuseum.Vista.PinturaABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,14 +10,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.R;
@@ -29,6 +33,8 @@ import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
  */
 
 public class NuevaPinturaActivity extends AppCompatActivity implements IObserver {
+	private static final int RQS_BUSCARIMAGEN = 0;
+	
 	private LinearLayout agregarPintor, agregarPeriodo;
 	
 	private TextView nombrePintura, descripcion, añoCreacion;
@@ -41,6 +47,10 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 	
 	private Pintor pintorActual;
 	private Periodo periodoActual;
+	
+	private ImageView imageView;
+	private TextView imagenTextView;
+	private Uri uriImagen;
 	
 	private ProgressDialog loading;
 	
@@ -64,6 +74,12 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 						break;
 					case R.id.Save_NuevaPintura:
 						guardarInformacion();
+						break;
+					case R.id.buttonAgregarImagen_NuevaPintura:
+						Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+						intent.addCategory(Intent.CATEGORY_OPENABLE);
+						intent.setType("image/*");
+						startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
 						break;
 				}
 			}
@@ -107,6 +123,12 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		guardar = (Button)findViewById(R.id.Save_NuevaPintura);
 		guardar.setOnClickListener(clickListenerBotones);
 		
+		imageView = (ImageView) findViewById(R.id.imagenView_NuevaPintura);
+		imageView.setOnClickListener(clickListenerBotones);
+		
+		imagenTextView = (TextView)findViewById(R.id.buttonAgregarImagen_NuevaPintura);
+		imagenTextView.setOnClickListener(clickListenerBotones);
+		
 	}
 	private void actualizarSpinnerPintores(){
 		if(pintores != null){
@@ -139,6 +161,9 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 			
 			ModuloEntidad.obtenerModulo().crearPintura(nombreGuar,descriGuar,periodoActual, pintorActual,
 					añoGuar,this);
+			if(uriImagen != null){
+				ModuloImagen.obtenerModulo().insertarImagen(nombreGuar,ControlDB.str_obj_Pintura,this,uriImagen,this);
+			}
 			onBackPressed();
 		}
 	}
@@ -178,7 +203,16 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		startActivity(intent);
 	}
 	
-	public void update(Guardable[] g,int request, String respuesta) {
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == RQS_BUSCARIMAGEN){
+			uriImagen = data.getData();
+			imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
+			imageView.setAdjustViewBounds(true);
+		}
+	}
+	
+	public void update(Guardable[] g, int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:

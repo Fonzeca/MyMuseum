@@ -3,6 +3,8 @@ package com.a000webhostapp.mymuseum.Controlador;
 import android.content.Context;
 import android.net.Uri;
 
+import com.a000webhostapp.mymuseum.DAO.ControlFTP;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -32,6 +34,6 @@ public class RequestImagen extends Request {
 	}
 	
 	public String getPath() {
-		return "/public_html/images/" + entidad + nombre + ".png";
+		return ControlFTP.pathImagenFTP + entidad + nombre + ControlFTP.extensionArchivo;
 	}
 }

@@ -2,29 +2,37 @@ package com.a000webhostapp.mymuseum.Vista.PinturaABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
 public class EditarPinturaActivity extends AppCompatActivity implements IObserver {
+	private static final int RQS_BUSCARIMAGEN = 0;
     private Pintor[] pintoresCargados;
     private Periodo[] periodosCargados;
 
@@ -36,6 +44,12 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
     private Spinner nombrePeriodoSpinner, nombrePintoresSpinner;
     private CheckBox ACPintura;
     private Button guardar;
+	
+	private ImageView imageView;
+	private TextView imagenTextView;
+	private Uri uriImagen;
+	private Imagen imagen;
+	private boolean imagenBuscada;
 
     private ProgressDialog loading;
 
@@ -48,7 +62,7 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         pintura = (Pintura) getIntent().getSerializableExtra("Pintura");
-
+        
 		buscarInfoSpinners();
 		
         nombre = (TextView) findViewById(R.id.editar_pintura_nombre_pintura);
@@ -95,9 +109,24 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 	
 	
 				ModuloEntidad.obtenerModulo().editarPintura(pintura,EditarPinturaActivity.this);
+				if(uriImagen != null){
+					ModuloImagen.obtenerModulo().insertarImagen(nombre.getText().toString(),ControlDB.str_obj_Pintura,EditarPinturaActivity.this,uriImagen,EditarPinturaActivity.this);
+				}
 				onBackPressed();
             }
         });
+	
+		imageView = (ImageView) findViewById(R.id.imagenView_EditarPintura);
+	
+		imagenTextView = (TextView)findViewById(R.id.buttonAgregarImagen_EditarPintura);
+		imagenTextView.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType("image/*");
+				startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
+			}
+		});
         
         //seteamos los datos
         nombre.setText(pintura.getNombre());
@@ -110,8 +139,6 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
         descripcion.setText(pintura.getDescripcion());
 		
     }
-
-    
 	
 	private void buscarInfoSpinners(){
 		loading = new ProgressDialog(this){
@@ -129,6 +156,10 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 		
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+		
+		if(!imagenBuscada){
+			ModuloImagen.obtenerModulo().buscarImagen(pintura.getNombre(),ControlDB.str_obj_Pintura,this);
+		}
 		
 	}
 	private void actualizarSpinnerInventores(){
@@ -175,7 +206,16 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 		onBackPressed();
 		return true;
 	}
-    
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == RQS_BUSCARIMAGEN){
+			uriImagen = data.getData();
+			imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
+			imageView.setAdjustViewBounds(true);
+		}
+		
+	}
+	
     public void update(Guardable[] g,int request, String respuesta) {
 		if(loading.isShowing()){
 			switch(respuesta){
@@ -195,9 +235,17 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 									actualizarSpinnerPeriodo();
 								}
 								break;
+							case ModuloImagen.RQS_BUSQUEDA_IMAGEN_UNICA:
+							if(g[0] instanceof Imagen){
+								imagen = (Imagen)g[0];
+								imageView.setImageBitmap(imagen.getBitmap());
+								imageView.setAdjustViewBounds(true);
+							}
+							imagenBuscada = true;
+							break;
 						}
 						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
-						if(periodosCargados != null && pintoresCargados != null){
+						if(periodosCargados != null && pintoresCargados != null && imagenBuscada){
 							loading.dismiss();
 						}
 					}

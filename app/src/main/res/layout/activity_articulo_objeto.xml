@@ -9,12 +9,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/articulo_invento_nombre_invento"
+        android:id="@+id/articulo_objeto_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre invento"
-        android:textSize="24sp"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -34,6 +34,7 @@
             android:padding="16dp">
 
             <LinearLayout
+                android:id="@+id/layout_prueba"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -41,10 +42,11 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="4">
+                    android:layout_weight="4"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/articulo_objeto_periodo_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -53,7 +55,7 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/articulo_invento_nombre_periodo"
+                        android:id="@+id/articulo_objeto_periodo_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -63,6 +65,7 @@
 
 
                     <TextView
+                        android:id="@+id/articulo_objeto_año_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -71,8 +74,26 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/articulo_invento_año_invencion"
+                        android:id="@+id/articulo_objeto_año_text"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text=""/>
+
+                    <TextView
+                        android:id="@+id/articulo_objeto_persona_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Pintor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/articulo_objeto_persona_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:paddingLeft="8dp"
@@ -81,37 +102,26 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imagenInvento_ArticuloInvento"
+                <ImageView android:id="@+id/articulo_objeto_imagen"
+                           android:layout_width="0dp"
+                           android:layout_weight="3"
+                           android:layout_height="fill_parent"
+                           android:src="@drawable/ic_image">
+                </ImageView>
+
+                <ProgressBar
+                    android:id="@+id/articulo_objeto_carga"
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:layout_height="fill_parent"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_image"
-                    />
-
+                    android:indeterminate="true">
+                </ProgressBar>
 
             </LinearLayout>
 
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Inventor"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/articulo_invento_nombre_inventor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text=""/>
-
-            <TextView
+                android:id="@+id/articulo_objeto_descri_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -120,7 +130,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/articulo_invento_descripcion"
+                android:id="@+id/articulo_objeto_descri_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

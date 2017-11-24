@@ -1,15 +1,10 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,21 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.a000webhostapp.mymuseum.Constantes;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.text.Collator;
-import java.text.Normalizer;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentButtonPressed {
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Fragment fragmentActual;
 	private Fragment incioFragment, infoFragment, adminFragment;
+	private Fragment loginFragment;
 	
 	public final int requestBuscar = 6;
 
@@ -48,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 		incioFragment = new InicioFragment();
 
         //Ponemos el Inicio Fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_content, incioFragment).commit();
 
 
@@ -87,11 +79,18 @@ public class MainActivity extends AppCompatActivity {
 					}
                     fragmentActual = infoFragment;
                 }else if (id == R.id.nav_panel_de_administrador) {
+					if(loginFragment == null){
+						loginFragment = new LoginFragment();
+					}
 					if(adminFragment == null){
 						adminFragment = new AdminPanelFragment();
 					}
-                    fragmentActual = adminFragment;
-                }
+					if(Constantes.getADMIN()){
+						fragmentActual = adminFragment;
+					}else{
+						fragmentActual = loginFragment;
+					}
+				}
 
                 //Hacemos la transicion del fragment
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -115,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
 		navigationView.getMenu().getItem(0).setChecked(true);
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.frame_content, incioFragment).commitNowAllowingStateLoss();
+		fragmentActual = incioFragment;
+	}
+	private void startAdminPanelFragment(){
+		if(adminFragment == null){
+			adminFragment = new AdminPanelFragment();
+		}
+		navigationView.getMenu().getItem(2).setChecked(true);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.frame_content, adminFragment).commitNowAllowingStateLoss();
+		fragmentActual = adminFragment;
 	}
 	
 	public void onBackPressed() {
@@ -146,5 +155,10 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void onButtonPressedI() {
+		startAdminPanelFragment();
 	}
 }

@@ -23,19 +23,21 @@
         android:layout_margin="32dp">
 
         <EditText
+            android:id="@+id/clave_AdminLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Clave"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/save_AdminLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="INGRESAR"
-        android:textColor="#FFF" />
+        android:textColor="#FFF"/>
 
 </LinearLayout>

@@ -4,6 +4,7 @@ package com.a000webhostapp.mymuseum.Controlador;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.a000webhostapp.mymuseum.DAO.ControlFTP;
 import com.a000webhostapp.mymuseum.IObserver;
@@ -22,9 +23,9 @@ public class ModuloImagen implements ISujeto {
 	private ArrayList<Request> requests;
 	private static ModuloImagen mi;
 	
-	public static final int RQS_BUSQUEDA_IMAGEN_UNICA = 0;
+	public static final int RQS_BUSQUEDA_IMAGEN_UNICA = 1000;
 	
-	public static final int RQS_INSERTAR_IMAGEN = 100;
+	public static final int RQS_INSERTAR_IMAGEN = 1100;
 	
 	private ModuloImagen(){
 		observers = new ArrayList<IObserver>();
@@ -76,9 +77,13 @@ public class ModuloImagen implements ISujeto {
 			case "Exito":
 				switch (request.getId()){
 					case RQS_BUSQUEDA_IMAGEN_UNICA:
-						Imagen im = new Imagen(g);
+						//La cagaste
+						Imagen im = null;
 						Guardable[] gs = new Guardable[1];
-						gs[0] = im;
+						if(g != null){
+							im = new Imagen(g);
+							gs[0] = im;
+						}
 						notificarObserver(request,gs,respuesta);
 						break;
 				}
@@ -90,7 +95,7 @@ public class ModuloImagen implements ISujeto {
 	
 	/*protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.prueba);
+		setContentView(R.layout.image_view);
 		
 		iv = (ImageView)findViewById(R.id.imageViewPRUEBA);
 		

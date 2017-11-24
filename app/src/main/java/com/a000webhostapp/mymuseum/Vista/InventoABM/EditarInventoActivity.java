@@ -2,19 +2,25 @@ package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
@@ -28,6 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditarInventoActivity extends AppCompatActivity implements IObserver {
+	private static final int RQS_BUSCARIMAGEN = 0;
+	private static final int RQS_NUEVO_INVENTOR = 100;
+	private static final int RQS_NUEVO_PERIODO = 101;
     private Inventor[] inventoresCargados;
     private Periodo[] periodosCargados;
 
@@ -39,6 +48,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     private Spinner nombrePeriodoSpinner, nombreInventorSpinner;
     private CheckBox ACInvento, theMachine;
     private Button guardar;
+	
+	private ImageView imageView;
+	private TextView imagenTextView;
+	private Uri uriImagen;
+	private Imagen imagen;
+	private boolean imagenBuscada;
 
     private ProgressDialog loading;
 	private boolean cargado;
@@ -52,7 +67,7 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         invento = (Invento) getIntent().getSerializableExtra("Invento");
-
+        
 		buscarInfoSpinners();
 		
         nombreInvento = (TextView) findViewById(R.id.editar_invento_nombre_invento);
@@ -103,9 +118,24 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	
 	
 				ModuloEntidad.obtenerModulo().editarInvento(invento,EditarInventoActivity.this);
+				if(uriImagen != null){
+					ModuloImagen.obtenerModulo().insertarImagen(nombreInvento.getText().toString(),ControlDB.str_obj_Invento,EditarInventoActivity.this,uriImagen,EditarInventoActivity.this);
+				}
 				onBackPressed();
             }
         });
+	
+		imageView = (ImageView) findViewById(R.id.imagenView_EditarInvento);
+	
+		imagenTextView = (TextView)findViewById(R.id.buttonAgregarImagen_EditarInvento);
+		imagenTextView.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+				intent.addCategory(Intent.CATEGORY_OPENABLE);
+				intent.setType("image/*");
+				startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),RQS_BUSCARIMAGEN);
+			}
+		});
         
         //seteamos los datos
         nombreInvento.setText(invento.getNombre());
@@ -120,7 +150,6 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     }
 
     
-	
 	private void buscarInfoSpinners(){
 		loading = new ProgressDialog(this){
 			public void onBackPressed() {
@@ -137,6 +166,10 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		
 		ModuloEntidad.obtenerModulo().buscarInventores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
+		
+		if(!imagenBuscada){
+			ModuloImagen.obtenerModulo().buscarImagen(invento.getNombre(),ControlDB.str_obj_Invento,this);
+		}
 		
 	}
 	private void actualizarSpinnerInventores(){
@@ -189,8 +222,20 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		onBackPressed();
 		return true;
 	}
-    
-    public void update(Guardable[] g,int request, String respuesta) {
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode){
+			case RQS_BUSCARIMAGEN:
+				uriImagen = data.getData();
+				imageView.setImageBitmap(Imagen.obtenerImagen(uriImagen,this).getBitmap());
+				imageView.setAdjustViewBounds(true);
+				break;
+		}
+  
+	}
+	
+	public void update(Guardable[] g, int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
@@ -208,10 +253,18 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 									actualizarSpinnerInventores();
 								}
 								break;
+							case ModuloImagen.RQS_BUSQUEDA_IMAGEN_UNICA:
+								if(g[0] instanceof Imagen){
+									imagen = (Imagen)g[0];
+									imageView.setImageBitmap(imagen.getBitmap());
+									imageView.setAdjustViewBounds(true);
+								}
+								imagenBuscada = true;
+								break;
 						}
 						
 						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
-						if(periodosCargados != null && inventoresCargados != null){
+						if(periodosCargados != null && inventoresCargados != null && imagenBuscada){
 							loading.dismiss();
 						}
 					}
@@ -237,12 +290,12 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
     }
 	private void startNuevoInventorActivity() {
 		Intent intent = new Intent(this, NuevoInventorActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent,RQS_NUEVO_INVENTOR);
 	}
 	
 	private void startNuevoPeriodoActivity() {
 		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent,RQS_NUEVO_PERIODO);
 	}
     
 }
