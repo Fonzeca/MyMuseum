@@ -8,6 +8,16 @@
     android:layout_height="match_parent"
     tools:context="com.a000webhostapp.mymuseum.Vista.InventorABM.EditarInventorActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar inventor"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:background="#FFF"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
