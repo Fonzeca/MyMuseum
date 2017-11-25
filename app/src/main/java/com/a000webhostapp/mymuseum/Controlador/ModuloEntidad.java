@@ -347,8 +347,8 @@ public class ModuloEntidad implements ISujeto {
 					notificarObserver(request,g,respuesta);
 					break;
 			}
-		}else if(respuesta.equals(ControlDB.res_tablaTrasladoUnicoVacio)){
-			notificarObserver(request,g,respuesta);
+		}else{
+			notificarObserver(request,null,respuesta);
 		}
 	}
 	

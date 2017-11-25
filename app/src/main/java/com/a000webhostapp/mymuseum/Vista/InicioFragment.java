@@ -214,13 +214,15 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 									objetosCargados = (Objeto[])g;
 									break;
 								case ModuloEntidad.RQS_BUSQUEDA_INVENTO_DIRECTA:
-									intent = new Intent(getContext(), ArticuloInventoActivity.class);
-									intent.putExtra("Invento", g[0]);
+									intent = new Intent(getContext(), ArticuloObjetoActivity.class);
+									intent.putExtra("TipoObjeto", ControlDB.str_obj_Invento);
+									intent.putExtra(ControlDB.str_obj_Invento, g[0]);
 									startActivity(intent);
 									break;
 								case ModuloEntidad.RQS_BUSQUEDA_PINTURA_DIRECTA:
-									intent = new Intent(getContext(), ArticuloPinturaActivity.class);
-									intent.putExtra("Pintura", g[0]);
+									intent = new Intent(getContext(), ArticuloObjetoActivity.class);
+									intent.putExtra("TipoObjeto", ControlDB.str_obj_Pintura);
+									intent.putExtra(ControlDB.str_obj_Pintura, g[0]);
 									startActivity(intent);
 									break;
 							}
@@ -237,7 +239,8 @@ public class InicioFragment extends Fragment implements IObserver, SwipeRefreshL
 						}
 					});
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(getActivity(), ControlDB.res_falloConexion, "Error").mostrar();
+					//new DialogoAlerta(getActivity(), ControlDB.res_falloConexion, "Error").mostrar();
+					new ModuloNotificacion(getActivity()).mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaInventoVacio:
 					loading.dismiss();

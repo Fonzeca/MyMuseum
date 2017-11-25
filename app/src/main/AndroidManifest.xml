@@ -50,8 +50,6 @@
         <activity android:name=".Vista.ElegirEliminarPersonaActivity"/>
         <activity android:name=".Vista.ElegirNuevoObjetoActivity"/>
         <activity android:name=".Vista.ElegirEliminarObjetoActivity"/>
-        <activity android:name=".Vista.ArticuloInventoActivity"/>
-        <activity android:name=".Vista.ArticuloPinturaActivity"/>
         <activity android:name=".Vista.ArticuloObjetoActivity"/>
         <activity android:name=".Vista.BuscarObjetoActivity"/>
         <activity android:name=".Vista.HistorialPinturaActivity"/>

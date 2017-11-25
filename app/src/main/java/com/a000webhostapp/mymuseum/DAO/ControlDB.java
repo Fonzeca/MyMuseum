@@ -396,6 +396,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			notificarModulo(null, res_falloConexion);
 			cancel(true);
 		}
+		notificarModulo(null, res_falloConexion);
+		cancel(true);
 		return "NO SE CONECTO";
 	}
 
