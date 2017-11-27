@@ -17,7 +17,7 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +29,13 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 	private Pintura pinturaActual;
 	private Pintura[] pinturas;
 	
-	private ProgressDialog loading;
+	private ModuloNotificacion notificacion;
 	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eliminar_pintura);
+	
+		notificacion = new ModuloNotificacion(this);
 	
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -64,19 +66,7 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 	}
 	
 	private void buscarInfoSpinners(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
-		
+		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarPinturas(this);
 	}
     private void actualizarSpinners(){
@@ -90,7 +80,7 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 	}
 	
     public void update(Guardable[] g,int request, String respuesta) {
-        if(loading.isShowing()){
+        if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -102,18 +92,18 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 								break;
 						}
 						actualizarSpinners();
-						loading.dismiss();
+						notificacion.loadingDismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaPinturasVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPinturasVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaPinturasVacio);
 					break;
 			}
 			

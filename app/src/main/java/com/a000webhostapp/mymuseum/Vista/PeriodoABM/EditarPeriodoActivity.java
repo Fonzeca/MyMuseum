@@ -17,7 +17,7 @@ import com.a000webhostapp.mymuseum.IObserver;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +32,14 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
     private Periodo[] periodos;
     private Periodo periodoActual;
 	
-	private ProgressDialog loading;
-	private boolean cargado;
+	private ModuloNotificacion notificacion;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_periodo);
+	
+		notificacion = new ModuloNotificacion(this);
 	
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -144,19 +145,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	private void buscarInfoSpinner(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
-		
+		notificacion = new ModuloNotificacion(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
     
@@ -168,7 +157,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
     
 	
 	public void update(Guardable[] g,int request, String respuesta) {
-		if(loading.isShowing()){
+		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -180,18 +169,18 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 								break;
 						}
 						actualizarSpinnerInventores();
-						loading.dismiss();
+						notificacion.loadingDismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaPeriodoVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
 					break;
 				
 			}

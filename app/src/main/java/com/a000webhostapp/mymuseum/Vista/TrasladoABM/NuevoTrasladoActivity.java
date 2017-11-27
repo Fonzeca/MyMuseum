@@ -26,6 +26,7 @@ import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.Calendar;
 
@@ -40,7 +41,7 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 	private TextView fecha;
 	private Button save;
 	
-	private ProgressDialog loading;
+	private ModuloNotificacion notificacion;
 	private DatePickerDialog datePickerDialog;
 	private DatePickerDialog.OnDateSetListener listenerDate;
 	
@@ -51,6 +52,9 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_generar_traslado);
+		
+		notificacion = new ModuloNotificacion(this);
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		Calendar calendar = Calendar.getInstance();
@@ -126,18 +130,7 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 	private void buscarInfoSpinner(){
 		runOnUiThread(new Runnable() {
 			public void run() {
-				loading = new ProgressDialog(NuevoTrasladoActivity.this){
-					public void onBackPressed() {
-						if(isShowing()){
-							dismiss();
-						}else{
-							super.onBackPressed();
-						}
-					}
-				};
-				loading.setMessage("Espere un momento...");
-				loading.setCancelable(false);
-				loading.show();
+				notificacion.mostrarLoading();
 			}
 		});
 		
@@ -146,18 +139,7 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 	private void buscarInfoTrasladoPintura(Pintura pintura){
 		runOnUiThread(new Runnable() {
 			public void run() {
-				loading = new ProgressDialog(NuevoTrasladoActivity.this){
-					public void onBackPressed() {
-						if(isShowing()){
-							dismiss();
-						}else{
-							super.onBackPressed();
-						}
-					}
-				};
-				loading.setMessage("Espere un momento...");
-				loading.setCancelable(false);
-				loading.show();
+				notificacion.mostrarLoading();
 			}
 		});
 		
@@ -176,7 +158,7 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 	}
 	
 	public void update(Guardable[] g, int request, String respuesta) {
-		if(loading.isShowing()){
+		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					switch (request){
@@ -187,11 +169,11 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 							actualizarCampos();
 							break;
 					}
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					break;
 				case ControlDB.res_tablaTrasladoUnicoVacio:
 					actualizarCampos();
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					break;
 			}
 		}

@@ -25,8 +25,8 @@ import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 import com.a000webhostapp.mymuseum.Vista.InventorABM.NuevoInventorActivity;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 
 import java.util.ArrayList;
@@ -51,16 +51,17 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 	private ImageView imageView;
 	private TextView imagenTextView;
 	private Uri uriImagen;
-    
-    private ProgressDialog loading;
-    private boolean cargado;
+	
+	private ModuloNotificacion notificacion;
 
     private View.OnClickListener clickListenerBotones;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_invento);
-
+	
+		notificacion = new ModuloNotificacion(this);
+        
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -145,18 +146,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
     
 	
 	private void buscarInfoSpinners(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
+		notificacion.mostrarLoading();
 		
 		ModuloEntidad.obtenerModulo().buscarInventores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
@@ -208,7 +198,9 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 			if(uriImagen != null){
 				ModuloImagen.obtenerModulo().insertarImagen(nombreGuar,ControlDB.str_obj_Invento,this,uriImagen,this);
 			}
-			onBackPressed();
+			notificacion.mostrarLoading();
+			guardar.setEnabled(false);
+			//onBackPressed();
 		}
 	}
 	
@@ -241,7 +233,7 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 	}
 	
 	public void update(Guardable[] g, int request, String respuesta) {
-        if(loading.isShowing()){
+        if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -260,24 +252,21 @@ public class NuevoInventoActivity extends AppCompatActivity implements IObserver
 								break;
 						}
 						if(inventores != null && periodos != null){
-							loading.dismiss();
+							notificacion.loadingDismiss();
 						}
+					}else if(request == ModuloEntidad.RQS_ALTA_INVENTO){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se cargo exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
-				case ControlDB.res_falloConexion:
-					loading.dismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
-					break;
-				case ControlDB.res_tablaInventorVacio:
-					loading.dismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
-					break;
-				case ControlDB.res_tablaPeriodoVacio:
-					loading.dismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+				default:
+					notificacion.loadingDismiss();
+					notificacion.mostrarError(respuesta);
 					break;
 		
 			}

@@ -87,9 +87,8 @@ public class ModuloEntidad implements ISujeto {
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Invento);
     }
-	public void buscarInventosRefinada(IObserver observer, String nombre){
-		//Mandamos a buscar los Inventos
-		Request request = new RequestBusqueda(RQS_BUSQUEDA_INVENTOS_REFINADO,nombre);
+	public void buscarInventosRefinada(IObserver observer, RequestBusqueda req){
+		Request request = req;
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Invento);
 	}
@@ -124,8 +123,8 @@ public class ModuloEntidad implements ISujeto {
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Pintura);
 	}
-	public void buscarPinturasRefinada(IObserver observer, String nombre){
-		Request request = new RequestBusqueda(RQS_BUSQUEDA_PINTURAS_REFINADO, nombre);
+	public void buscarPinturasRefinada(IObserver observer, RequestBusqueda req){
+		Request request = req;
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Pintura);
 	}
@@ -269,7 +268,17 @@ public class ModuloEntidad implements ISujeto {
 			for (Objeto in: inventosCargados) {
 				for (int i = 0; i <= in.getNombre().length() - nombreABuscar.length(); i++){
 					if(comparador.compare(in.getNombre().substring(i,i+nombreABuscar.length()), nombreABuscar) == 0){
-						match.add(in);
+						if(requestBusqueda.getPeriodo() == null || requestBusqueda.getPeriodo().getNombrePeriodo().equals(in.getPeriodo().getNombrePeriodo())){
+							if(in instanceof Invento){
+								if(requestBusqueda.getInventor() == null || ((Invento)in).getInventor().getNombre().equals(requestBusqueda.getInventor().getNombre())){
+									match.add(in);
+								}
+							}else if(in instanceof Pintura){
+								if(requestBusqueda.getPintor() == null || ((Pintura)in).getPintor().getNombre().equals(requestBusqueda.getPintor().getNombre())){
+									match.add(in);
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -336,7 +345,11 @@ public class ModuloEntidad implements ISujeto {
 				case RQS_BUSQUEDA_INVENTOS_REFINADO:
 				case RQS_BUSQUEDA_PINTURAS_REFINADO:
 					Objeto[] resultado = busquedaPrivadaObjetos(g,request);
-					notificarObserver(request,resultado,respuesta);
+					if(resultado == null){
+						notificarObserver(request,resultado,ControlDB.res_busquedaFallida);
+					}else{
+						notificarObserver(request,resultado,respuesta);
+					}
 					break;
 				case RQS_BUSQUEDA_INVENTO_DIRECTA:
 				case RQS_BUSQUEDA_PINTURA_DIRECTA:
@@ -345,6 +358,10 @@ public class ModuloEntidad implements ISujeto {
 				case RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
 					insertarTrasladosEnPintura(request,g);
 					notificarObserver(request,g,respuesta);
+					break;
+				case RQS_ALTA_INVENTO:
+				case RQS_BAJA_INVENTO:
+					notificarObserver(request,null,respuesta);
 					break;
 			}
 		}else{

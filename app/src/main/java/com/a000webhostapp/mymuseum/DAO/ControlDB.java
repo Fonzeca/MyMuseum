@@ -53,7 +53,20 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String res_tablaPintoresVacio = "No hay Pintores en la base de datos";
 	public static final String res_tablaPinturasVacio = "No hay Pinturas en la base de datos";
 	public static final String res_tablaTrasladoUnicoVacio = "No hay Traslados asociado a la Pintura en la base de datos";
-
+	public static final String res_busquedaFallida = "Busqueda fallida";
+	
+	
+	public static final String res_exitoInsertarInvento = "El invento se guardó exitosamente.";
+	public static final String res_exitoInsertarPintura = "La pintura se guardó exitosamente.";
+	public static final String res_exitoInsertarPersona = "El inventor se guardó exitosamente.";
+	public static final String res_exitoInsertarPeriodo = "El período fue guardado correctamente.";
+	public static final String res_exitoInsertarTraslado = "El movimiento se generó exitosamente";
+	
+	
+	public static final String res_modificarObjeto = "El objeto se editó correctamente.";
+	public static final String res_modificarPersona = "La persona se editó correctamente.";
+	public static final String res_modificarPeriodo = "El período fue guardado correctamente.";
+	
 
 	
 	public ControlDB(Request request){
@@ -131,12 +144,22 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	
 	private boolean insertarPrivado(Guardable g){
 		String respuesta = conectar(g.configGuardar());
+		if(respuesta.equals(res_exitoInsertarInvento) || respuesta.equals(res_exitoInsertarPintura)
+													  || respuesta.equals(res_exitoInsertarPersona)
+													  || respuesta.equals(res_exitoInsertarPeriodo)){
+			notificarModulo(null,res_exito);
+		}
 		Log.v("Response DB", respuesta);
 		return true;
 	}
 	
 	private boolean modificarPrivado(Guardable g){
 		String respuesta = conectar(g.configModificar());
+		if(respuesta.equals(res_modificarObjeto) || respuesta.equals(res_modificarPersona)
+												 || respuesta.equals(res_modificarPeriodo)){
+			notificarModulo(null,res_exito);
+		}
+		
 		Log.v("Response DB", respuesta);
 		return true;
 	}
@@ -174,6 +197,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			respuestaFinal = buscarInvento(jsonRespuesta);
 		}else if(entidad.equals(str_obj_Pintura)){
 			respuestaFinal = buscarPintura(jsonRespuesta);
+		}
+		if(respuestaFinal == null || respuestaFinal.length == 0 || respuestaFinal[0] == null){
+			notificarModulo(null,res_busquedaFallida);
+			cancel(true);
+			return null;
 		}
 		
 		return respuestaFinal;

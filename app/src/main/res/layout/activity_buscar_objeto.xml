@@ -55,33 +55,46 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/boton_mas_opciones_BuscarObjeto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mostrar más opciones"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/colorPrimary"/>
+                android:clickable="true"
+                android:text="Mostrar más opciones"
+                android:textColor="@color/colorPrimary"
+                android:focusable="true"/>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/layout_mas_opciones_BuscarObjeto"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Período histórico"
-                android:textSize="18sp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Período histórico"
+                    android:textSize="18sp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Inventor"
-                android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/spinner_periodos_BuscarObjeto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/view_persona_BuscarObjeto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Inventor"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_persona_BuscarObjeto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/Save_BuscarObjeto"

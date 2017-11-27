@@ -26,8 +26,8 @@ import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
 import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
@@ -50,13 +50,15 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 	private Uri uriImagen;
 	private Imagen imagen;
 	private boolean imagenBuscada;
-
-    private ProgressDialog loading;
+	
+	private ModuloNotificacion notificacion;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_pintura);
+		notificacion = new ModuloNotificacion(this);
+        
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -141,18 +143,7 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
     }
 	
 	private void buscarInfoSpinners(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
+		notificacion.mostrarLoading();
 		
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
@@ -217,7 +208,7 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 	}
 	
     public void update(Guardable[] g,int request, String respuesta) {
-		if(loading.isShowing()){
+		if(notificacion.isLoadingShowing()){
 			switch(respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -246,24 +237,24 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 						}
 						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
 						if(periodosCargados != null && pintoresCargados != null && imagenBuscada){
-							loading.dismiss();
+							notificacion.loadingDismiss();
 						}
 					}
 					break;
 				case ControlDB.res_falloConexion:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaInventorVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaInventorVacio);
 					break;
 				case ControlDB.res_tablaPeriodoVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
 					break;
 			}
 		}

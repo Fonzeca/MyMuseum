@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.a000webhostapp.mymuseum.Constantes;
+import com.a000webhostapp.mymuseum.Controlador.RequestBusqueda;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.R;
 
@@ -27,11 +28,15 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 	private Fragment incioFragment, infoFragment, adminFragment;
 	private Fragment loginFragment;
 	
+	private ModuloNotificacion notificacion;
+	
 	public final int requestBuscar = 6;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+	
+		notificacion = new ModuloNotificacion(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,19 +144,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 		if(requestCode == requestBuscar){
 			if(resultCode == RESULT_OK){
 				startFragmentInicio();
-				String[] partesData = data.getDataString().split("=");
-				if(partesData[0].equals(ControlDB.str_obj_Invento)){
-					((InicioFragment)incioFragment).busquedaInventos(partesData[1]);
-				}else if(partesData[0].equals(ControlDB.str_obj_Pintura)){
-					((InicioFragment)incioFragment).busquedaPinturas(partesData[1]);
-				}
+				InicioFragment inicioF = (InicioFragment)incioFragment;
+				
+				RequestBusqueda requestBusqueda = (RequestBusqueda)data.getSerializableExtra("Request");
+				inicioF.busquedaRefinada(requestBusqueda);
 			}else if(resultCode == BuscarObjetoActivity.responseScannerQR){
 				startFragmentInicio();
 				String[] partesData = data.getDataString().split("=");
 				if(partesData.length != 2){
-					new DialogoAlerta(this,"Parece que el código escaneado no pertence al museo, por favor inténtelo de nuevo.", "Error");
+					notificacion.mostrarError("Parece que el código escaneado no pertence al museo, por favor inténtelo de nuevo.");
 				}else if(partesData[0].equals(ControlDB.str_obj_Invento) || partesData[0].equals(ControlDB.str_obj_Pintura)){
-					((InicioFragment)incioFragment).busquedaObjetoDirecto(partesData[1],partesData[0]);
+					InicioFragment inicioF = (InicioFragment)incioFragment;
+					inicioF.busquedaObjetoDirecto(partesData[1],partesData[0]);
+				}else{
+					notificacion.mostrarError("Parece que el código escaneado no pertence al museo, por favor inténtelo de nuevo.");
 				}
 			}
 		}

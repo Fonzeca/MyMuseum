@@ -2,27 +2,34 @@ package com.a000webhostapp.mymuseum.Controlador;
 
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
+import com.a000webhostapp.mymuseum.Modelo.Pintor;
+
+import java.io.Serializable;
 
 /**
  * Created by Alexis on 29/10/2017.
  */
 
-public class RequestBusqueda extends Request {
-	private String nombre,descripcion;
+public class RequestBusqueda extends Request{
+	private String nombre;
 	private Periodo periodo;
 	private Inventor inventor;
-	private int año;
+	private Pintor pintor;
 	
-	public RequestBusqueda(int id, String nombre, String descripcion, Periodo periodo, Inventor inventor, int año) {
+	public RequestBusqueda(int id, String nombre, Periodo periodo, Inventor inventor) {
 		super(id);
 		this.nombre = nombre;
-		this.descripcion = descripcion;
 		this.periodo = periodo;
 		this.inventor = inventor;
-		this.año = año;
+	}
+	public RequestBusqueda(int id, String nombre, Periodo periodo, Pintor pintor) {
+		super(id);
+		this.nombre = nombre;
+		this.periodo = periodo;
+		this.pintor = pintor;
 	}
 	public RequestBusqueda(int id, String nombre){
-		this(id,nombre,null,null,null,0);
+		this(id,nombre,null, (Inventor) null);
 	}
 	
 	public String getNombre() {
@@ -31,14 +38,6 @@ public class RequestBusqueda extends Request {
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	
-	public String getDescripcion() {
-		return descripcion;
-	}
-	
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 	
 	public Periodo getPeriodo() {
@@ -57,11 +56,11 @@ public class RequestBusqueda extends Request {
 		this.inventor = inventor;
 	}
 	
-	public int getAño() {
-		return año;
+	public Pintor getPintor() {
+		return pintor;
 	}
 	
-	public void setAño(int año) {
-		this.año = año;
+	public void setPintor(Pintor pintor) {
+		this.pintor = pintor;
 	}
 }

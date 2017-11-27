@@ -16,7 +16,7 @@ import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,13 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 	private Inventor inventorActual;
 	private Inventor[] inventores;
 	
-	private ProgressDialog loading;
+	private ModuloNotificacion notificacion;
 	private boolean cargado;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eliminar_inventor);
+		notificacion = new ModuloNotificacion(this);
 	
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -70,18 +71,7 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 	}
 	
 	private void buscarInfoSpinners(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
+		notificacion.mostrarLoading();
 		
 		ModuloEntidad.obtenerModulo().buscarInventores(this);
 	}
@@ -110,7 +100,7 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 	}
 	
 	public void update(Guardable[] g,int request, String respuesta) {
-		if(loading.isShowing()){
+		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -122,18 +112,18 @@ public class EliminarInventorActivity extends AppCompatActivity implements IObse
 								break;
 						}
 						actualizarSpinners();
-						loading.dismiss();
+						notificacion.loadingDismiss();
 					}
 					break;
 				case ControlDB.res_falloConexion:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaInventorVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaInventorVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaInventorVacio);
 					break;
 			}
 		}

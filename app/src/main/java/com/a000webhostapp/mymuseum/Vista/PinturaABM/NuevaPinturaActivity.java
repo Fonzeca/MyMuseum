@@ -24,7 +24,7 @@ import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.DialogoAlerta;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
@@ -52,7 +52,7 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 	private TextView imagenTextView;
 	private Uri uriImagen;
 	
-	private ProgressDialog loading;
+	private ModuloNotificacion notificacion;
 	
 	private View.OnClickListener clickListenerBotones;
 	
@@ -60,6 +60,9 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nueva_pintura);
+		
+		notificacion = new ModuloNotificacion(this);
+		
 		buscarInfoSpinners();
 		
 		clickListenerBotones = new View.OnClickListener() {
@@ -168,18 +171,7 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		}
 	}
 	private void buscarInfoSpinners(){
-		loading = new ProgressDialog(this){
-			public void onBackPressed() {
-				if(isShowing()){
-					dismiss();
-				}else{
-					super.onBackPressed();
-				}
-			}
-		};
-		loading.setMessage("Espere un momento...");
-		loading.setCancelable(false);
-		loading.show();
+		notificacion.mostrarLoading();
 		
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
@@ -213,7 +205,7 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 	}
 	
 	public void update(Guardable[] g, int request, String respuesta) {
-		if(loading.isShowing()){
+		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
 					if(g != null){
@@ -233,24 +225,24 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 								
 						}
 						if(pintores != null && periodos != null){
-							loading.dismiss();
+							notificacion.loadingDismiss();
 						}
 					}
 					break;
 				case ControlDB.res_falloConexion:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_falloConexion, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_falloConexion);
 					break;
 				case ControlDB.res_tablaPintoresVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPintoresVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaPintoresVacio);
 					break;
 				case ControlDB.res_tablaPeriodoVacio:
-					loading.dismiss();
+					notificacion.loadingDismiss();
 					//Creamos un alertDialog en el Thread UI del activity
-					new DialogoAlerta(this, ControlDB.res_tablaPeriodoVacio, "Error").mostrar();
+					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
 					break;
 				
 			}

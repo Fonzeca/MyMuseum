@@ -7,13 +7,14 @@
     tools:context="com.a000webhostapp.mymuseum.Vista.InicioFragment">
 
     <TextView
+        android:id="@+id/titulo_inicio_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inventos agregados recientemente:"
+        android:padding="16dp"
+        android:text="Objetos agregados recientemente:"
         android:textColor="#333"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="16dp"/>
+        android:textStyle="bold"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeActualizar_InicioFragment"
         android:layout_width="match_parent"
