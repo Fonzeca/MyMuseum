@@ -37,16 +37,12 @@ public class LoginFragment extends Fragment {
 					+ " must implement OnFragmentInteractionListener");
 		}
 	}
-	
-	
-	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_admin_panel_login, container, false);
 	}
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		claveText = (EditText)view.findViewById(R.id.clave_AdminLogin);
 		
@@ -63,12 +59,13 @@ public class LoginFragment extends Fragment {
 			listener.onButtonPressedI();
 		}
 	}
-	
 	public void onDetach() {
 		super.onDetach();
 		listener = null;
 	}
-	
+	public static String getClave(){
+		return clave;
+	}
 	public interface OnFragmentButtonPressed {
 		void onButtonPressedI();
 	}

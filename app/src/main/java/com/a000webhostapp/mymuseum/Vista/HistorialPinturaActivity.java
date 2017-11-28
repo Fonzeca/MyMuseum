@@ -27,7 +27,6 @@ import java.util.Locale;
  */
 
 public class HistorialPinturaActivity extends AppCompatActivity implements IObserverEntidad {
-	
 	private ListView listaPinturas;
 	private ProgressDialog loading;
 	
@@ -125,7 +124,6 @@ public class HistorialPinturaActivity extends AppCompatActivity implements IObse
 		onBackPressed();
 		return true;
 	}
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(loading.isShowing()){
 			switch (respuesta){

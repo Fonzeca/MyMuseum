@@ -7,14 +7,14 @@ import com.a000webhostapp.mymuseum.Modelo.Pintura;
  */
 
 public class RequestHistorialPintura extends Request {
-	private Pintura p;
+	private Pintura pintura;
 	
 	public RequestHistorialPintura(int id, Pintura p) {
 		super(id);
-		this.p = p;
+		this.pintura = p;
 	}
 	
 	public Pintura getPintura() {
-		return p;
+		return pintura;
 	}
 }

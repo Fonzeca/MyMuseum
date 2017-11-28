@@ -10,13 +10,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +26,8 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
     private CheckBox AC;
     private Button guardar;
 	private Spinner inventoresSpin;
-
-	
     private Inventor inventorActual;
-	
 	private Inventor[] inventores;
-	
-	
 	private ModuloNotificacion notificacion;
     
     
@@ -128,7 +123,6 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 			}
 		}
 	}
-	
 	private void buscarInfoSpinner(){
 		notificacion.mostrarLoading();
 	
@@ -138,7 +132,6 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 		onBackPressed();
 		return true;
 	}
-	
 	public void update(Guardable[] g,int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

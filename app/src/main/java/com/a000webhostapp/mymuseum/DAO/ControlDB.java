@@ -12,6 +12,7 @@ import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
+import com.a000webhostapp.mymuseum.Modelo.Persona;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
@@ -87,6 +88,8 @@ public class ControlDB extends AsyncTask<Object, String, Object[]> implements DA
 				return obtenerTopBusquedasPrivado((String)objects[1], (int)objects[2]);
 			case 10:
 				return obtenerTotalBusquedasPrivado();
+			case 11:
+				return obtenerInventorDestacadoPrivado();
 		}
 
 		return null;
@@ -150,6 +153,9 @@ public class ControlDB extends AsyncTask<Object, String, Object[]> implements DA
 	}
 	public void obtenerTotalBusquedas(){
 		execute(10);
+	}
+	public void obtenerInventorDestacado(){
+		execute(11);
 	}
 	//----------------
 	private boolean borrarPrivado(String parametro){
@@ -280,6 +286,18 @@ public class ControlDB extends AsyncTask<Object, String, Object[]> implements DA
 		String[] respuestaFinal = new String[1];
 		respuestaFinal[0] = respuesta;
 		return respuestaFinal;
+	}
+	private String[] obtenerInventorDestacadoPrivado(){
+		String respuesta = conectar("accion=obtener_inventor_destacado");
+		Log.v("Response DB", respuesta);
+		Persona[] inventorSolo = (Persona[]) buscarInventores(respuesta);
+		if(inventorSolo == null){
+			return null;
+		}else{
+			String[] respuestaFinal = new String[1];
+			respuestaFinal[0] = inventorSolo[0].getNombre();
+			return respuestaFinal;
+		}
 	}
 	//----------------
 	

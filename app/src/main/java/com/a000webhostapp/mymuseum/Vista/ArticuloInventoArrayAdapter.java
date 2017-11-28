@@ -38,8 +38,6 @@ public class ArticuloInventoArrayAdapter extends ArrayAdapter<Objeto> {
         this.objetos = objetos;
     }
 
-    @NonNull
-    @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         

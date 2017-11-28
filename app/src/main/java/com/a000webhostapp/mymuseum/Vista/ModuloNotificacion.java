@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 public class ModuloNotificacion {
 	private Activity activity;
-	
 	private AlertDialog alertDialog;
 	private ProgressDialog loading;
 	
@@ -45,6 +44,7 @@ public class ModuloNotificacion {
 			}
 		});
 	}
+	
 	public void mostrarError(final String mensaje){
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
@@ -62,7 +62,6 @@ public class ModuloNotificacion {
 			}
 		});
 	}
-	
 	public void mostarNotificacion(final String mensaje){
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
@@ -70,16 +69,12 @@ public class ModuloNotificacion {
 			}
 		});
 	}
-	
-	
 	public boolean isAlertaShowing(){
 		return alertDialog.isShowing();
 	}
 	public boolean isLoadingShowing(){
 		return loading.isShowing();
 	}
-	
-	
 	public void alertaDismiss(){
 		alertDialog.dismiss();
 	}

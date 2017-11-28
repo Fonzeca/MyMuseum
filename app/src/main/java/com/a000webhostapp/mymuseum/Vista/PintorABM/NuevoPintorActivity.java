@@ -9,11 +9,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 /**
  * Created by Alexis on 10/10/2017.
@@ -23,7 +23,6 @@ public class NuevoPintorActivity extends AppCompatActivity implements IObserverE
 	private EditText nomYApe, año,lugarNacimiento;
 	private CheckBox AC;
 	private Button btnGuardar;
-	
 	private ModuloNotificacion notificacion;
 	
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,8 +69,6 @@ public class NuevoPintorActivity extends AppCompatActivity implements IObserverE
 		onBackPressed();
 		return true;
 	}
-	
-	@Override
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

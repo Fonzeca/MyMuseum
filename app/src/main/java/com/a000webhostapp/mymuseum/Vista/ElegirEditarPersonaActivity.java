@@ -19,7 +19,6 @@ import com.a000webhostapp.mymuseum.Vista.PintorABM.EditarPintorActivity;
  */
 
 public class ElegirEditarPersonaActivity extends AppCompatActivity {
-	
 	private Spinner spinnerPersonas;
 	private Button save;
 	
@@ -55,7 +54,6 @@ public class ElegirEditarPersonaActivity extends AppCompatActivity {
 			}
 		});
 	}
-	
 	private void actualizarSpinnerPersonas() {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ControlDB.personas);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

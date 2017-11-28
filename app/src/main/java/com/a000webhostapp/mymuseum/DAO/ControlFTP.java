@@ -41,6 +41,12 @@ public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
 	public void insertar(Uri uri){
 		execute(uri);
 	}
+	public void cambiarNombre(String nombreAnterior, String nombreActual){
+		Uri.Builder builder = new Uri.Builder();
+		builder.query(nombreAnterior + "/" + nombreActual);
+		Uri uri = builder.build();
+		execute(uri);
+	}
 	
 	protected Bitmap doInBackground(Uri... uris) {
 		conectar();
@@ -55,6 +61,9 @@ public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
 				break;
 			case ModuloImagen.RQS_INSERTAR_IMAGEN:
 				insertarImagen(request.getInputStreamContext(uri));
+				break;
+			case ModuloImagen.RQS_CAMBIAR_NOMBRE_IMAGEN:
+				cambiarNombrePrivado(uri.getQuery());
 				break;
 		}
 		
@@ -94,6 +103,19 @@ public class ControlFTP extends AsyncTask<Uri, String, Bitmap>{
 		Log.v("Obtener",""+busco);
 		return bitmap;
 	}
+	private boolean cambiarNombrePrivado(String query){
+		boolean modifico = false;
+		String nombreAnterior, nombreActual;
+		nombreAnterior = query.split("/")[0];
+		nombreActual = query.split("/")[1];
+		try {
+			modifico = ftp.rename(pathImagenFTP + nombreAnterior + extensionArchivo,pathImagenFTP + nombreActual + extensionArchivo );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modifico;
+	}
+	//-----------
 	private boolean conectar(){
 		boolean conecto = false;
 		try {

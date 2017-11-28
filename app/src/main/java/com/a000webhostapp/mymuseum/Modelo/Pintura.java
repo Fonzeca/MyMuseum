@@ -48,7 +48,7 @@ public class Pintura extends Objeto{
 		String nombreConfig= "nombre="+nombre;
 		String descriConfig= "descripcion="+descripcion;
 		String periConfig= "nombre_periodo="+periodo.getNombrePeriodo();
-		String pintorConfig= "nombre_inventor="+ pintor.getNombre();
+		String pintorConfig= "nombre_persona="+ pintor.getNombre();
 		String añoConfig= "anio="+añoInvencion;
 		
 		return accion + "&" + entidad + "&" + idConfig + "&" + nombreConfig + "&" + añoConfig +

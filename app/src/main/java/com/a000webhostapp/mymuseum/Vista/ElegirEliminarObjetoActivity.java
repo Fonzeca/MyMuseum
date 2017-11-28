@@ -19,7 +19,6 @@ import com.a000webhostapp.mymuseum.Vista.PinturaABM.EliminarPinturaActivity;
  */
 
 public class ElegirEliminarObjetoActivity extends AppCompatActivity {
-	
 	private Spinner spinnerObjetos;
 	private Button save;
 	
@@ -52,7 +51,6 @@ public class ElegirEliminarObjetoActivity extends AppCompatActivity {
 			}
 		});
 	}
-	
 	private void actualizarSpinnerPersonas() {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ControlDB.objetos);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

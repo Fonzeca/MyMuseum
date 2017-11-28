@@ -9,12 +9,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,10 @@ import java.util.List;
 public class EliminarPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
     private Button eliminar;
     private Spinner periodoSpinner;
-    
     private Periodo periodoActual;
     private Periodo[] periodos;
-	
 	private ModuloNotificacion notificacion;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eliminar_periodo);
@@ -65,17 +62,14 @@ public class EliminarPeriodoActivity extends AppCompatActivity implements IObser
 		buscarInfoSpinners();
 		
     }
-    
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-	
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
-	
 	private void actualizarSpinners(){
 		List<String> spinnerArray =  new ArrayList<String>();
 		if(periodos != null){
@@ -99,7 +93,6 @@ public class EliminarPeriodoActivity extends AppCompatActivity implements IObser
 			}
 		}
 	}
-    
 	public void update(Guardable[] g,int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

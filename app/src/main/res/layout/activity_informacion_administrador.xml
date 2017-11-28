@@ -65,6 +65,19 @@
                     android:textAlignment="center"
                     android:textStyle="italic"/>
 
+                <TextView
+                    android:id="@+id/view_mostar_clave_info_general"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:clickable="true"
+                    android:text="Mostrar clave"
+                    android:textColor="@color/colorPrimary"
+                    android:focusable="true"
+                    android:textAlignment="center"/>
+
             </LinearLayout>
 
             <View

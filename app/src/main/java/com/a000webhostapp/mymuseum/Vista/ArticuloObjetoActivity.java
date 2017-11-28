@@ -46,7 +46,6 @@ public class ArticuloObjetoActivity extends AppCompatActivity implements IObserv
 	
 	
 	
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_articulo_objeto);
@@ -133,8 +132,6 @@ public class ArticuloObjetoActivity extends AppCompatActivity implements IObserv
 				break;
 		}
 	}
-	
-	
 	private void buscarInfo(){
 		switch (tipoObjeto){
 			case ControlDB.str_obj_Invento:
@@ -145,7 +142,6 @@ public class ArticuloObjetoActivity extends AppCompatActivity implements IObserv
 				break;
 		}
 	}
-	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if(Constantes.getADMIN()){
 			MenuInflater inflater = getMenuInflater();

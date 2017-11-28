@@ -12,13 +12,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.Calendar;
 
@@ -27,16 +27,13 @@ import java.util.Calendar;
  */
 
 public class NuevoTrasladoActivity extends AppCompatActivity implements IObserverEntidad {
-	
 	private Spinner spinnerPinturas;
 	private TextView destino, origen;
 	private TextView fecha;
 	private Button save;
-	
 	private ModuloNotificacion notificacion;
 	private DatePickerDialog datePickerDialog;
 	private DatePickerDialog.OnDateSetListener listenerDate;
-	
 	private Pintura pinturaActual;
 	private Traslado trasladoAnterior;
 	
@@ -149,7 +146,6 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 		onBackPressed();
 		return true;
 	}
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

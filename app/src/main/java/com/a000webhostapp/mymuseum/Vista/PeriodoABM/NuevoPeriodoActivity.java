@@ -8,18 +8,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 public class NuevoPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
-
     private EditText nombrePeriodo,añoIncioPeriodo, añoFinPeriodo;
     private CheckBox checkAñoIncio, checkAñoFin;
     private Button btnGuardar;
-    
     private ModuloNotificacion notificacion;
 
 
@@ -73,14 +71,10 @@ public class NuevoPeriodoActivity extends AppCompatActivity implements IObserver
 			btnGuardar.setEnabled(false);
         }
     }
-
-    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-    
-    @Override
     public void update(Guardable[] g, int request, String respuesta) {
         if(notificacion.isLoadingShowing()){
             switch (respuesta){

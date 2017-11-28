@@ -11,29 +11,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 public class EditarPintorActivity extends AppCompatActivity implements IObserverEntidad {
     private EditText nombre, año, lugar;
     private CheckBox AC;
     private Button guardar;
 	private Spinner pintoresSpinner;
-
-	
     private Pintor pintorActual;
-	
 	private Pintor[] pintores;
-	
-	
 	private ModuloNotificacion notificacion;
     
     
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editar_pintor);
@@ -103,7 +97,6 @@ public class EditarPintorActivity extends AppCompatActivity implements IObserver
 			pintoresSpinner.setAdapter(adapter);
 		}
 	}
-	
 	private void buscarInfoSpinner(){
 		notificacion.mostrarLoading();
 	
@@ -113,7 +106,6 @@ public class EditarPintorActivity extends AppCompatActivity implements IObserver
 		onBackPressed();
 		return true;
 	}
-	
 	public void update(Guardable[] g,int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

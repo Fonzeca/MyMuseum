@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
@@ -24,7 +25,6 @@ import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.InventorABM.NuevoInventorActivity;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 
 import java.util.ArrayList;
@@ -34,24 +34,21 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	private static final int RQS_BUSCARIMAGEN = 0;
 	private static final int RQS_NUEVO_INVENTOR = 100;
 	private static final int RQS_NUEVO_PERIODO = 101;
+	
     private Inventor[] inventoresCargados;
     private Periodo[] periodosCargados;
-
     private Invento invento;
-	
 	private LinearLayout agregarInventor, agregarPeriodo;
-	
     private TextView nombreInvento, descripcion, añoInvencion;
     private Spinner nombrePeriodoSpinner, nombreInventorSpinner;
     private CheckBox ACInvento, theMachine;
     private Button guardar;
-	
 	private ImageView imageView;
 	private TextView imagenTextView;
 	private Uri uriImagen;
 	private Imagen imagen;
 	private boolean imagenBuscada;
-
+	private String nombreAnterior;
     private ModuloNotificacion notificacion;
 
 
@@ -64,6 +61,8 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         invento = (Invento) getIntent().getSerializableExtra("Invento");
+        
+        nombreAnterior = invento.getNombre();
         
 		buscarInfoSpinners();
 		
@@ -118,6 +117,10 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 				if(uriImagen != null){
 					ModuloImagen.obtenerModulo().insertarImagen(nombreInvento.getText().toString(),ControlDB.str_obj_Invento,EditarInventoActivity.this,uriImagen,EditarInventoActivity.this);
 				}
+				if(!nombreAnterior.equals(invento.getNombre()) && uriImagen == null){
+					ModuloImagen.obtenerModulo().cambiarNombre(ControlDB.str_obj_Invento+nombreAnterior,ControlDB.str_obj_Invento+invento.getNombre());
+				}
+				
 				notificacion.mostrarLoading();
 				guardar.setEnabled(false);
             }
@@ -146,8 +149,6 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         descripcion.setText(invento.getDescripcion());
 		
     }
-
-    
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
 		
@@ -198,19 +199,14 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
         nombrePeriodoSpinner.setAdapter(adapter);
         nombrePeriodoSpinner.setSelection(selected);
     }
-	
-	@Override
 	protected void onRestart() {
 		super.onRestart();
 		buscarInfoSpinners();
 	}
-	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-	
-	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode){
 			case RQS_BUSCARIMAGEN:
@@ -221,7 +217,6 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		}
   
 	}
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
@@ -274,7 +269,6 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 		Intent intent = new Intent(this, NuevoInventorActivity.class);
 		startActivityForResult(intent,RQS_NUEVO_INVENTOR);
 	}
-	
 	private void startNuevoPeriodoActivity() {
 		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
 		startActivityForResult(intent,RQS_NUEVO_PERIODO);

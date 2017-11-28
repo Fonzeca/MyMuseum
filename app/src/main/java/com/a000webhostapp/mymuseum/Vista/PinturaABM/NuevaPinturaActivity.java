@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
@@ -23,7 +24,6 @@ import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
@@ -35,27 +35,21 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 	private static final int RQS_BUSCARIMAGEN = 0;
 	
 	private LinearLayout agregarPintor, agregarPeriodo;
-	
 	private TextView nombrePintura, descripcion, añoCreacion;
 	private Spinner nombrePeriodoSpinner, nombrePintorSpinner;
 	private CheckBox ACPintura;
 	private Button guardar;
-	
 	private Pintor[] pintores;
 	private Periodo[] periodos;
-	
 	private Pintor pintorActual;
 	private Periodo periodoActual;
-	
 	private ImageView imageView;
 	private TextView imagenTextView;
 	private Uri uriImagen;
-	
 	private ModuloNotificacion notificacion;
 	
 	private View.OnClickListener clickListenerBotones;
 	
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nueva_pintura);
@@ -176,7 +170,6 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
-	
 	protected void onRestart() {
 		super.onRestart();
 		buscarInfoSpinners();
@@ -185,7 +178,6 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		onBackPressed();
 		return true;
 	}
-	
 	private void startNuevoPintorActivity() {
 		Intent intent = new Intent(this, NuevoPintorActivity.class);
 		startActivity(intent);
@@ -194,8 +186,6 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 		Intent intent = new Intent(this, NuevoPeriodoActivity.class);
 		startActivity(intent);
 	}
-	
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RQS_BUSCARIMAGEN){
 			uriImagen = data.getData();
@@ -203,7 +193,6 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 			imageView.setAdjustViewBounds(true);
 		}
 	}
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

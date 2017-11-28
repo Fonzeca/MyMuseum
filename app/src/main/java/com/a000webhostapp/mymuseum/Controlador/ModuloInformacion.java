@@ -28,6 +28,7 @@ public class ModuloInformacion implements ISujetoInfo {
 	public static final int RQS_SUMA_DE_BUSQUEDA = 2101;
 	public static final int RQS_BUSQUEDA_TOP_INVENTOS = 2102;
 	public static final int RQS_BUSQUEDA_TOP_PINTURAS = 2103;
+	public static final int RQS_BUSQUEDA_INVENTOR_DESTACADO = 2104;
 	
 	
 	
@@ -57,6 +58,11 @@ public class ModuloInformacion implements ISujetoInfo {
 		Request request = new Request(RQS_BUSQUEDA_INFO_TOTAL_INVENTORES);
 		registrarObserver(observer,request);
 		new ControlDB(request).obtenerInfoCantidad(ControlDB.str_per_Inventor);
+	}
+	public void obtenerInventorDestacado(IObserverInfo observer){
+		Request request = new Request(RQS_BUSQUEDA_INVENTOR_DESTACADO);
+		registrarObserver(observer,request);
+		new ControlDB(request).obtenerInventorDestacado();
 	}
 	//------------------------
 	public void obtenerTotalPinturas(IObserverInfo observer){
@@ -130,6 +136,7 @@ public class ModuloInformacion implements ISujetoInfo {
 				case RQS_BUSQUEDA_TOP_PINTURAS:
 				case RQS_BUSQUEDA_INFO_TOTAL_TRASLADOS:
 				case RQS_BUSQUEDA_INFO_TOTAL_BUSQUEDAS:
+				case RQS_BUSQUEDA_INVENTOR_DESTACADO:
 					notificarObserver(request,data,respuesta);
 					break;
 			}

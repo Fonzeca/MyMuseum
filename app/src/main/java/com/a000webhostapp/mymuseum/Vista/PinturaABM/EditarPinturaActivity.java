@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
@@ -23,30 +24,26 @@ import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
 public class EditarPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	private static final int RQS_BUSCARIMAGEN = 0;
+	
     private Pintor[] pintoresCargados;
     private Periodo[] periodosCargados;
-
     private Pintura pintura;
-	
 	private LinearLayout agregarPintor, agregarPeriodo;
-	
     private TextView nombre, descripcion, año;
     private Spinner nombrePeriodoSpinner, nombrePintoresSpinner;
     private CheckBox ACPintura;
     private Button guardar;
-	
 	private ImageView imageView;
 	private TextView imagenTextView;
 	private Uri uriImagen;
 	private Imagen imagen;
 	private boolean imagenBuscada;
-	
+	private String nombreAnterior;
 	private ModuloNotificacion notificacion;
 
 
@@ -61,6 +58,7 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 
         pintura = (Pintura) getIntent().getSerializableExtra("Pintura");
         
+		nombreAnterior = pintura.getNombre();
 		buscarInfoSpinners();
 		
         nombre = (TextView) findViewById(R.id.editar_pintura_nombre_pintura);
@@ -110,6 +108,9 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 				if(uriImagen != null){
 					ModuloImagen.obtenerModulo().insertarImagen(nombre.getText().toString(),ControlDB.str_obj_Pintura,EditarPinturaActivity.this,uriImagen,EditarPinturaActivity.this);
 				}
+				if(!nombreAnterior.equals(pintura.getNombre()) && uriImagen == null){
+					ModuloImagen.obtenerModulo().cambiarNombre(ControlDB.str_obj_Pintura+nombreAnterior,ControlDB.str_obj_Pintura+pintura.getNombre());
+				}
 				notificacion.mostrarLoading();
 				guardar.setEnabled(false);
             }
@@ -138,7 +139,6 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
         descripcion.setText(pintura.getDescripcion());
 		
     }
-	
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
 		
@@ -183,18 +183,14 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
         nombrePeriodoSpinner.setAdapter(adapter);
         nombrePeriodoSpinner.setSelection(selected);
     }
-	
-	@Override
 	protected void onRestart() {
 		super.onRestart();
 		buscarInfoSpinners();
 	}
-	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RQS_BUSCARIMAGEN){
 			uriImagen = data.getData();
@@ -203,7 +199,6 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 		}
 		
 	}
-	
     public void update(Guardable[] g,int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch(respuesta){

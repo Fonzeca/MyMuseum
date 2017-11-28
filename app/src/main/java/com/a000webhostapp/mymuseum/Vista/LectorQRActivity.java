@@ -23,26 +23,21 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class LectorQRActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
 	private ZBarScannerView scannerView;
 	
-	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		scannerView = new ZBarScannerView(this);
 		setContentView(scannerView);
 		
 	}
-	
 	protected void onResume() {
 		super.onResume();
 		scannerView.setResultHandler(this);
 		scannerView.startCamera();
 	}
-	
-	@Override
 	protected void onPause() {
 		super.onPause();
 		scannerView.stopCamera();
 	}
-	
 	public void handleResult(Result result) {
 		String respuestaEntera = "";
 		try {

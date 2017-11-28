@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
     private Fragment fragmentActual;
 	private Fragment incioFragment, infoFragment, adminFragment;
 	private Fragment loginFragment;
-	
 	private ModuloNotificacion notificacion;
 	
 	public final int requestBuscar = 6;
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 		Intent intent = new Intent(this, BuscarObjetoActivity.class);
 		startActivityForResult(intent, requestBuscar);
 	}
-	
 	private void startFragmentInicio(){
 		if(incioFragment == null){
 			incioFragment = new InicioFragment();
@@ -130,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 		fragmentManager.beginTransaction().replace(R.id.frame_content, adminFragment).commitNowAllowingStateLoss();
 		fragmentActual = adminFragment;
 	}
-	
 	public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -138,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
             super.onBackPressed();
         }
     }
-	
-	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == requestBuscar){
 			if(resultCode == RESULT_OK){
@@ -162,8 +157,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 			}
 		}
 	}
-	
-	@Override
 	public void onButtonPressedI() {
 		startAdminPanelFragment();
 	}

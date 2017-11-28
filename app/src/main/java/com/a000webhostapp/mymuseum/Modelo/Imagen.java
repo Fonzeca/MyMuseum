@@ -25,18 +25,16 @@ public class Imagen implements Guardable{
 	public Imagen(Bitmap bitmap) {
 		this.bitmap = bitmap;
 	}
+	
 	public String configGuardar() {
 		return null;
 	}
-	
 	public String configModificar() {
 		return null;
 	}
-	
 	public Bitmap getBitmap() {
 		return bitmap;
 	}
-	
 	public static Imagen obtenerImagen(Uri uri, Context context){
 		Imagen imagen = null;
 		try {

@@ -14,7 +14,6 @@ import com.a000webhostapp.mymuseum.Vista.InventorABM.NuevoInventorActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
 public class ElegirNuevaPersonaActivity extends AppCompatActivity {
-	
 	private Spinner spinnerPersonas;
 	private Button save;
 	protected void onCreate(Bundle savedInstanceState) {

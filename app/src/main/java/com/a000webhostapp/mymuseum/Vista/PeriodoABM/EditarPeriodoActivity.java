@@ -11,26 +11,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditarPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
-    
     private EditText nombre, añoInicio, añoFin;
     private CheckBox ACIncio, ACFin;
     private Button guardar;
 	private Spinner nombrePeriodoSpinner;
-	
     private Periodo[] periodos;
     private Periodo periodoActual;
-	
 	private ModuloNotificacion notificacion;
     
     @Override
@@ -143,19 +140,14 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 			}
 		}
 	}
-    
 	private void buscarInfoSpinner(){
 		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
-    
-    
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-    
-	
 	public void update(Guardable[] g,int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

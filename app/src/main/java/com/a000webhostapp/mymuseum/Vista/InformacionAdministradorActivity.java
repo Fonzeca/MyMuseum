@@ -1,10 +1,13 @@
 package com.a000webhostapp.mymuseum.Vista;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
-import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloInformacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverInfo;
@@ -21,10 +24,14 @@ public class InformacionAdministradorActivity extends AppCompatActivity implemen
 	private TextView totalTraslados;
 	private TextView inventorDestacado;
 	
+	private TextView botonMostrarClave;
+	
+	
 	private ModuloNotificacion notificacion;
 	private int contaRequest = 0;
 
-    @Override
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacion_administrador);
@@ -58,6 +65,21 @@ public class InformacionAdministradorActivity extends AppCompatActivity implemen
 	
 		totalTraslados = (TextView) findViewById(R.id.total_traslados_info_general);
 		inventorDestacado = (TextView) findViewById(R.id.inventor_destacado_info_general);
+		
+		botonMostrarClave = (TextView) findViewById(R.id.view_mostar_clave_info_general);
+		botonMostrarClave.setOnTouchListener(new View.OnTouchListener() {
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				if (view.getId() == R.id.view_mostar_clave_info_general) {
+					if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+						viewClave.setText(LoginFragment.getClave());
+					} else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+						viewClave.setText("*********************");
+					}
+					return true;
+				}
+				return false;
+			}
+		});
   
 		buscarInfo();
 		
@@ -83,6 +105,8 @@ public class InformacionAdministradorActivity extends AppCompatActivity implemen
 		mo.obtenerTotalTraslados(this);
 		contaRequest++;
 		mo.obtenerTotalBusquedas(this);
+		contaRequest++;
+		mo.obtenerInventorDestacado(this);
 		contaRequest++;
 	}
 	public boolean onSupportNavigateUp() {
@@ -139,6 +163,10 @@ public class InformacionAdministradorActivity extends AppCompatActivity implemen
 							break;
 						case ModuloInformacion.RQS_BUSQUEDA_INFO_TOTAL_BUSQUEDAS:
 							totalBusquedas.setText(data[0]);
+							contaRequest--;
+							break;
+						case ModuloInformacion.RQS_BUSQUEDA_INVENTOR_DESTACADO:
+							inventorDestacado.setText(data[0]);
 							contaRequest--;
 							break;
 					}

@@ -24,7 +24,6 @@ public class InicioFragment extends Fragment implements IObserverEntidad, SwipeR
 	private ModuloNotificacion notificacion;
 	private SwipeRefreshLayout swipe;
 	private TextView titulo;
-	private String nombreABuscar;
 	
 	public InicioFragment() {
 	}
@@ -48,7 +47,7 @@ public class InicioFragment extends Fragment implements IObserverEntidad, SwipeR
 		actualizarLista();
 	}
 	private void reiniciarTitulo(){
-		titulo.setText("Objetos agregados recientemente:");
+		titulo.setText("Objetos del museo:");
 	}
 	
 	
@@ -89,10 +88,6 @@ public class InicioFragment extends Fragment implements IObserverEntidad, SwipeR
 		}else if(req.getId() == ModuloEntidad.RQS_BUSQUEDA_PINTURAS_REFINADO){
 			ModuloEntidad.obtenerModulo().buscarPinturasRefinada(this,req);
 		}
-		
-	}
-	public void busquedaPinturas(RequestBusqueda req){
-		notificacion.mostrarLoading();
 		
 	}
 	public void busquedaObjetoDirecto(String nombre, String entidad){

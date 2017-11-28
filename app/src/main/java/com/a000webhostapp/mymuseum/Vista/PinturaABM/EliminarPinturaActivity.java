@@ -9,20 +9,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 public class EliminarPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	private Button eliminar;
 	private Spinner pinturaSpinner;
-	
 	private Pintura pinturaActual;
 	private Pintura[] pinturas;
-	
 	private ModuloNotificacion notificacion;
 	
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +52,10 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 		buscarInfoSpinners();
 		
     }
-    
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-	
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarPinturas(this);
@@ -73,7 +69,6 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 			
 		}
 	}
-	
     public void update(Guardable[] g,int request, String respuesta) {
         if(notificacion.isLoadingShowing()){
 			switch (respuesta){

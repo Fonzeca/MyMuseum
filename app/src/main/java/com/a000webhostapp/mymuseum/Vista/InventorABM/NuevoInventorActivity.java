@@ -8,17 +8,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 public class NuevoInventorActivity extends AppCompatActivity implements IObserverEntidad {
     private EditText nomYApe, año,lugarNacimiento;
     private CheckBox AC;
     private Button btnGuardar;
-    
     private ModuloNotificacion notificacion;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +59,10 @@ public class NuevoInventorActivity extends AppCompatActivity implements IObserve
 			btnGuardar.setEnabled(false);
         }
     }
-
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){

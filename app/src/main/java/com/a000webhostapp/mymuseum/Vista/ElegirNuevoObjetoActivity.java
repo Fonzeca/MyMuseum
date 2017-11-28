@@ -19,10 +19,8 @@ import com.a000webhostapp.mymuseum.Vista.PinturaABM.NuevaPinturaActivity;
  */
 
 public class ElegirNuevoObjetoActivity extends AppCompatActivity {
-	
 	private Spinner spinnerObjetos;
 	private Button save;
-	
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_elegir_nuevo_objeto);
@@ -52,13 +50,11 @@ public class ElegirNuevoObjetoActivity extends AppCompatActivity {
 			}
 		});
 	}
-	
 	private void actualizarSpinnerPersonas() {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ControlDB.objetos);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerObjetos.setAdapter(adapter);
 	}
-	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;

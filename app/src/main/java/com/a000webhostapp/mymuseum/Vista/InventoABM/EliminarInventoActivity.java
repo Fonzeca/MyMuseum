@@ -9,12 +9,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,8 @@ import java.util.List;
 public class EliminarInventoActivity extends AppCompatActivity implements IObserverEntidad {
 	private Button eliminar;
 	private Spinner inventoSpinner;
-	
 	private Invento inventoActual;
 	private Invento[] inventos;
-	
 	private ModuloNotificacion notificacion;
 	
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +61,10 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		buscarInfoSpinners();
 		
     }
-    
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
 	}
-	
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarInventos(this);
@@ -95,7 +91,6 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 			}
 		}
 	}
-	
     public void update(Guardable[] g,int request, String respuesta) {
         if(notificacion.isLoadingShowing()){
 			switch (respuesta){

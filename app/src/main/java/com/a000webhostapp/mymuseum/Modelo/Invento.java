@@ -40,7 +40,6 @@ public class Invento extends Objeto{
         return accion + "&" + entidad + "&" + nombreConfig + "&" + añoConfig + "&" + descriConfig +
                 "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
     }
-	
 	public String configModificar() {
 		String accion = "accion=editar_registro";
 		String entidad = "entidad=" + ControlDB.str_objeto;
@@ -55,7 +54,6 @@ public class Invento extends Objeto{
 		return accion + "&" + entidad + "&" + idConfig + "&" + nombreConfig + "&" + añoConfig +
 				"&" + descriConfig + "&" + isMaquinaConfig + "&" + periConfig + "&" + inventorConfig;
 	}
-	
 	public static Invento obtenerInventoJSON(JSONObject obJSON) throws JSONException{
 		int id = obJSON.getInt("invento_id");
 		String nom = obJSON.getString("nombre");

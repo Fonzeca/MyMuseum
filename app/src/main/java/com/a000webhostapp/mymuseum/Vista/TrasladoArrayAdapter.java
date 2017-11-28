@@ -28,15 +28,12 @@ public class TrasladoArrayAdapter extends ArrayAdapter<Traslado> {
     private final Context context;
     private final Traslado[] traslados;
 	
-	
     public TrasladoArrayAdapter(Context context, Traslado[] traslados){
         super(context, -1, traslados);
         this.context = context;
         this.traslados = traslados;
     }
-
-    @NonNull
-    @Override
+    
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         

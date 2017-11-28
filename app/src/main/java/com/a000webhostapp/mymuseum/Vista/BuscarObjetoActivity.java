@@ -174,7 +174,6 @@ public class BuscarObjetoActivity extends AppCompatActivity implements IObserver
 		}
 		return requestBusqueda;
 	}
-	
 	private void actualizarSpinnerObjetos(){
 		List<String> spinnerArray =  new ArrayList<String>(Arrays.asList(ControlDB.objetos));
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spinnerArray);
@@ -212,9 +211,6 @@ public class BuscarObjetoActivity extends AppCompatActivity implements IObserver
 				break;
 		}
 		
-		
-		
-		
 	}
 	private void buscarInfoSpinners(){
 		notificacion.mostrarLoading();
@@ -222,14 +218,12 @@ public class BuscarObjetoActivity extends AppCompatActivity implements IObserver
 		ModuloEntidad.obtenerModulo().buscarInventores(this);
 		ModuloEntidad.obtenerModulo().buscarPintores(this);
 	}
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == requestQR && resultCode == RESULT_OK){
 			setResult(responseScannerQR,data);
 			finish();
 		}
 	}
-	
 	public boolean onSupportNavigateUp() {
 		onBackPressed();
 		return true;
@@ -256,8 +250,6 @@ public class BuscarObjetoActivity extends AppCompatActivity implements IObserver
 			startActivityForResult(intent,requestQR);
 		}
 	}
-	
-	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		switch (requestCode){
 			case requestPermisionCamera:
@@ -270,7 +262,6 @@ public class BuscarObjetoActivity extends AppCompatActivity implements IObserver
 				break;
 		}
 	}
-	
 	public void update(Guardable[] g, int request, String respuesta) {
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
