@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.PeriodoABM;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
@@ -22,7 +21,7 @@ import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditarPeriodoActivity extends AppCompatActivity implements IObserver {
+public class EditarPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
     
     private EditText nombre, añoInicio, añoFin;
     private CheckBox ACIncio, ACFin;
@@ -94,7 +93,8 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 					periodoActual.setAñoInicio(añoIncio);
 					periodoActual.setAñoFin(añoFin);
 					ModuloEntidad.obtenerModulo().editarPeriodo(periodoActual,EditarPeriodoActivity.this);
-					onBackPressed();
+					notificacion.mostrarLoading();
+					guardar.setEnabled(false);
 				}
             }
         });
@@ -145,7 +145,7 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 	}
     
 	private void buscarInfoSpinner(){
-		notificacion = new ModuloNotificacion(this);
+		notificacion.mostrarLoading();
 		ModuloEntidad.obtenerModulo().buscarPeriodos(this);
 	}
     
@@ -170,17 +170,19 @@ public class EditarPeriodoActivity extends AppCompatActivity implements IObserve
 						}
 						actualizarSpinnerInventores();
 						notificacion.loadingDismiss();
+					}else if(request == ModuloEntidad.RQS_MODIFICACION_PERIODO){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se modifico exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
-				case ControlDB.res_falloConexion:
+				default:
 					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_falloConexion);
-					break;
-				case ControlDB.res_tablaPeriodoVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
+					notificacion.mostrarError(respuesta);
 					break;
 				
 			}

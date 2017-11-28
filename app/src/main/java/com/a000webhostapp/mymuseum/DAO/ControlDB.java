@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
+import com.a000webhostapp.mymuseum.Controlador.ModuloInformacion;
 import com.a000webhostapp.mymuseum.Controlador.Request;
 import com.a000webhostapp.mymuseum.Controlador.RequestHistorialPintura;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
@@ -11,8 +12,6 @@ import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.IObserver;
-import com.a000webhostapp.mymuseum.ISujeto;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
@@ -26,10 +25,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 
-public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements DAOInterface{
+public class ControlDB extends AsyncTask<Object, String, Object[]> implements DAOInterface{
 	private Request request;
 	
 	public static final String str_obj_Invento = "Invento";
@@ -56,24 +54,11 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public static final String res_busquedaFallida = "Busqueda fallida";
 	
 	
-	public static final String res_exitoInsertarInvento = "El invento se guardó exitosamente.";
-	public static final String res_exitoInsertarPintura = "La pintura se guardó exitosamente.";
-	public static final String res_exitoInsertarPersona = "El inventor se guardó exitosamente.";
-	public static final String res_exitoInsertarPeriodo = "El período fue guardado correctamente.";
-	public static final String res_exitoInsertarTraslado = "El movimiento se generó exitosamente";
-	
-	
-	public static final String res_modificarObjeto = "El objeto se editó correctamente.";
-	public static final String res_modificarPersona = "La persona se editó correctamente.";
-	public static final String res_modificarPeriodo = "El período fue guardado correctamente.";
-	
-
-	
 	public ControlDB(Request request){
 		this.request = request;
 	}
 
-	protected Guardable[] doInBackground(Object[] objects) {
+	protected Object[] doInBackground(Object[] objects) {
 
 		switch((int)objects[0]){
 			case 0:
@@ -93,16 +78,34 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 				return buscarTrasladoPrivadoID();
 			case 6:
 				return buscarTrasladoPrivado();
+			case 7:
+				return obtenerInfoCantidadPrivado((String)objects[1]);
+			case 8:
+				sumarBusquedaPrivado((int)objects[1]);
+				break;
+			case 9:
+				return obtenerTopBusquedasPrivado((String)objects[1], (int)objects[2]);
+			case 10:
+				return obtenerTotalBusquedasPrivado();
 		}
 
 		return null;
 	}
 
-	protected void onPostExecute(Guardable[] resultados) {
+	protected void onPostExecute(Object[] resultados) {
 		super.onPostExecute(resultados);
-		if(resultados != null && resultados.length != 0){
-			notificarModulo(resultados, res_exito);
+		if(resultados != null){
+			if(resultados instanceof Guardable[]){
+				if(resultados.length != 0){
+					notificarModuloEntidad((Guardable[]) resultados, res_exito);
+				}
+			}else if(resultados instanceof String[]){
+				if(resultados.length != 0){
+					notificarModuloInfo((String[]) resultados, res_exito);
+				}
+			}
 		}
+		
 	}
 
 	public boolean insertar(Guardable g) {
@@ -135,19 +138,33 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	public void buscarTraslados(){
 		execute(6);
 	}
+	
+	public void obtenerInfoCantidad(String entidad){
+		execute(7,entidad);
+	}
+	public void sumarBusqueda(int id){
+		execute(8,id);
+	}
+	public void obtenerTopBusqueda(String entidad, int cantidad){
+		execute(9,entidad,cantidad);
+	}
+	public void obtenerTotalBusquedas(){
+		execute(10);
+	}
 	//----------------
 	private boolean borrarPrivado(String parametro){
 		String respuesta = conectar(parametro);
+		if(respuesta.equals(res_exito)){
+			notificarModuloEntidad(null,res_exito);
+		}
 		Log.v("Response DB", respuesta);
 		return true;
 	}
 	
 	private boolean insertarPrivado(Guardable g){
 		String respuesta = conectar(g.configGuardar());
-		if(respuesta.equals(res_exitoInsertarInvento) || respuesta.equals(res_exitoInsertarPintura)
-													  || respuesta.equals(res_exitoInsertarPersona)
-													  || respuesta.equals(res_exitoInsertarPeriodo)){
-			notificarModulo(null,res_exito);
+		if(respuesta.equals(res_exito)){
+			notificarModuloEntidad(null,res_exito);
 		}
 		Log.v("Response DB", respuesta);
 		return true;
@@ -155,9 +172,8 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 	
 	private boolean modificarPrivado(Guardable g){
 		String respuesta = conectar(g.configModificar());
-		if(respuesta.equals(res_modificarObjeto) || respuesta.equals(res_modificarPersona)
-												 || respuesta.equals(res_modificarPeriodo)){
-			notificarModulo(null,res_exito);
+		if(respuesta.equals(res_exito)){
+			notificarModuloEntidad(null,res_exito);
 		}
 		
 		Log.v("Response DB", respuesta);
@@ -199,7 +215,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			respuestaFinal = buscarPintura(jsonRespuesta);
 		}
 		if(respuestaFinal == null || respuestaFinal.length == 0 || respuestaFinal[0] == null){
-			notificarModulo(null,res_busquedaFallida);
+			notificarModuloEntidad(null,res_busquedaFallida);
 			cancel(true);
 			return null;
 		}
@@ -223,6 +239,48 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 		Log.v("Response DB", respuesta);
 		return buscarTraslados(respuesta);
 	}
+	private String[] obtenerInfoCantidadPrivado(String entidad){
+		String respuesta = conectar("accion=obtener_total&entidad="+entidad);
+		Log.v("Response DB", respuesta);
+		String[] respuestaFinal = new String[1];
+		respuestaFinal[0] = respuesta;
+		return respuestaFinal;
+	}
+	private boolean sumarBusquedaPrivado(int id){
+		String respuesta = conectar("accion=nueva_busqueda&objeto_id="+id);
+		Log.v("Response DB", respuesta);
+		return true;
+	}
+	private String[] obtenerTopBusquedasPrivado(String entidad, int cantidad){
+		String respuesta = conectar("accion=obtener_mas_buscado&entidad="+entidad + "&cantidad="+cantidad);
+		Objeto[] respuestaObjeto = null;
+		switch (entidad){
+			case str_obj_Invento:
+				respuestaObjeto = (Objeto[]) buscarInvento(respuesta);
+				break;
+			case str_obj_Pintura:
+				respuestaObjeto = (Objeto[]) buscarPintura(respuesta);
+				break;
+		}
+		if(respuestaObjeto == null){
+			return null;
+		}else{
+			String[] respuestaFinal = new String[respuestaObjeto.length];
+			for(int i = 0; i < respuestaFinal.length; i++){
+				respuestaFinal[i] = respuestaObjeto[i].getNombre() + "=" + respuestaObjeto[i].getCantBuscado();
+				Log.v("Respuesta TOP", respuestaFinal[i]);
+			}
+			return respuestaFinal;
+		}
+		
+	}
+	private String[] obtenerTotalBusquedasPrivado(){
+		String respuesta = conectar("accion=obtener_total_de_busquedas");
+		Log.v("Response DB", respuesta);
+		String[] respuestaFinal = new String[1];
+		respuestaFinal[0] = respuesta;
+		return respuestaFinal;
+	}
 	//----------------
 	
 	private Guardable[] buscarInventores(String jsonRespuesta){
@@ -233,7 +291,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			inventores = new Inventor[json_array.length()];
 			
 			if(inventores.length == 0){
-				notificarModulo(null, res_tablaInventorVacio);
+				notificarModuloEntidad(null, res_tablaInventorVacio);
 				cancel(true);
 				return null;
 			}
@@ -256,7 +314,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			periodos = new Periodo[json_array.length()];
 	
 			if(periodos.length == 0){
-				notificarModulo(null, res_tablaPeriodoVacio);
+				notificarModuloEntidad(null, res_tablaPeriodoVacio);
 				cancel(true);
 				return null;
 			}
@@ -280,7 +338,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			inventos = new Invento[json_array.length()];
 			
 			if(inventos.length == 0){
-				notificarModulo(inventos, res_tablaInventoVacio);
+				notificarModuloEntidad(inventos, res_tablaInventoVacio);
 				cancel(true);
 				return null;
 			}
@@ -303,7 +361,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			pintores = new Pintor[json_array.length()];
 			
 			if(pintores.length == 0){
-				notificarModulo(null, res_tablaPintoresVacio);
+				notificarModuloEntidad(null, res_tablaPintoresVacio);
 				cancel(true);
 				return null;
 			}
@@ -327,7 +385,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			pinturas = new Pintura[json_array.length()];
 			
 			if(pinturas.length == 0){
-				notificarModulo(null, res_tablaPinturasVacio);
+				notificarModuloEntidad(null, res_tablaPinturasVacio);
 				cancel(true);
 				return null;
 			}
@@ -364,7 +422,7 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			traslados = new Traslado[json_array.length()];
 			
 			if(traslados.length == 0){
-				notificarModulo(null, res_tablaTrasladoUnicoVacio);
+				notificarModuloEntidad(null, res_tablaTrasladoUnicoVacio);
 				cancel(true);
 				return null;
 			}
@@ -421,17 +479,20 @@ public class ControlDB extends AsyncTask<Object, String, Guardable[]> implements
 			return response.toString();
 		} catch (java.io.IOException e) {
 			e.printStackTrace();
-			notificarModulo(null, res_falloConexion);
+			notificarModuloEntidad(null, res_falloConexion);
 			cancel(true);
 		}
-		notificarModulo(null, res_falloConexion);
+		notificarModuloEntidad(null, res_falloConexion);
 		cancel(true);
 		return "NO SE CONECTO";
 	}
 
 
 	//Metodos del Observer
-	public void notificarModulo(Guardable[] g, String respuesta){
+	public void notificarModuloEntidad(Guardable[] g, String respuesta){
 		ModuloEntidad.obtenerModulo().resultadoControlDB(request,respuesta,g);
+	}
+	public void notificarModuloInfo(String[] data, String respuesta){
+		ModuloInformacion.obtenerModulo().resultadoControlDB(request,respuesta,data);
 	}
 }

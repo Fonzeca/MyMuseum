@@ -10,6 +10,7 @@ public abstract class Objeto implements Guardable {
 	protected String nombre, descripcion;
 	protected Periodo periodo;
 	protected int añoInvencion;
+	protected int cantBuscado = 0;
 	
 	public Objeto(String nombre, String descripcion, Periodo periodo, int añoInvencion) {
 		this.nombre = nombre;
@@ -53,5 +54,13 @@ public abstract class Objeto implements Guardable {
 	
 	public void setAñoInvencion(int añoInvencion) {
 		this.añoInvencion = añoInvencion;
+	}
+	
+	public int getCantBuscado() {
+		return cantBuscado;
+	}
+	
+	public void setCantBuscado(int cantBuscado) {
+		this.cantBuscado = cantBuscado;
 	}
 }

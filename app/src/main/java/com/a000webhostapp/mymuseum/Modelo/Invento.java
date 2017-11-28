@@ -70,7 +70,12 @@ public class Invento extends Objeto{
 		int año = obJSON.getInt("año");
 		boolean maquina = obJSON.getBoolean("es_maquina");
 		
-		return new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
+		Invento inventoFinal = new Invento(nom,descripcion,periodo,inventor,año,maquina,id);
+		if(obJSON.has("cant_busquedas")){
+			inventoFinal.setCantBuscado(obJSON.getInt("cant_busquedas"));
+		}
+		
+		return inventoFinal;
 		
 	}
 	

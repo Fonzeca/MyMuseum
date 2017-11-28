@@ -8,20 +8,26 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
-public class NuevoPeriodoActivity extends AppCompatActivity implements IObserver {
+public class NuevoPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
 
     private EditText nombrePeriodo,añoIncioPeriodo, añoFinPeriodo;
     private CheckBox checkAñoIncio, checkAñoFin;
     private Button btnGuardar;
+    
+    private ModuloNotificacion notificacion;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_periodo);
+	
+		notificacion = new ModuloNotificacion(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -63,7 +69,8 @@ public class NuevoPeriodoActivity extends AppCompatActivity implements IObserver
                 añoFin = Integer.parseInt(añoFinTexto);
             }
             me.crearPeriodo(nombre,añoIncio, añoFin,this);
-            onBackPressed();
+            notificacion.mostrarLoading();
+			btnGuardar.setEnabled(false);
         }
     }
 
@@ -75,6 +82,26 @@ public class NuevoPeriodoActivity extends AppCompatActivity implements IObserver
     
     @Override
     public void update(Guardable[] g, int request, String respuesta) {
-    
+        if(notificacion.isLoadingShowing()){
+            switch (respuesta){
+                case ControlDB.res_exito:
+                    if(g != null){
+                    
+                    }else if(request == ModuloEntidad.RQS_ALTA_PERIODO){
+                        notificacion.loadingDismiss();
+                        notificacion.mostarNotificacion("Se cargo exitosamente");
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                onBackPressed();
+                            }
+                        });
+                    }
+                    break;
+                default:
+                    notificacion.loadingDismiss();
+                    notificacion.mostrarError(respuesta);
+                    break;
+            }
+        }
     }
 }

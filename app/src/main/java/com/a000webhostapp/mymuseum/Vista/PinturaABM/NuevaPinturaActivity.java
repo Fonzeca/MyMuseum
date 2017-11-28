@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.PinturaABM;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
@@ -32,7 +31,7 @@ import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
  * Created by Alexis on 10/10/2017.
  */
 
-public class NuevaPinturaActivity extends AppCompatActivity implements IObserver {
+public class NuevaPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	private static final int RQS_BUSCARIMAGEN = 0;
 	
 	private LinearLayout agregarPintor, agregarPeriodo;
@@ -167,7 +166,8 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 			if(uriImagen != null){
 				ModuloImagen.obtenerModulo().insertarImagen(nombreGuar,ControlDB.str_obj_Pintura,this,uriImagen,this);
 			}
-			onBackPressed();
+			notificacion.mostrarLoading();
+			guardar.setEnabled(false);
 		}
 	}
 	private void buscarInfoSpinners(){
@@ -227,6 +227,14 @@ public class NuevaPinturaActivity extends AppCompatActivity implements IObserver
 						if(pintores != null && periodos != null){
 							notificacion.loadingDismiss();
 						}
+					}else if(request == ModuloEntidad.RQS_ALTA_PINTURA){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se cargo exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
 				case ControlDB.res_falloConexion:

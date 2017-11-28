@@ -52,6 +52,7 @@
         <activity android:name=".Vista.ArticuloObjetoActivity"/>
         <activity android:name=".Vista.BuscarObjetoActivity"/>
         <activity android:name=".Vista.HistorialPinturaActivity"/>
+        <activity android:name=".Vista.InformacionAdministradorActivity"/>
         <activity android:name=".Vista.ElegirNuevaPersonaActivity"/>
         <activity android:name=".Vista.LectorQRActivity">
         </activity>

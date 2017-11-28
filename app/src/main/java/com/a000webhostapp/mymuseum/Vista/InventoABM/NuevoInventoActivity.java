@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
@@ -32,7 +31,7 @@ import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NuevoInventoActivity extends AppCompatActivity implements IObserver {
+public class NuevoInventoActivity extends AppCompatActivity implements IObserverEntidad {
 	private static final int RQS_BUSCARIMAGEN = 0;
     private LinearLayout botonNuevoPeriodo, botonNuevoInventor;
 

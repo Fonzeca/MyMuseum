@@ -9,22 +9,28 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.DAO.ControlDB;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
 /**
  * Created by Alexis on 10/10/2017.
  */
 
-public class NuevoPintorActivity extends AppCompatActivity implements IObserver {
+public class NuevoPintorActivity extends AppCompatActivity implements IObserverEntidad {
 	private EditText nomYApe, año,lugarNacimiento;
 	private CheckBox AC;
 	private Button btnGuardar;
 	
+	private ModuloNotificacion notificacion;
+	
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nuevo_pintor);
+		
+		notificacion = new ModuloNotificacion(this);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -56,7 +62,8 @@ public class NuevoPintorActivity extends AppCompatActivity implements IObserver 
 				añoPintor = Integer.parseInt(año.getText().toString());
 			}
 			me.crearPintor(nombreyapellido,lugar,añoPintor,this);
-			onBackPressed();
+			notificacion.mostrarLoading();
+			btnGuardar.setEnabled(false);
 		}
 	}
 	public boolean onSupportNavigateUp() {
@@ -66,6 +73,26 @@ public class NuevoPintorActivity extends AppCompatActivity implements IObserver 
 	
 	@Override
 	public void update(Guardable[] g, int request, String respuesta) {
-	
+		if(notificacion.isLoadingShowing()){
+			switch (respuesta){
+				case ControlDB.res_exito:
+					if(g != null){
+					
+					}else if(request == ModuloEntidad.RQS_ALTA_PINTOR){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se cargo exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
+					}
+					break;
+				default:
+					notificacion.loadingDismiss();
+					notificacion.mostrarError(respuesta);
+					break;
+			}
+		}
 	}
 }

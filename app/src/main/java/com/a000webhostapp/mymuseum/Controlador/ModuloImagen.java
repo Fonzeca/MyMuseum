@@ -4,11 +4,10 @@ package com.a000webhostapp.mymuseum.Controlador;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 
 import com.a000webhostapp.mymuseum.DAO.ControlFTP;
-import com.a000webhostapp.mymuseum.IObserver;
-import com.a000webhostapp.mymuseum.ISujeto;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
+import com.a000webhostapp.mymuseum.Observers.ISujetoEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 
@@ -18,8 +17,8 @@ import java.util.ArrayList;
  * Created by Alexis on 5/11/2017.
  */
 
-public class ModuloImagen implements ISujeto {
-	private ArrayList<IObserver> observers;
+public class ModuloImagen implements ISujetoEntidad {
+	private ArrayList<IObserverEntidad> observers;
 	private ArrayList<Request> requests;
 	private static ModuloImagen mi;
 	
@@ -28,7 +27,7 @@ public class ModuloImagen implements ISujeto {
 	public static final int RQS_INSERTAR_IMAGEN = 1100;
 	
 	private ModuloImagen(){
-		observers = new ArrayList<IObserver>();
+		observers = new ArrayList<IObserverEntidad>();
 		requests = new ArrayList<Request>();
 	}
 	
@@ -39,13 +38,13 @@ public class ModuloImagen implements ISujeto {
 		return mi;
 	}
 	//----------------------
-	public void buscarImagen(String nombre, String entidad, IObserver observer){
+	public void buscarImagen(String nombre, String entidad, IObserverEntidad observer){
 		RequestImagen ri = new RequestImagen(RQS_BUSQUEDA_IMAGEN_UNICA,nombre,entidad);
 		registrarObserver(observer,ri);
 		new ControlFTP(ri).buscar();
 	}
 	//----------------------
-	public void insertarImagen(String nombre, String entidad,Context context,Uri uri, IObserver observer){
+	public void insertarImagen(String nombre, String entidad,Context context,Uri uri, IObserverEntidad observer){
 		RequestImagen ri = new RequestImagen(RQS_INSERTAR_IMAGEN, context,nombre,entidad);
 		registrarObserver(observer,ri);
 		new ControlFTP(ri).insertar(uri);
@@ -53,12 +52,12 @@ public class ModuloImagen implements ISujeto {
 	//----------------------
 	
 	//Metodos Observer
-	public void registrarObserver(IObserver ob, Request request) {
+	public void registrarObserver(IObserverEntidad ob, Request request) {
 		observers.add(ob);
 		requests.add(request);
 	}
 	
-	public boolean eliminarObserver(IObserver ob) {
+	public boolean eliminarObserver(IObserverEntidad ob) {
 		requests.remove(observers.indexOf(ob));
 		observers.remove(ob);
 		return true;
@@ -90,82 +89,4 @@ public class ModuloImagen implements ISujeto {
 				break;
 		}
 	}
-	
-	
-	
-	/*protected void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.image_view);
-		
-		iv = (ImageView)findViewById(R.id.imageViewPRUEBA);
-		
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-		intent.setType("image/*");
-		startActivityForResult(Intent.createChooser(intent,"Elegir imagen"),5);
-		
-		
-		r = new AsyncTask() {
-			protected Object doInBackground(Object[] objects) {
-				if (objects[0] instanceof Uri) {
-					Uri uri = (Uri) objects[0];
-					insertarImagen(uri);
-				}
-				return null;
-			}
-		};
-		
-		
-	}
-	private void insertarImagen(Uri uri){
-		boolean conecto = false;
-		try{
-			ftp = new FTPClient();
-			ftp.connect("files.000webhost.com",21);
-			if(FTPReply.isPositiveCompletion(ftp.getReplyCode())){
-				conecto = ftp.login("mymuseum", "39623299Aa");
-				ftp.setFileType(FTP.BINARY_FILE_TYPE);
-				ftp.enterLocalPassiveMode();
-			}
-			Log.v("Conectar",""+conecto);
-			
-			//InputStream is = getContentResolver().openInputStream(uri);
-			//boolean a = ftp.storeFile("/public_html/images/hola.jpeg", is);
-			//is.close();
-			
-			//Log.v("Guardar",""+a);
-			
-			final ByteArrayOutputStream os = new ByteArrayOutputStream();
-			
-			boolean a = ftp.retrieveFile("/public_html/images/hola.jpeg",os);
-			os.close();
-			
-			Log.v("Obtener",""+a);
-			
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					Bitmap a = BitmapFactory.decodeByteArray(os.toByteArray(),0,os.toByteArray().length);
-					iv.setImageBitmap(a);
-				}
-			});
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				ftp.logout();
-				ftp.disconnect();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(requestCode == 5){
-			r.execute(data.getData());
-		}
-	}*/
-	
 }

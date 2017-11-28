@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.R;
@@ -20,7 +19,7 @@ import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EliminarInventoActivity extends AppCompatActivity implements IObserver {
+public class EliminarInventoActivity extends AppCompatActivity implements IObserverEntidad {
 	private Button eliminar;
 	private Spinner inventoSpinner;
 	
@@ -42,7 +41,8 @@ public class EliminarInventoActivity extends AppCompatActivity implements IObser
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				ModuloEntidad.obtenerModulo().eliminarInvento(inventoActual.getID(),EliminarInventoActivity.this);
-				onBackPressed();
+				notificacion.mostrarLoading();
+				eliminar.setEnabled(false);
 			}
 		});
 		

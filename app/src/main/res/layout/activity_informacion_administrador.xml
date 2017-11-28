@@ -55,14 +55,15 @@
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
+                    android:id="@+id/view_clave_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="*********************"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
             </LinearLayout>
 
@@ -99,15 +100,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/total_objetos_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -119,15 +121,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/total_pinturas_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -139,15 +142,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/total_inventos_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -158,15 +162,16 @@
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
+                    android:id="@+id/total_inventores_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -177,14 +182,15 @@
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
+                    android:id="@+id/total_pintores_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
             </LinearLayout>
 
@@ -221,15 +227,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/busquedas_realizadas_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -241,37 +248,40 @@
                     />
 
                 <TextView
+                    android:id="@+id/inventos_mas_buscados_1_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
+                    android:id="@+id/inventos_mas_buscados_2_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
+                    android:id="@+id/inventos_mas_buscados_3_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -283,36 +293,39 @@
                     />
 
                 <TextView
+                    android:id="@+id/pinturas_mas_buscadas_1_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
+                    android:id="@+id/pinturas_mas_buscadas_2_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
+                    android:id="@+id/pinturas_mas_buscadas_3_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
             </LinearLayout>
 
@@ -354,15 +367,16 @@
                     />
 
                 <TextView
+                    android:id="@+id/total_traslados_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -374,14 +388,15 @@
                     />
 
                 <TextView
+                    android:id="@+id/inventor_destacado_info_general"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="12dp"
                     android:text="#############"
                     android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"/>
+                    android:textStyle="italic"/>
 
             </LinearLayout>
 

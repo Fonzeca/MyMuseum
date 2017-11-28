@@ -1,12 +1,9 @@
 package com.a000webhostapp.mymuseum.Vista.InventoABM;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +16,7 @@ import android.widget.TextView;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
@@ -33,7 +30,7 @@ import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditarInventoActivity extends AppCompatActivity implements IObserver {
+public class EditarInventoActivity extends AppCompatActivity implements IObserverEntidad {
 	private static final int RQS_BUSCARIMAGEN = 0;
 	private static final int RQS_NUEVO_INVENTOR = 100;
 	private static final int RQS_NUEVO_PERIODO = 101;
@@ -56,7 +53,6 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 	private boolean imagenBuscada;
 
     private ModuloNotificacion notificacion;
-	private boolean cargado;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +118,8 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 				if(uriImagen != null){
 					ModuloImagen.obtenerModulo().insertarImagen(nombreInvento.getText().toString(),ControlDB.str_obj_Invento,EditarInventoActivity.this,uriImagen,EditarInventoActivity.this);
 				}
-				onBackPressed();
+				notificacion.mostrarLoading();
+				guardar.setEnabled(false);
             }
         });
 	
@@ -252,29 +249,24 @@ public class EditarInventoActivity extends AppCompatActivity implements IObserve
 								imagenBuscada = true;
 								break;
 						}
-						
 						//Si todoo esta cargado, se ponen los booleanos como deben ser y se quita el loading
 						if(periodosCargados != null && inventoresCargados != null && imagenBuscada){
 							notificacion.loadingDismiss();
 						}
+					}else if(request == ModuloEntidad.RQS_MODIFICACION_INVENTO){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se modifico exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
-				case ControlDB.res_falloConexion:
+				default:
 					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_falloConexion);
+					notificacion.mostrarError(respuesta);
 					break;
-				case ControlDB.res_tablaInventorVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaInventorVacio);
-					break;
-				case ControlDB.res_tablaPeriodoVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
-					break;
-				
 			}
 		}
     }

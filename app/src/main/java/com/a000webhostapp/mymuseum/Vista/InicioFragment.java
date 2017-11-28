@@ -1,11 +1,9 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +13,12 @@ import android.widget.TextView;
 import com.a000webhostapp.mymuseum.Controlador.RequestBusqueda;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.IObserver;
-import com.a000webhostapp.mymuseum.Modelo.Invento;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
-import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
 
-import java.text.Collator;
-import java.util.ArrayList;
-
-public class InicioFragment extends Fragment implements IObserver, SwipeRefreshLayout.OnRefreshListener {
+public class InicioFragment extends Fragment implements IObserverEntidad, SwipeRefreshLayout.OnRefreshListener {
 	private Objeto[] objetosCargados;
 	
 	private ModuloNotificacion notificacion;

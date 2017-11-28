@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.PeriodoABM;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +10,8 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
@@ -21,7 +19,7 @@ import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EliminarPeriodoActivity extends AppCompatActivity implements IObserver{
+public class EliminarPeriodoActivity extends AppCompatActivity implements IObserverEntidad {
     private Button eliminar;
     private Spinner periodoSpinner;
     
@@ -45,7 +43,8 @@ public class EliminarPeriodoActivity extends AppCompatActivity implements IObser
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				ModuloEntidad.obtenerModulo().eliminarPeriodo(periodoActual.getID(), EliminarPeriodoActivity.this);
-				onBackPressed();
+				notificacion.mostrarLoading();
+				eliminar.setEnabled(false);
 			}
 		});
 	
@@ -115,6 +114,14 @@ public class EliminarPeriodoActivity extends AppCompatActivity implements IObser
 						}
 						actualizarSpinners();
 						notificacion.loadingDismiss();
+					}else if(request == ModuloEntidad.RQS_BAJA_PERIODO){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Elemento eliminado correctamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
 				case ControlDB.res_falloConexion:

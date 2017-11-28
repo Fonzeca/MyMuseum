@@ -1,40 +1,35 @@
 package com.a000webhostapp.mymuseum.Vista;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Constantes;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
+import com.a000webhostapp.mymuseum.Controlador.ModuloInformacion;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
+import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
 import com.a000webhostapp.mymuseum.Vista.PinturaABM.EditarPinturaActivity;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.Buffer;
 
 /**
  * Created by Alexis on 21/11/2017.
  */
 
-public class ArticuloObjetoActivity extends AppCompatActivity implements IObserver {
+public class ArticuloObjetoActivity extends AppCompatActivity implements IObserverEntidad {
 	
 	private Pintura pintura;
 	private Invento invento;
@@ -56,19 +51,25 @@ public class ArticuloObjetoActivity extends AppCompatActivity implements IObserv
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_articulo_objeto);
 		
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		
 		tipoObjeto = getIntent().getStringExtra("TipoObjeto");
 		
+		int idObjeto = -1;
 		switch (tipoObjeto){
 			case ControlDB.str_obj_Invento:
 				invento = (Invento) getIntent().getSerializableExtra(tipoObjeto);
+				idObjeto = invento.getID();
 				break;
 			case ControlDB.str_obj_Pintura:
 				pintura = (Pintura) getIntent().getSerializableExtra(tipoObjeto);
+				idObjeto = pintura.getID();
 				break;
 		}
+		ModuloInformacion.obtenerModulo().sumar1Busqueda(idObjeto);
+		
 		
 		buscarInfo();
 		
@@ -156,11 +157,14 @@ public class ArticuloObjetoActivity extends AppCompatActivity implements IObserv
 		if(item.getItemId() == R.id.articulo_invento_edit_button){
 			switch (tipoObjeto){
 				case ControlDB.str_obj_Invento:
+					Intent intentInve = new Intent(this, EditarInventoActivity.class);
+					intentInve.putExtra(ControlDB.str_obj_Invento, this.invento);
+					startActivity(intentInve);
 					break;
 				case ControlDB.str_obj_Pintura:
-					Intent intent = new Intent(this, EditarPinturaActivity.class);
-					intent.putExtra(ControlDB.str_obj_Pintura, this.pintura);
-					startActivity(intent);
+					Intent intentPintu = new Intent(this, EditarPinturaActivity.class);
+					intentPintu.putExtra(ControlDB.str_obj_Pintura, this.pintura);
+					startActivity(intentPintu);
 					break;
 			}
 		}

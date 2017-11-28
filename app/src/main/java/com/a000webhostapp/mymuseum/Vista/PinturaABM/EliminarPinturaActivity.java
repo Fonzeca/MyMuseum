@@ -1,9 +1,7 @@
 package com.a000webhostapp.mymuseum.Vista.PinturaABM;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,17 +10,13 @@ import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
 import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class EliminarPinturaActivity extends AppCompatActivity implements IObserver {
+public class EliminarPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	private Button eliminar;
 	private Spinner pinturaSpinner;
 	
@@ -44,7 +38,8 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 		eliminar.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				ModuloEntidad.obtenerModulo().eliminarPintura(pinturaActual.getID(),EliminarPinturaActivity.this);
-				onBackPressed();
+				notificacion.mostrarLoading();
+				eliminar.setEnabled(false);
 			}
 		});
 		
@@ -93,6 +88,14 @@ public class EliminarPinturaActivity extends AppCompatActivity implements IObser
 						}
 						actualizarSpinners();
 						notificacion.loadingDismiss();
+					}else if(request == ModuloEntidad.RQS_BAJA_PINTURA){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Elemento eliminado correctamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
 				case ControlDB.res_falloConexion:

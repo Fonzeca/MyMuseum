@@ -68,7 +68,12 @@ public class Pintura extends Objeto{
 		
 		int año = obJSON.getInt("año");
 		
-		return new Pintura(nom,descripcion,periodo,pintor,año,id);
+		Pintura pinturaFinal = new Pintura(nom,descripcion,periodo,pintor,año,id);
+		if(obJSON.has("cant_busquedas")){
+			pinturaFinal.setCantBuscado(obJSON.getInt("cant_busquedas"));
+		}
+		
+		return pinturaFinal;
 	}
 	
 	

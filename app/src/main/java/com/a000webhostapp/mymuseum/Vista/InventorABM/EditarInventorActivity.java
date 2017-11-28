@@ -1,6 +1,5 @@
 package com.a000webhostapp.mymuseum.Vista.InventorABM;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.R;
@@ -23,7 +21,7 @@ import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditarInventorActivity extends AppCompatActivity implements IObserver{
+public class EditarInventorActivity extends AppCompatActivity implements IObserverEntidad {
     private EditText nombre, año, lugar;
     private CheckBox AC;
     private Button guardar;
@@ -89,7 +87,8 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 					inventorActual.setAñoNacimiento(añoInventor);
 					inventorActual.setLugarNacimiento(lugarConfig);
 					ModuloEntidad.obtenerModulo().editarInventor(inventorActual,EditarInventorActivity.this);
-					onBackPressed();
+					notificacion.mostrarLoading();
+					guardar.setEnabled(false);
 				}
             }
         });
@@ -154,17 +153,19 @@ public class EditarInventorActivity extends AppCompatActivity implements IObserv
 						}
 						actualizarSpinnerInventores();
 						notificacion.loadingDismiss();
+					}else if(request == ModuloEntidad.RQS_MODIFICACION_INVENTOR){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se modifico exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
-				case ControlDB.res_falloConexion:
+				default:
 					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_falloConexion);
-					break;
-				case ControlDB.res_tablaInventorVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaInventorVacio);
+					notificacion.mostrarError(respuesta);
 					break;
 			}
 		}

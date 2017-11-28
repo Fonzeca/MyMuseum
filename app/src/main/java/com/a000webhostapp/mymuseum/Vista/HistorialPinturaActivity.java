@@ -3,7 +3,6 @@ package com.a000webhostapp.mymuseum.Vista;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,18 +11,14 @@ import android.widget.ListView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Objeto;
-import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
 import com.a000webhostapp.mymuseum.Vista.TrasladoABM.NuevoTrasladoActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,7 +26,7 @@ import java.util.Locale;
  * Created by Alexis on 25/10/2017.
  */
 
-public class HistorialPinturaActivity extends AppCompatActivity implements IObserver {
+public class HistorialPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	
 	private ListView listaPinturas;
 	private ProgressDialog loading;

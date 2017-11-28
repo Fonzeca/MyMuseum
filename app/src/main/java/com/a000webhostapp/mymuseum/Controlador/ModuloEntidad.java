@@ -1,11 +1,9 @@
 package com.a000webhostapp.mymuseum.Controlador;
 
-import android.util.Log;
-
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.ISujeto;
+import com.a000webhostapp.mymuseum.Observers.ISujetoEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Invento;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Objeto;
@@ -23,8 +21,8 @@ import java.util.ArrayList;
  * ESTA CLASE ES PARA MANEJAR LAS ENTIDADES Y MANDARLAS A LA BD(BASE DE DATOS)
  */
 
-public class ModuloEntidad implements ISujeto {
-	private ArrayList<IObserver> observers;
+public class ModuloEntidad implements ISujetoEntidad {
+	private ArrayList<IObserverEntidad> observers;
 	private ArrayList<Request> requests;
     private static ModuloEntidad me;
     
@@ -63,7 +61,7 @@ public class ModuloEntidad implements ISujeto {
 	
 
     private ModuloEntidad(){
-		observers = new ArrayList<IObserver>();
+		observers = new ArrayList<IObserverEntidad>();
 		requests = new ArrayList<Request>();
     }
     public static ModuloEntidad obtenerModulo(){
@@ -75,35 +73,35 @@ public class ModuloEntidad implements ISujeto {
     }
     
     //---------------
-    public void crearInvento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina, IObserver ob){
+    public void crearInvento(String nombre, String descripcion, Periodo periodo, Inventor inventor, int añoInvencion, boolean isMaquina, IObserverEntidad ob){
         Invento invento = new Invento(nombre,descripcion,periodo,inventor,añoInvencion,isMaquina);
         Request request = new Request(RQS_ALTA_INVENTO);
         registrarObserver(ob,request);
         new ControlDB(request).insertar(invento);
     }
-    public void buscarInventos(IObserver observer){
+    public void buscarInventos(IObserverEntidad observer){
         //Mandamos a buscar los Inventos
 		Request request = new Request(RQS_BUSQUEDA_INVENTOS_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Invento);
     }
-	public void buscarInventosRefinada(IObserver observer, RequestBusqueda req){
+	public void buscarInventosRefinada(IObserverEntidad observer, RequestBusqueda req){
 		Request request = req;
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Invento);
 	}
-	public void buscarInventoDirecto(IObserver observer, String nombre){
+	public void buscarInventoDirecto(IObserverEntidad observer, String nombre){
 		//Mandamos a buscar los Inventos
 		Request request = new Request(RQS_BUSQUEDA_INVENTO_DIRECTA);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscarDirecto(ControlDB.str_obj_Invento,nombre);
 	}
-    public void editarInvento(Guardable g, IObserver observer){
+    public void editarInvento(Guardable g, IObserverEntidad observer){
 		Request request = new Request(RQS_MODIFICACION_INVENTO);
 		registrarObserver(observer,request);
         new ControlDB(request).modificar(g);
     }
-	public void eliminarInvento(int id, IObserver observer){
+	public void eliminarInvento(int id, IObserverEntidad observer){
 		String entidad = "entidad=" + ControlDB.str_objeto;
 		String idBorra = "registro_id=" + id;
 		Request request = new Request(RQS_BAJA_INVENTO);
@@ -112,52 +110,52 @@ public class ModuloEntidad implements ISujeto {
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
     //---------------
-	public void crearPintura(String nombre, String descripcion, Periodo periodo, Pintor pintor, int añoInvencion,IObserver observer){
+	public void crearPintura(String nombre, String descripcion, Periodo periodo, Pintor pintor, int añoInvencion,IObserverEntidad observer){
 		Pintura pintura = new Pintura(nombre,descripcion,periodo,pintor,añoInvencion);
 		Request request = new Request(RQS_ALTA_PINTURA);
 		registrarObserver(observer,request);
 		new ControlDB(request).insertar(pintura);
 	}
-	public void buscarPinturas(IObserver observer){
+	public void buscarPinturas(IObserverEntidad observer){
 		Request request = new Request(RQS_BUSQUEDA_PINTURAS_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Pintura);
 	}
-	public void buscarPinturasRefinada(IObserver observer, RequestBusqueda req){
+	public void buscarPinturasRefinada(IObserverEntidad observer, RequestBusqueda req){
 		Request request = req;
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_obj_Pintura);
 	}
-	public void buscarPinturaDirecto(IObserver observer, String nombre){
+	public void buscarPinturaDirecto(IObserverEntidad observer, String nombre){
 		Request request = new Request(RQS_BUSQUEDA_PINTURA_DIRECTA);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscarDirecto(ControlDB.str_obj_Pintura,nombre);
 	}
-	public void eliminarPintura(int id,IObserver observer){
+	public void eliminarPintura(int id,IObserverEntidad observer){
 		String entidad = "entidad="+ControlDB.str_objeto;
 		String idBorra = "registro_id=" + id;
 		Request request = new Request(RQS_BAJA_PINTURA);
 		registrarObserver(observer,request);
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
-	public void editarPintura(Guardable g,IObserver observer){
+	public void editarPintura(Guardable g,IObserverEntidad observer){
 		Request request = new Request(RQS_MODIFICACION_PINTURA);
 		registrarObserver(observer,request);
 		new ControlDB(request).modificar(g);
 	}
     //---------------
-	public void crearPintor(String nombre, String lugarNacimiento, int añoNacimiento,IObserver observer){
+	public void crearPintor(String nombre, String lugarNacimiento, int añoNacimiento,IObserverEntidad observer){
 		Pintor pintor = new Pintor(nombre,lugarNacimiento,añoNacimiento);
 		Request request = new Request(RQS_ALTA_PINTOR);
 		registrarObserver(observer,request);
 		new ControlDB(request).insertar(pintor);
 	}
-	public void buscarPintores(IObserver observer){
+	public void buscarPintores(IObserverEntidad observer){
 		Request request = new Request(RQS_BUSQUEDA_PINTORES_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_per_Pintor);
 	}
-	public void eliminarPintor(int id,IObserver observer){
+	public void eliminarPintor(int id,IObserverEntidad observer){
 		String entidad = "entidad="+ControlDB.str_persona;
 		String idBorra = "registro_id=" + id;
 		Request request = new Request(RQS_BAJA_PINTOR);
@@ -165,31 +163,31 @@ public class ModuloEntidad implements ISujeto {
 		
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
-	public void editarPintor(Guardable g,IObserver observer){
+	public void editarPintor(Guardable g,IObserverEntidad observer){
 		Request request = new Request(RQS_MODIFICACION_PINTOR);
 		registrarObserver(observer,request);
 		new ControlDB(request).modificar(g);
 	}
 	
 	//---------------
-    public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento,IObserver observer){
+    public void crearInventor(String nombrecompleto, String lugarNacimiento, int añoNacimiento,IObserverEntidad observer){
         Inventor inventor = new Inventor(nombrecompleto,lugarNacimiento,añoNacimiento);
 		Request request = new Request(RQS_ALTA_INVENTOR);
 		registrarObserver(observer,request);
         new ControlDB(request).insertar(inventor);
     }
-    public void buscarInventores(IObserver observer){
+    public void buscarInventores(IObserverEntidad observer){
         //mandamos a buscar los inventores
 		Request request = new Request(RQS_BUSQUEDA_INVENTORES_TOTAL);
 		registrarObserver(observer,request);
         new ControlDB(request).buscar("Inventor");
     }
-    public void editarInventor(Guardable g,IObserver observer){
+    public void editarInventor(Guardable g,IObserverEntidad observer){
 		Request request = new Request(RQS_MODIFICACION_INVENTOR);
 		registrarObserver(observer,request);
         new ControlDB(request).modificar(g);
     }
-	public void eliminarInventor(int id,IObserver observer){
+	public void eliminarInventor(int id,IObserverEntidad observer){
 		String entidad = "entidad=" + ControlDB.str_persona;
 		String idBorra = "registro_id=" + id;
 		Request request = new Request(RQS_BAJA_INVENTOR);
@@ -197,25 +195,25 @@ public class ModuloEntidad implements ISujeto {
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
     //---------------
-    public void crearPeriodo(String nombre, int añoInicio, int añoFin,IObserver observer){
+    public void crearPeriodo(String nombre, int añoInicio, int añoFin,IObserverEntidad observer){
         Periodo peri = new Periodo(nombre, añoInicio,añoFin);
 		Request request = new Request(RQS_ALTA_PERIODO);
 		registrarObserver(observer,request);
         new ControlDB(request).insertar(peri);
 
     }
-    public void buscarPeriodos(IObserver observer){
+    public void buscarPeriodos(IObserverEntidad observer){
         //mandamos a buscar los periodos
 		Request request = new Request(RQS_BUSQUEDA_PERIODOS_TOTAL);
 		registrarObserver(observer,request);
         new ControlDB(request).buscar("Periodo");
     }
-    public void editarPeriodo(Guardable g,IObserver observer){
+    public void editarPeriodo(Guardable g,IObserverEntidad observer){
 		Request request = new Request(RQS_MODIFICACION_PERIODO);
 		registrarObserver(observer,request);
         new ControlDB(request).modificar(g);
     }
-    public void eliminarPeriodo(int id,IObserver observer){
+    public void eliminarPeriodo(int id,IObserverEntidad observer){
 		String entidad = "entidad=Periodo";
 		String idBorra = "registro_id=" + id;
 		Request request = new Request(RQS_BAJA_PERIODO);
@@ -223,24 +221,24 @@ public class ModuloEntidad implements ISujeto {
 		new ControlDB(request).borrar("accion=eliminar_registro" + "&" + entidad + "&" + idBorra);
 	}
 	//---------------
-	public void crearTraslado(String nombrePintura,int idPintura, String lugarOrigen, String lugarDestino, String fechaTraslado, IObserver observer){
+	public void crearTraslado(String nombrePintura,int idPintura, String lugarOrigen, String lugarDestino, String fechaTraslado, IObserverEntidad observer){
 		Traslado nuevoTraslado = new Traslado(nombrePintura,idPintura,lugarOrigen,lugarDestino,fechaTraslado);
 		Request request = new Request(RQS_ALTA_TRASLADO);
 		registrarObserver(observer,request);
 		new ControlDB(request).insertar(nuevoTraslado);
 	}
-	public void buscarTraslados(IObserver observer, Pintura p){
+	public void buscarTraslados(IObserverEntidad observer, Pintura p){
 		Request request = new RequestHistorialPintura(RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA, p);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscarTrasladosIDPintura();
 	}
-	public void buscarTrasladosTOTAL(IObserver observer){
+	public void buscarTrasladosTOTAL(IObserverEntidad observer){
 		Request request = new Request(RQS_BUSQUEDA_TRASLADOS_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscarTraslados();
 	}
 	//---------------
-	public void buscarObjetos(IObserver observer){
+	public void buscarObjetos(IObserverEntidad observer){
 		Request request = new Request(RQS_BUSQUEDA_OBJETO_TOTAL);
 		registrarObserver(observer,request);
 		new ControlDB(request).buscar(ControlDB.str_objeto);
@@ -311,12 +309,12 @@ public class ModuloEntidad implements ISujeto {
 	}
 	//---------------
 	
-	public void registrarObserver(IObserver ob, Request request) {
+	public void registrarObserver(IObserverEntidad ob, Request request) {
 		observers.add(ob);
 		requests.add(request);
 	}
 	
-	public boolean eliminarObserver(IObserver ob) {
+	public boolean eliminarObserver(IObserverEntidad ob) {
 		requests.remove(observers.indexOf(ob));
 		observers.remove(ob);
 		return true;
@@ -360,7 +358,21 @@ public class ModuloEntidad implements ISujeto {
 					notificarObserver(request,g,respuesta);
 					break;
 				case RQS_ALTA_INVENTO:
+				case RQS_ALTA_INVENTOR:
+				case RQS_ALTA_PERIODO:
+				case RQS_ALTA_PINTOR:
+				case RQS_ALTA_PINTURA:
+				case RQS_ALTA_TRASLADO:
 				case RQS_BAJA_INVENTO:
+				case RQS_BAJA_INVENTOR:
+				case RQS_BAJA_PERIODO:
+				case RQS_BAJA_PINTOR:
+				case RQS_BAJA_PINTURA:
+				case RQS_MODIFICACION_INVENTO:
+				case RQS_MODIFICACION_INVENTOR:
+				case RQS_MODIFICACION_PERIODO:
+				case RQS_MODIFICACION_PINTOR:
+				case RQS_MODIFICACION_PINTURA:
 					notificarObserver(request,null,respuesta);
 					break;
 			}

@@ -1,11 +1,8 @@
 package com.a000webhostapp.mymuseum.Vista;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,23 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
-import com.a000webhostapp.mymuseum.Controlador.Request;
 import com.a000webhostapp.mymuseum.Controlador.RequestBusqueda;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Inventor;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
-import com.a000webhostapp.mymuseum.Modelo.Persona;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
-import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BuscarObjetoActivity extends AppCompatActivity implements IObserver {
+public class BuscarObjetoActivity extends AppCompatActivity implements IObserverEntidad {
 	private Button save;
 	private Spinner objetosSpinner;
 	private EditText nombreObjetoEdit;

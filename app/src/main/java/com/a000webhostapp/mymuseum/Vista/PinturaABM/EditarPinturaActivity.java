@@ -1,12 +1,9 @@
 package com.a000webhostapp.mymuseum.Vista.PinturaABM;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,19 +16,18 @@ import android.widget.TextView;
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.Controlador.ModuloImagen;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
 import com.a000webhostapp.mymuseum.Modelo.Imagen;
 import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintor;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.R;
-import com.a000webhostapp.mymuseum.Vista.InventoABM.EditarInventoActivity;
 import com.a000webhostapp.mymuseum.Vista.ModuloNotificacion;
 import com.a000webhostapp.mymuseum.Vista.PeriodoABM.NuevoPeriodoActivity;
 import com.a000webhostapp.mymuseum.Vista.PintorABM.NuevoPintorActivity;
 
-public class EditarPinturaActivity extends AppCompatActivity implements IObserver {
+public class EditarPinturaActivity extends AppCompatActivity implements IObserverEntidad {
 	private static final int RQS_BUSCARIMAGEN = 0;
     private Pintor[] pintoresCargados;
     private Periodo[] periodosCargados;
@@ -114,7 +110,8 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 				if(uriImagen != null){
 					ModuloImagen.obtenerModulo().insertarImagen(nombre.getText().toString(),ControlDB.str_obj_Pintura,EditarPinturaActivity.this,uriImagen,EditarPinturaActivity.this);
 				}
-				onBackPressed();
+				notificacion.mostrarLoading();
+				guardar.setEnabled(false);
             }
         });
 	
@@ -239,22 +236,19 @@ public class EditarPinturaActivity extends AppCompatActivity implements IObserve
 						if(periodosCargados != null && pintoresCargados != null && imagenBuscada){
 							notificacion.loadingDismiss();
 						}
+					}else if(request == ModuloEntidad.RQS_MODIFICACION_PINTURA){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se modifico exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								onBackPressed();
+							}
+						});
 					}
 					break;
-				case ControlDB.res_falloConexion:
+				default:
 					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_falloConexion);
-					break;
-				case ControlDB.res_tablaInventorVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaInventorVacio);
-					break;
-				case ControlDB.res_tablaPeriodoVacio:
-					notificacion.loadingDismiss();
-					//Creamos un alertDialog en el Thread UI del activity
-					notificacion.mostrarError(ControlDB.res_tablaPeriodoVacio);
+					notificacion.mostrarError(respuesta);
 					break;
 			}
 		}

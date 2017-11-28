@@ -1,28 +1,20 @@
 package com.a000webhostapp.mymuseum.Vista.TrasladoABM;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a000webhostapp.mymuseum.Controlador.ModuloEntidad;
 import com.a000webhostapp.mymuseum.DAO.ControlDB;
-import com.a000webhostapp.mymuseum.IObserver;
+import com.a000webhostapp.mymuseum.Observers.IObserverEntidad;
 import com.a000webhostapp.mymuseum.Modelo.Guardable;
-import com.a000webhostapp.mymuseum.Modelo.Periodo;
 import com.a000webhostapp.mymuseum.Modelo.Pintura;
 import com.a000webhostapp.mymuseum.Modelo.Traslado;
 import com.a000webhostapp.mymuseum.R;
@@ -34,7 +26,7 @@ import java.util.Calendar;
  * Created by Alexis on 25/10/2017.
  */
 
-public class NuevoTrasladoActivity extends AppCompatActivity implements IObserver {
+public class NuevoTrasladoActivity extends AppCompatActivity implements IObserverEntidad {
 	
 	private Spinner spinnerPinturas;
 	private TextView destino, origen;
@@ -104,8 +96,9 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 				String strFecha = fecha.getText().toString();
 				
 				ModuloEntidad.obtenerModulo().crearTraslado(pinturaActual.getNombre(),pinturaActual.getID(),strOrigen,strDestino,strFecha,NuevoTrasladoActivity.this);
+				notificacion.mostrarLoading();
+				save.setEnabled(false);
 				
-				finish();
 			}
 		});
 	}
@@ -161,15 +154,25 @@ public class NuevoTrasladoActivity extends AppCompatActivity implements IObserve
 		if(notificacion.isLoadingShowing()){
 			switch (respuesta){
 				case ControlDB.res_exito:
-					switch (request){
-						case ModuloEntidad.RQS_BUSQUEDA_PINTURAS_TOTAL:
-							cargarPinturasSpinner((Pintura[]) g);
-							break;
-						case ModuloEntidad.RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
-							actualizarCampos();
-							break;
+					if(g != null){
+						switch (request){
+							case ModuloEntidad.RQS_BUSQUEDA_PINTURAS_TOTAL:
+								cargarPinturasSpinner((Pintura[]) g);
+								break;
+							case ModuloEntidad.RQS_BUSQUEDA_TRASLADOS_UNICO_PINTURA:
+								actualizarCampos();
+								break;
+						}
+						notificacion.loadingDismiss();
+					}else if(request == ModuloEntidad.RQS_ALTA_TRASLADO){
+						notificacion.loadingDismiss();
+						notificacion.mostarNotificacion("Se cargo exitosamente");
+						runOnUiThread(new Runnable() {
+							public void run() {
+								finish();
+							}
+						});
 					}
-					notificacion.loadingDismiss();
 					break;
 				case ControlDB.res_tablaTrasladoUnicoVacio:
 					actualizarCampos();

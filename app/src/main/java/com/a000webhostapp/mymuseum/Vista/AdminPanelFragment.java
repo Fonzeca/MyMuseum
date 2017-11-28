@@ -22,6 +22,7 @@ public class AdminPanelFragment extends Fragment {
 	private RelativeLayout editarInventorButton, editarPeriodoButton, editarObjetoButton;
 	private RelativeLayout eliminarInventoButton,eliminarInventorButton, eliminarPeriodoButton;
 	private RelativeLayout generarTrasladoButton,verHistorialButton;
+	private RelativeLayout verInfoAdmin;
 	
 	
 	private View.OnClickListener clickListenerBotones;
@@ -79,6 +80,10 @@ public class AdminPanelFragment extends Fragment {
 						intent = new Intent(getActivity(), HistorialPinturaActivity.class);
 						startActivity(intent);
 						break;
+					case R.id.ver_informacion_button:
+						intent = new Intent(getActivity(), InformacionAdministradorActivity.class);
+						startActivity(intent);
+						break;
                 }
             }
         };
@@ -124,6 +129,9 @@ public class AdminPanelFragment extends Fragment {
 		
 		verHistorialButton = (RelativeLayout) viewFinal.findViewById(R.id.ver_historial_button);
 		verHistorialButton.setOnClickListener(clickListenerBotones);
+		
+		verInfoAdmin = (RelativeLayout) viewFinal.findViewById(R.id.ver_informacion_button);
+		verInfoAdmin.setOnClickListener(clickListenerBotones);
 		
 	}
 }
